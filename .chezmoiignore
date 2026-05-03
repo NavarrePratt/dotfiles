@@ -1,0 +1,28 @@
+# Never let chezmoi apply local-only secret files from the source tree.
+dot_config/dotfiles/local/env.zsh
+dot_config/dotfiles/local/teleport.zsh
+dot_config/dotfiles/local/*.secret.zsh
+
+# Repository-only files.
+README.md
+Brewfile
+scripts/**
+
+# Codex runtime files are intentionally unmanaged.
+dot_codex/auth.json
+dot_codex/history.jsonl
+dot_codex/installation_id
+dot_codex/models_cache.json
+dot_codex/cloud-requirements-cache.json
+dot_codex/version.json
+dot_codex/logs*.sqlite*
+dot_codex/state*.sqlite*
+dot_codex/cache/**
+dot_codex/log/**
+dot_codex/sessions/**
+dot_codex/shell_snapshots/**
+dot_codex/.tmp/**
+
+# Claude migration is deliberately deferred.
+private_dot_claude/**
+dot_claude/**

@@ -1,0 +1,29 @@
+# Local secret material
+dot_config/dotfiles/local/env.zsh
+dot_config/dotfiles/local/teleport.zsh
+dot_config/dotfiles/local/*.secret.zsh
+*.pem
+*.key
+.env
+
+# Chezmoi and local editor state
+.chezmoi*
+!.chezmoiignore
+.DS_Store
+*.swp
+*.swo
+
+# Codex runtime state. Keep only intended config, rules, and approved skills.
+dot_codex/auth.json
+dot_codex/history.jsonl
+dot_codex/installation_id
+dot_codex/models_cache.json
+dot_codex/cloud-requirements-cache.json
+dot_codex/version.json
+dot_codex/logs*.sqlite*
+dot_codex/state*.sqlite*
+dot_codex/cache/
+dot_codex/log/
+dot_codex/sessions/
+dot_codex/shell_snapshots/
+dot_codex/.tmp/

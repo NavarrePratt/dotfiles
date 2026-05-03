@@ -1,0 +1,108 @@
+# Session Protocol
+
+## Session Startup (User-Initiated Only)
+
+Run this sequence ONLY when the user explicitly requests it (e.g., "start session", "check for work").
+
+**After context compaction**: Do NOT treat compaction as a new session. If you were actively working on something, continue that work. The compaction summary will indicate what you were doing.
+
+```bash
+pwd                    # Confirm working directory
+br prime               # Recover context
+br ready --json        # Find available work
+git log --oneline -5   # Review recent state
+git status             # Verify clean state
+```
+
+## Incremental Progress
+
+Work on ONE issue at a time:
+
+1. Select highest-priority issue from `br ready`
+2. Implement ONLY that feature
+3. Commit only when asked, using atomic commits that match project style
+4. Close: `br close <id> --reason "Completed..." --json`
+5. Verify feature works end-to-end
+6. Move to next issue
+
+Never batch multiple features into single commits.
+
+## CRITICAL: Bead Closure Requirement
+
+**You MUST close beads before ending your session.** Failure to close beads causes them to get stuck in_progress forever, requiring manual intervention.
+
+Before ending your session:
+1. Run `br show <id> --json` to verify the bead status
+2. If work is complete: `br close <id> --reason "Completed: <what was done>"`
+3. If work is NOT complete: `br update <id> --status open --notes "Needs: <what remains>"`
+
+Never leave a bead in_progress - either close it or reset it to open.
+
+## Session Completion
+
+```bash
+br create "Follow-up: ..." --json    # File remaining work
+br close <id> --reason "..." --json  # Close completed issues
+# Run quality validation (lint, test, type-check)
+# Commit only when asked, using atomic commits
+```
+
+Do NOT push to remote - commits should remain local for user review.
+
+## Clean State Requirement
+
+Each session must leave code production-ready:
+- No major bugs introduced
+- Well-documented changes
+- Mergeable to main without cleanup
+- All tests passing
+
+# Quality Gates
+
+Before committing:
+- Code compiles/lints without errors
+- All existing tests pass
+- New code has appropriate test coverage
+- No hardcoded secrets or credentials
+- Changes are minimal and focused
+
+# Integration Test Verification
+
+After implementing changes that affect core functionality:
+
+1. **Check if integration tests need updates**: If you modified API behavior, added features,
+   or changed how existing functionality works, verify integration tests still pass
+2. **Update integration tests**: When tests use outdated patterns, update them to match
+   current API patterns
+3. **Run integration tests**: Execute the project's integration test command before closing
+   issues (check project `AGENTS.md` or other local AI instruction file for specific commands)
+4. **Add new integration tests**: When implementing new features that interact with external
+   services, add corresponding integration test coverage
+
+**Warning**: Do not get stuck in planning loops when tests fail. If integration tests fail
+after code changes, diagnose and fix them rather than reverting to planning mode repeatedly.
+Check test patterns match current API usage.
+
+# Code Style
+
+- Read before modifying: understand existing code first
+- Match existing style: indentation, naming, patterns
+- Minimal changes: only modify what's necessary
+- Delete unused code: remove completely, don't comment out
+- No over-engineering - three similar lines > premature abstraction
+
+# Git Commits
+
+When asked to commit:
+- Inspect git history to match the project's commit style
+- Create atomic, logically grouped commits
+- Prefer imperative mood and concise subjects
+- Add an explanatory body only when the reason or consequence is not obvious from the diff
+
+# Communication Standards
+
+- Be explicit - state instructions directly
+- Provide context - explain why, not just what
+- Use positive framing - say what TO do, not what to avoid
+- Be concise - no filler words
+- Match specificity to complexity
