@@ -24,7 +24,6 @@ while IFS= read -r path; do
     dot_codex/sessions/*|\
     dot_codex/shell_snapshots/*|\
     dot_codex/.tmp/*|\
-    dot_claude/*|\
     private_dot_claude/*|\
     */.env|\
     *.pem|\

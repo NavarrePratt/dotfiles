@@ -26,3 +26,4 @@ dot_codex/.tmp/**
 # Claude migration is deliberately deferred.
 private_dot_claude/**
 dot_claude/**
+.claude/**
