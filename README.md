@@ -11,8 +11,9 @@ This repository currently manages shell configuration and Codex configuration. O
 - `dot_config/dotfiles/local/`: tracked templates for local-only secret and private config files.
 - `dot_codex/private_config.toml`: managed `~/.codex/config.toml` with restrictive permissions.
 - `dot_codex/AGENTS.md`: manually maintained global Codex instructions.
-- `dot_codex/rules/`: Codex rules.
+- `dot_codex/exact_rules/`: keeps `~/.codex/rules` free of execpolicy files unless explicitly added later.
 - `dot_codex/skills/npratt/`: explicitly approved personal Codex skills.
+- `dot_claude/`: staged Claude source files copied from the tracked surface of `~/.claude`; currently blocked from apply.
 - `scripts/`: validation helpers.
 
 ## Secrets and Runtime State
@@ -29,6 +30,8 @@ Private local configuration also lives under `~/.config/dotfiles/local/`. For ex
 
 Runtime state, histories, auth files, caches, sessions, SQLite databases, and local env files are intentionally ignored and should not be tracked.
 
+Claude source is staged under `dot_claude/`, but `.chezmoiignore` currently prevents it from being applied into `~/.claude`. This keeps the existing `~/.claude` git checkout untouched while the dotfiles copy is reviewed.
+
 ## Validate
 
 Run the validation suite before applying changes:
@@ -38,6 +41,12 @@ Run the validation suite before applying changes:
 ```
 
 The validation runs shell syntax checks, secret scanning, tracked-file audits, and chezmoi checks when `chezmoi` is available.
+
+To compare the staged Claude source with the tracked files in the live `~/.claude` checkout:
+
+```sh
+./scripts/claude-staged-diff.sh
+```
 
 ## Apply
 
