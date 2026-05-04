@@ -1,7 +1,7 @@
 # Managed by chezmoi from ~/git/dotfiles/dot_zshrc.
 
 _dotfiles_interactive_tty() {
-  [[ -o interactive && -o zle && -t 0 && -t 1 && -t 2 ]]
+  [[ -o interactive && -n ${TTY:-} && ${TTY:-notty} != notty ]]
 }
 
 # Enable Powerlevel10k instant prompt. Keep console-interactive setup above this.
