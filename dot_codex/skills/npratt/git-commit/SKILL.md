@@ -1,5 +1,5 @@
 ---
-name: npratt-git-commit
+name: commit
 description: Create logically grouped, atomic local git commits with well-formatted commit messages. Use when the user asks to commit changes, run a commit workflow, or use /commit-style behavior. Before committing, inspect current changes and recent history, group changes intentionally, surface unresolved decisions to the user when they materially affect the commit, and never push without explicit approval.
 ---
 
