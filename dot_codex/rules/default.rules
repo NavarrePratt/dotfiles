@@ -1,6 +1,0 @@
-# Default Codex Rules
-
-- Follow `~/.codex/AGENTS.md`.
-- Use detailed Codex rules under `~/.codex/rules/`.
-- Do not perform GitHub writes or git pushes without explicit user approval.
-- Keep local secrets, histories, SQLite DBs, caches, sessions, shell snapshots, model caches, install IDs, and local env files out of git.

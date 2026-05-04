@@ -11,14 +11,13 @@ fi
 paths=(
   "$repo_root/dot_codex/AGENTS.md"
   "$repo_root/dot_codex/private_config.toml"
-  "$repo_root/dot_codex/rules"
+  "$repo_root/dot_codex/skills"
 )
 
 patterns=(
   '\[via Claude\]'
   '@rules'
   'mcp__codex__codex'
-  '/commit'
   'CronCreate'
   'Monitor\('
   'bd-xxx'
