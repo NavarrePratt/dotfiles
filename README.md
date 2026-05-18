@@ -13,6 +13,8 @@ This repository currently manages shell configuration and Codex configuration. O
 - `dot_codex/AGENTS.md`: manually maintained global Codex instructions.
 - `dot_codex/exact_rules/`: keeps `~/.codex/rules` free of execpolicy files unless explicitly added later.
 - `dot_codex/skills/npratt/`: explicitly approved personal Codex skills.
+- `.codex/plans/`: local-only ExecPlans for larger work. This path is ignored through `.git/info/exclude`, not tracked `.gitignore`.
+- `.codex/worktrees/`: local-only project worktrees for isolated Codex work. This path is ignored through `.git/info/exclude`, not tracked `.gitignore`.
 - `dot_claude/`: staged Claude source files copied from the tracked surface of `~/.claude`; currently blocked from apply.
 - `scripts/`: validation helpers.
 
@@ -31,6 +33,18 @@ Private local configuration also lives under `~/.config/dotfiles/local/`. For ex
 Runtime state, histories, auth files, caches, sessions, SQLite databases, and local env files are intentionally ignored and should not be tracked.
 
 Claude source is staged under `dot_claude/`, but `.chezmoiignore` currently prevents it from being applied into `~/.claude`. This keeps the existing `~/.claude` git checkout untouched while the dotfiles copy is reviewed.
+
+## Local Codex Plans
+
+Larger Codex work is planned locally with ExecPlan documents under `.codex/plans/`. Each plan has a top-level Markdown file as the source of truth. Supporting notes, review output, PR drafts, or agent summaries can live in an optional sibling directory with the same slug.
+
+These files are local working state and are not intended for git by default. Keep `.codex/plans/` and `.codex/worktrees/` in the local Git exclude file:
+
+```sh
+git check-ignore -v .codex/plans/example.md .codex/worktrees/example
+```
+
+Use the `plan-epic`, `plans`, `implement-plan`, and `clean-plans` Codex skills for this workflow.
 
 ## Validate
 

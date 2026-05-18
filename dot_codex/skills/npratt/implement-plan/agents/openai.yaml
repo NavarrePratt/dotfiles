@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implement Plan"
+  short_description: "Execute local ExecPlans safely."
+  default_prompt: "Use $implement-plan to execute this local ExecPlan through verification and handoff."

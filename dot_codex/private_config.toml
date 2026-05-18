@@ -36,6 +36,15 @@ trust_level = "trusted"
 [projects."/Users/npratt/.codex"]
 trust_level = "trusted"
 
+[projects."/Users/npratt/git/dotfiles"]
+trust_level = "trusted"
+
+[projects."/Users/npratt/git"]
+trust_level = "trusted"
+
+[projects."/Users/npratt/git/kynes"]
+trust_level = "trusted"
+
 [notice]
 "hide_gpt-5.1-codex-max_migration_prompt" = true
 
@@ -49,4 +58,10 @@ enabled = true
 enabled = true
 
 [tui.model_availability_nux]
-"gpt-5.5" = 2
+"gpt-5.5" = 4
+
+[features]
+terminal_resize_reflow = true
+memories = true
+prevent_idle_sleep = true
+goals = true

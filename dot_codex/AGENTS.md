@@ -57,36 +57,14 @@ task-specific workflows belong in Codex skills.
 - Prefer `ygrep` over `grep` or complex `yq` when extracting structured blocks from YAML by key or partial path.
 - Use the `git-spice` Codex skill for stacked branch work involving `gs`.
 
-# Issue Tracking With br
+# Local Planning
 
-Use `br` for local issue tracking when work needs to persist across sessions or when the user asks to plan or track work.
+Use local ExecPlan documents for durable planning. In this dotfiles repo, store them under `.codex/plans/` and keep that directory in the repo's local Git exclude file, not tracked `.gitignore`, unless the user explicitly chooses to track plans later.
 
-- Create issues for discovered bugs, test failures, and follow-up work that should not be handled immediately.
-- Use priority levels: 0=critical, 1=high, 2=normal, 3=low, 4=backlog.
-- Keep issue titles short, imperative, and specific.
-- Write descriptions with enough detail for a future session to resume the work.
-- Close issues only when work is complete and verified.
-- Always provide `--reason` when closing a bead.
-- Use `br dep add A B --type blocks` to mean A depends on B, so B must complete before A can start.
-
-Detailed planning workflows should live in Codex skills. Do not recreate a Claude session protocol in this file.
-
-# Bead Boundaries
-
-After creating a bead through a planning workflow or manual `br create`:
-
-- Report the bead ID.
-- Return to the previous task immediately.
-- Do not start working on the newly created bead unless the user explicitly says to work on it now.
-
-Beads must never include instructions that involve upstream or remote operations:
-
-- No `git push` or branch pushing.
-- No `gh pr create` or PR creation.
-- No `gh issue create` or GitHub issue creation.
-- No posting comments, reviews, or other GitHub API writes.
-
-Beads are for local work only: code changes, tests, and local verification.
+- Treat the ExecPlan document as the source of truth for planned work.
+- Track ownership, state, active worktree, milestones, verification, and progress in the plan itself.
+- Do not create a second source of truth in `br` unless the user explicitly asks for `br` on a specific task.
+- Detailed planning workflows should live in Codex skills. Do not recreate a Claude session protocol in this file.
 
 # Commits And PRs
 
@@ -126,6 +104,8 @@ Before any GitHub write operation:
 
 Never push to remote repositories without explicit user approval. This includes commits, tags, branch updates, and Git-Spice submit commands.
 
+For this dotfiles repo, keep changes local by default. The user prefers a thorough manual review before any push or other remote publication.
+
 Before running `git push`, `gs branch submit`, `gs stack submit`, `gs bs`, or `gs ss`:
 
 1. Show what will be pushed or submitted.
@@ -152,6 +132,8 @@ Treat personal-account communication tools such as Slack or Gmail as read-orient
 # Configuration Hygiene
 
 Keep local secrets, histories, SQLite databases, caches, sessions, shell snapshots, model caches, installation IDs, and local env files out of git.
+
+Codex may update `~/.codex/config.toml` outside chezmoi, such as trusted projects, feature flags, and UI state. Before applying managed Codex config, review the targeted `chezmoi diff`; reconcile live-only settings into `dot_codex/private_config.toml` or consciously discard them. Use `chezmoi --force apply` only after that review, and only for the specific Codex files being applied.
 
 # Model And Tool Selection
 
