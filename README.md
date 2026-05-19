@@ -67,13 +67,7 @@ Run the validation suite before applying changes:
 ./scripts/validate.sh
 ```
 
-The validation runs shell syntax checks, secret scanning, tracked-file audits, and chezmoi checks when `chezmoi` is available.
-
-For Codex skill changes, also validate the changed skill directory with the skill-creator validator. Example:
-
-```sh
-uv run --with pyyaml python /Users/npratt/.codex/skills/.system/skill-creator/scripts/quick_validate.py dot_codex/skills/npratt/review-branch
-```
+The validation runs shell syntax checks, Codex skill validation when the local validator is available, secret scanning, tracked-file audits, and chezmoi checks when `chezmoi` is available.
 
 To compare the staged Claude source with the tracked files in the live `~/.claude` checkout:
 
