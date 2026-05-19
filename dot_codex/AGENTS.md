@@ -22,6 +22,14 @@ task-specific workflows belong in Codex skills.
 - Do not use emojis.
 - Do not use em dashes. Use hyphens or colons.
 
+## Local Review Artifacts
+
+When creating or updating a local file specifically for user review, offer to open it with `cursor <path>` before asking the user to review or approve it.
+
+- Use this for review-gated drafts and artifacts such as issue drafts, PR bodies, ExecPlans, handoff notes, review findings, and generated instructions.
+- Show the path and the exact `cursor <path>` command.
+- Opening the file in Cursor is only for review convenience. It does not replace explicit approval for a GitHub write, remote push, message, deletion, or other gated action.
+
 # Code Style
 
 - Prefer self-documenting code over explanatory comments.
