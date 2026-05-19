@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Branch"
+  short_description: "Run a local parallel reviewer team."
+  default_prompt: "Use $review-branch to review the local changes with the parallel reviewer team before pushing or opening a PR."

@@ -83,9 +83,17 @@ Local PR artifacts are useful, but do not push or create a PR without explicit a
 
 ## Review Boundary
 
-Treat review as human-gated in this first version.
+Treat review as human-gated. After implementation and relevant verification,
+ask whether to invoke `$review-branch` before handoff. When the current plan has
+a path, pass that path so review artifacts are written under
+`.codex/plans/<slug>/`.
 
-Codex has a built-in review command:
+`$review-branch` runs a parallel Codex reviewer team and is report-only. Do not
+invoke it automatically from this skill unless the user explicitly asks for the
+review step. If it runs, record artifact paths or known review state in the
+handoff.
+
+Codex also has a built-in review command:
 
 ```bash
 codex review --uncommitted
@@ -93,7 +101,9 @@ codex review --base <branch>
 codex review --commit <sha>
 ```
 
-Use it only when requested or clearly appropriate. Record output in plan artifacts. Do not treat it as a replacement for a future multi-reviewer workflow.
+Use the built-in command only when requested or clearly appropriate. Record
+output in plan artifacts. Do not treat it as a replacement for `$review-branch`
+when the user asked for the local parallel review workflow.
 
 ## Handoff
 

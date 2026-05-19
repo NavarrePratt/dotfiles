@@ -8,6 +8,17 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 "$repo_root/scripts/secret-audit.sh"
 "$repo_root/scripts/tracked-file-audit.sh"
 
+skill_validator="${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py"
+if [ -f "$skill_validator" ] && command -v uv >/dev/null 2>&1; then
+  while IFS= read -r -d '' skill_file; do
+    skill_dir="${skill_file%/SKILL.md}"
+    uv run --with pyyaml python "$skill_validator" "$skill_dir" >/dev/null
+  done < <(find "$repo_root/dot_codex/skills/npratt" -mindepth 2 -maxdepth 2 -name SKILL.md -print0)
+  echo "codex-skill-validate: ok"
+else
+  echo "validate: Codex skill validator not available; skipping Codex skill validation" >&2
+fi
+
 zsh -n "$repo_root/dot_zshrc"
 find "$repo_root/dot_config/dotfiles/shell" -type f -name '*.zsh' -print0 |
   xargs -0 -n 1 zsh -n

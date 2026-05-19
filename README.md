@@ -13,6 +13,7 @@ This repository currently manages shell configuration and Codex configuration. O
 - `dot_codex/AGENTS.md`: manually maintained global Codex instructions.
 - `dot_codex/exact_rules/`: keeps `~/.codex/rules` free of execpolicy files unless explicitly added later.
 - `dot_codex/skills/npratt/`: explicitly approved personal Codex skills.
+- `dot_config/dotfiles/agent-review/`: shared reviewer definitions and prompt templates for local agent review workflows.
 - `.codex/plans/`: local-only ExecPlans for larger work. This path is ignored through `.git/info/exclude`, not tracked `.gitignore`.
 - `.codex/worktrees/`: local-only project worktrees for isolated Codex work. This path is ignored through `.git/info/exclude`, not tracked `.gitignore`.
 - `dot_claude/`: staged Claude source files copied from the tracked surface of `~/.claude`; currently blocked from apply.
@@ -44,7 +45,19 @@ These files are local working state and are not intended for git by default. Kee
 git check-ignore -v .codex/plans/example.md .codex/worktrees/example
 ```
 
-Use the `plan-epic`, `plans`, `implement-plan`, `finish-plan`, and `clean-plans` Codex skills for this workflow.
+Use the `plan-epic`, `plans`, `implement-plan`, `review-branch`, `finish-plan`, and `clean-plans` Codex skills for this workflow.
+
+`review-branch` is the local parallel review step for checking uncommitted changes, branch diffs, commits, or plan-backed worktrees before pushing or opening a PR. When a plan path is provided, durable review artifacts are written under `.codex/plans/<slug>/`, including stable latest files such as `review-findings.md` and `review-summary.md`.
+
+## Shared Agent Review Prompts
+
+Reviewer role definitions and reusable review templates live under:
+
+```sh
+~/.config/dotfiles/agent-review/
+```
+
+The chezmoi source for those files is `dot_config/dotfiles/agent-review/`. Codex and staged Claude review skills use this shared source so reviewer language stays consistent while each tool keeps its own orchestration.
 
 ## Validate
 
@@ -54,7 +67,7 @@ Run the validation suite before applying changes:
 ./scripts/validate.sh
 ```
 
-The validation runs shell syntax checks, secret scanning, tracked-file audits, and chezmoi checks when `chezmoi` is available.
+The validation runs shell syntax checks, Codex skill validation when the local validator is available, secret scanning, tracked-file audits, and chezmoi checks when `chezmoi` is available.
 
 To compare the staged Claude source with the tracked files in the live `~/.claude` checkout:
 

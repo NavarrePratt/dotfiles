@@ -124,17 +124,19 @@ Based on lines_changed:
    - `templates/reviewer-prompt.md` - The prompt template for reviewer agents (used in step 4 below)
    - `templates/final-report.md` - The report format for Phase 5 synthesis (read now, use later)
 
-   **Reviewer briefs** (from `~/.claude/skills/shared/reviewers/`):
+   **Reviewer briefs** (shared dotfiles-managed source:
+   `~/.config/dotfiles/agent-review/reviewers/`). This shared path must be
+   installed before these staged Claude review skills are applied or used.
 
    | Reviewer name | Brief file |
    |---|---|
-   | `reviewer-security` | `~/.claude/skills/shared/reviewers/security.md` |
-   | `reviewer-correctness` | `~/.claude/skills/shared/reviewers/correctness.md` |
-   | `reviewer-architecture` | `~/.claude/skills/shared/reviewers/architecture.md` |
-   | `reviewer-simplicity` | `~/.claude/skills/shared/reviewers/simplicity.md` |
-   | `reviewer-pragmatism` | `~/.claude/skills/shared/reviewers/pragmatism.md` |
-   | `reviewer-performance` | `~/.claude/skills/shared/reviewers/performance.md` |
-   | `reviewer-testing` | `~/.claude/skills/shared/reviewers/testing.md` |
+   | `reviewer-security` | `~/.config/dotfiles/agent-review/reviewers/security.md` |
+   | `reviewer-correctness` | `~/.config/dotfiles/agent-review/reviewers/correctness.md` |
+   | `reviewer-architecture` | `~/.config/dotfiles/agent-review/reviewers/architecture.md` |
+   | `reviewer-simplicity` | `~/.config/dotfiles/agent-review/reviewers/simplicity.md` |
+   | `reviewer-pragmatism` | `~/.config/dotfiles/agent-review/reviewers/pragmatism.md` |
+   | `reviewer-performance` | `~/.config/dotfiles/agent-review/reviewers/performance.md` |
+   | `reviewer-testing` | `~/.config/dotfiles/agent-review/reviewers/testing.md` |
 
    Read ALL relevant brief files and both template files.
 
