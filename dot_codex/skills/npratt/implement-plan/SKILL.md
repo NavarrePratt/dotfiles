@@ -112,6 +112,8 @@ At handoff, report:
 
 Do not mark a plan `done` just because local implementation finished or a PR was opened. Leave it `in_progress` or `blocked` until the project-specific lifecycle is complete.
 
+When implementation is handed off through a PR or another review path, suggest `$finish-plan .codex/plans/<slug>.md` as the next lifecycle tool after merge, CI, deploy, release, rollout validation, documentation, or other recorded completion checks are done. Do not invoke `$finish-plan` automatically unless the user explicitly asks to finish the plan and the lifecycle evidence is already available.
+
 Do not archive from this skill unless the user explicitly confirms the lifecycle is complete.
 
 ## Safety
