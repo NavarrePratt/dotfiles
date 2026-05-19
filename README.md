@@ -44,7 +44,7 @@ These files are local working state and are not intended for git by default. Kee
 git check-ignore -v .codex/plans/example.md .codex/worktrees/example
 ```
 
-Use the `plan-epic`, `plans`, `implement-plan`, and `clean-plans` Codex skills for this workflow.
+Use the `plan-epic`, `plans`, `implement-plan`, `finish-plan`, and `clean-plans` Codex skills for this workflow.
 
 ## Validate
 

@@ -63,6 +63,7 @@ Use local ExecPlan documents for durable planning. In this dotfiles repo, store 
 
 - Treat the ExecPlan document as the source of truth for planned work.
 - Track ownership, state, active worktree, milestones, verification, and progress in the plan itself.
+- Use `finish-plan` to verify lifecycle completion, mark plans done, archive them, and handle safe worktree cleanup.
 - Do not create a second source of truth in `br` unless the user explicitly asks for `br` on a specific task.
 - Detailed planning workflows should live in Codex skills. Do not recreate a Claude session protocol in this file.
 
