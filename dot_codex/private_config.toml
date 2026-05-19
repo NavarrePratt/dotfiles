@@ -65,3 +65,4 @@ terminal_resize_reflow = true
 memories = true
 prevent_idle_sleep = true
 goals = true
+default_mode_request_user_input = true
