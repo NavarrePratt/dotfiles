@@ -182,10 +182,9 @@ Based on lines_changed, use the same thresholds as team-branch-review:
    - `templates/reviewer-prompt.md` - The prompt template for reviewer agents (used in step 4 below)
    - `templates/final-report.md` - The report format for Phase 5 synthesis (read now, use later)
 
-   **Reviewer briefs** (canonical source:
-   `~/.config/dotfiles/agent-review/reviewers/`). The staged files under
-   `~/.claude/skills/shared/reviewers/` are pointers for migration review, not
-   standalone fallbacks; install the shared files first.
+   **Reviewer briefs** (shared dotfiles-managed source:
+   `~/.config/dotfiles/agent-review/reviewers/`). This shared path must be
+   installed before these staged Claude review skills are applied or used.
 
    | Reviewer name | Brief file |
    |---|---|

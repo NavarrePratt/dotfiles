@@ -112,10 +112,9 @@ Based on lines_changed:
    **Final report template** (for Phase 5, read now):
    - `~/.claude/skills/team-branch-review/templates/final-report.md`
 
-   **Reviewer briefs** (canonical source:
-   `~/.config/dotfiles/agent-review/reviewers/`). The staged files under
-   `~/.claude/skills/shared/reviewers/` are pointers for migration review, not
-   standalone fallbacks; install the shared files first.
+   **Reviewer briefs** (shared dotfiles-managed source:
+   `~/.config/dotfiles/agent-review/reviewers/`). This shared path must be
+   installed before these staged Claude review skills are applied or used.
 
    | Reviewer name | Brief file |
    |---|---|
