@@ -1,0 +1,4 @@
+interface:
+  display_name: "Watch PR"
+  short_description: "Monitor PR lifecycle state read-only."
+  default_prompt: "Use $watch-pr to monitor this PR read-only and update linked local plan artifacts when applicable."

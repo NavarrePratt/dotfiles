@@ -45,9 +45,11 @@ These files are local working state and are not intended for git by default. Kee
 git check-ignore -v .codex/plans/example.md .codex/worktrees/example
 ```
 
-Use the `plan-epic`, `plans`, `implement-plan`, `review-branch`, `finish-plan`, and `clean-plans` Codex skills for this workflow.
+Use the `plan-epic`, `plans`, `implement-plan`, `review-branch`, `watch-pr`, `finish-plan`, and `clean-plans` Codex skills for this workflow.
 
 `review-branch` is the local parallel review step for checking uncommitted changes, branch diffs, commits, or plan-backed worktrees before pushing or opening a PR. When a plan path is provided, durable review artifacts are written under `.codex/plans/<slug>/`, including stable latest files such as `review-findings.md` and `review-summary.md`.
+
+`watch-pr` is the read-only PR lifecycle monitor for existing GitHub PRs. With a linked plan, it records local PR status, CI findings, review state, and rollout notes under `.codex/plans/<slug>/` so the plan has evidence for the next lifecycle action. It does not push, post GitHub comments, rerun workflows, merge, or mark plans done; when the PR lifecycle appears complete, it points back to `finish-plan`.
 
 ## Shared Agent Review Prompts
 
