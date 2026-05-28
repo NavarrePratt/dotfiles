@@ -31,10 +31,5 @@
     }
   },
   "alwaysThinkingEnabled": true,
-  "effortLevel": "xhigh",
-  "ultracode": true,
-  "autoDreamEnabled": true,
-  "skipDangerousModePermissionPrompt": true,
-  "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true
+  "effortLevel": "xhigh"
 }
