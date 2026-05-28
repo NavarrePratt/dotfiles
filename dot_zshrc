@@ -1,0 +1,65 @@
+# Managed by chezmoi from ~/git/dotfiles/dot_zshrc.
+
+_dotfiles_interactive_tty() {
+  [[ -o interactive && -n ${TTY:-} && ${TTY:-notty} != notty ]]
+}
+
+# Enable Powerlevel10k instant prompt. Keep console-interactive setup above this.
+if _dotfiles_interactive_tty && [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+export ZSH="$HOME/.oh-my-zsh"
+export NVM_DIR="$HOME/.config/nvm"
+if _dotfiles_interactive_tty; then
+  ZSH_THEME="powerlevel10k/powerlevel10k"
+else
+  ZSH_THEME=""
+fi
+
+plugins=(
+  git
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+  kubectl
+  kubectx
+  kube-ps1
+  fzf
+  z
+  eza
+  helm
+  macos
+  pip
+  zsh-interactive-cd
+  colorize
+  gcloud
+  python
+  uv
+)
+
+zstyle ':omz:plugins:eza' 'icons' no
+export ZSH_DISABLE_COMPFIX=true
+zstyle ':omz:update' mode disabled
+
+if _dotfiles_interactive_tty && [[ -r "$ZSH/oh-my-zsh.sh" ]]; then
+  source "$ZSH/oh-my-zsh.sh"
+fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+if _dotfiles_interactive_tty && [[ -f ~/.p10k.zsh ]]; then
+  source ~/.p10k.zsh
+fi
+
+DOTFILES_SHELL_DIR="$HOME/.config/dotfiles/shell"
+for DOTFILES_SHELL_MODULE in path aliases kubernetes teleport ai-tools; do
+  if [[ -r "$DOTFILES_SHELL_DIR/${DOTFILES_SHELL_MODULE}.zsh" ]]; then
+    source "$DOTFILES_SHELL_DIR/${DOTFILES_SHELL_MODULE}.zsh"
+  fi
+done
+unset DOTFILES_SHELL_DIR DOTFILES_SHELL_MODULE
+
+DOTFILES_LOCAL_ENV="$HOME/.config/dotfiles/local/env.zsh"
+[[ -r "$DOTFILES_LOCAL_ENV" ]] && source "$DOTFILES_LOCAL_ENV"
+unset DOTFILES_LOCAL_ENV
+
+unset -f _dotfiles_interactive_tty

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Worktree"
+  short_description: "Use project-local Git worktrees."
+  default_prompt: "Use $worktree to review this PR in a project-local worktree."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Spice"
+  short_description: "Use Git-Spice for stacked local branch work."
+  default_prompt: "Use Git-Spice to inspect or manage this stack."

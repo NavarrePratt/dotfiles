@@ -1,0 +1,69 @@
+model = "gpt-5.5"
+model_reasoning_effort = "xhigh"
+model_reasoning_summary = "detailed"
+model_context_window = 1000000
+model_auto_compact_token_limit = 400000
+model_verbosity = "high"
+file_opener = "none"
+show_raw_agent_reasoning = true
+sandbox_mode = "danger-full-access"
+approval_policy = "never"
+tool_output_token_limit = 25000
+personality = "pragmatic"
+service_tier = "fast"
+web_search = "live"
+plan_mode_reasoning_effort = "xhigh"
+suppress_unstable_features_warning = true
+
+[shell_environment_policy]
+inherit = "all"
+ignore_default_excludes = true
+
+[projects."/Users/npratt/git/kueue"]
+trust_level = "trusted"
+
+[projects."/Users/npratt/git/aviato-client"]
+trust_level = "trusted"
+
+[projects."/Users/npratt/git/docs"]
+trust_level = "trusted"
+
+[projects."/Users/npratt/git/cwic"]
+trust_level = "trusted"
+
+[projects."/Users/npratt/git/aviato"]
+trust_level = "trusted"
+
+[projects."/Users/npratt/.codex"]
+trust_level = "trusted"
+
+[projects."/Users/npratt/git/dotfiles"]
+trust_level = "trusted"
+
+[projects."/Users/npratt/git"]
+trust_level = "trusted"
+
+[projects."/Users/npratt/git/kynes"]
+trust_level = "trusted"
+
+[notice]
+"hide_gpt-5.1-codex-max_migration_prompt" = true
+
+[notice.model_migrations]
+"gpt-5.1-codex-max" = "gpt-5.2-codex"
+
+[plugins."gmail@openai-curated"]
+enabled = true
+
+[plugins."github@openai-curated"]
+enabled = true
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
+
+[features]
+terminal_resize_reflow = true
+memories = true
+prevent_idle_sleep = true
+goals = true
+default_mode_request_user_input = true

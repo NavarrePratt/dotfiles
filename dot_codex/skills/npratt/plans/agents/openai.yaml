@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plans"
+  short_description: "List and inspect local ExecPlans."
+  default_prompt: "Use $plans to list local ExecPlans and summarize their state."

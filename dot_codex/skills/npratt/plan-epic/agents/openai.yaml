@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plan Epic"
+  short_description: "Create deep local ExecPlans."
+  default_prompt: "Use $plan-epic to create a deep local ExecPlan for this work."

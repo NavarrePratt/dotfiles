@@ -1,0 +1,4 @@
+interface:
+  display_name: "Finish Plan"
+  short_description: "Close and archive completed ExecPlans."
+  default_prompt: "Use $finish-plan to verify this local ExecPlan is complete, archive it, and clean up its worktree."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Clean Plans"
+  short_description: "Review and clean archived plans."
+  default_prompt: "Use $clean-plans to review archived local ExecPlans."

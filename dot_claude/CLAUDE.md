@@ -1,0 +1,240 @@
+# Global Instructions
+
+This file documents workflow standards, issue tracking practices, and code quality expectations.
+
+See detailed rules in:
+- @rules/issue-tracking.md - br CLI patterns and issue management
+- @rules/session-protocol.md - Session procedures and quality gates
+- @rules/kubernetes-safety.md - Never run unscoped kubectl queries on large clusters
+
+# Quick Reference
+
+## Git Commits
+
+Use `/commit` slash command for all commits—creates atomic, well-formatted commits matching project style.
+
+# PR Description Standards
+
+Every PR must have a meaningful description. Never create PRs with empty bodies.
+
+When writing PR descriptions:
+- Explain why the change was made, not what changed. We can read the code.
+- Link relevant Slack threads, JIRA tickets, and design documents
+- Write for the future: the on-call engineer debugging at 3am will not know about your Slack discussion. PRs serve future readers, not just current reviewers.
+- Include enough context that someone unfamiliar with the work can understand the motivation from the PR alone
+
+Commit messages are different: keep them brief. Most commits should be
+subject-only. Add a body only for why or a non-obvious consequence that
+cannot be inferred from the subject and diff. Do not use commit bodies
+for PR-level context, implementation walkthroughs, or test inventories.
+See the git-commit skill for body length rules.
+
+# Bead Creation Boundary
+
+After creating a bead (via /issue-create skill OR manual `br create`):
+- Report the bead ID
+- Return to previous task IMMEDIATELY
+- Do NOT start working on the newly created bead
+- Do NOT investigate, edit files, or implement anything for it
+
+The bead will be picked up later by atari or worked on in a future session.
+Exception: Only continue working if user explicitly says "and work on it now".
+
+# Bead Content Boundary
+
+Beads must NEVER include instructions that involve upstream/remote operations:
+- No `git push` or branch pushing
+- No `gh pr create` or PR creation
+- No `gh issue create` or GitHub issue creation
+- No posting comments, reviews, or any GitHub API writes
+
+Beads are for LOCAL work only: code changes, tests, local verification.
+Pushing commits and creating PRs are user-initiated actions that happen
+after reviewing the local work. This applies to both manual bead creation
+and beads created via /issue-plan-hybrid or similar planning skills.
+
+# Issue Tracking Summary
+
+Track all work with `br`. Create issues for test failures and bugs. Record meticulous notes for history.
+
+**Priority levels**: 0=critical, 1=high, 2=normal, 3=low, 4=backlog
+
+**Creating issues**: Title 50 chars max, imperative voice. Verbose descriptions with relevant files and snippets.
+
+**Closing issues**: Always provide `--reason` with what was done and how verified. Never close if tests fail or implementation is partial.
+
+**Dependencies**: `br dep add A B --type blocks` means A depends on B (B must complete before A can start).
+
+# Quality Gates
+
+Before committing:
+- Code compiles/lints without errors
+- All tests pass
+- No hardcoded secrets
+- Changes are minimal and focused
+
+# Code Style
+
+- Read before modifying
+- Match existing patterns
+- Minimal changes only
+- Delete unused code completely
+- No over-engineering
+- No emojis. No em dashes - use hyphens or colons instead.
+
+# Communication
+
+- Be explicit and direct
+- Provide context (why, not just what)
+- Use positive framing
+- Be concise
+
+# GitHub Interactions
+
+**NEVER perform write operations to GitHub without explicit user approval.**
+
+This includes:
+- Creating issues (`gh issue create`)
+- Creating PRs (`gh pr create`)
+- Posting comments or replies
+- Deleting issues, PRs, branches
+- Any other GitHub API write operations
+
+Before any GitHub write operation:
+1. Show the user exactly what will be created/posted
+2. Wait for explicit approval (e.g., "yes", "go ahead", "create it")
+3. Only then execute the API call
+
+# Git Remote Operations
+
+**NEVER push to remote repositories without explicit user approval.**
+
+This includes pushing commits, tags, or any branch updates to remote.
+
+Before running `git push`:
+1. Show what will be pushed (commits, branch)
+2. Wait for explicit approval
+3. Only then execute the push
+
+**ESPECIALLY CRITICAL**: Never run `git push --force` or `git push --force-with-lease` without approval, as these can destroy work on shared branches.
+
+Local operations (commit, branch, stash, rebase) are fine without approval.
+
+## Comment Formatting
+
+- Always prefix comments with `[via Claude]` to indicate they were written by Claude
+- When replying to an existing comment, post as a reply (not a new comment in the main thread)
+
+## Replying to PR Review Comments
+
+To reply to a PR review comment, POST to the pull comments endpoint with `in_reply_to`:
+
+```bash
+# CORRECT - posts as a threaded reply to an existing review comment
+jq -n --arg body "[via Claude] Your reply here" '{body: $body, in_reply_to: COMMENT_ID}' | \
+  gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments --input - -X POST
+
+# WRONG - posts as a new comment in the main thread
+gh api repos/OWNER/REPO/issues/PR_NUMBER/comments \
+  -X POST -f body="[via Claude] Your reply here"
+```
+
+To find comment IDs, fetch PR comments first:
+```bash
+gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments --jq '.[] | {id, user: .user.login, body: .body[:80]}'
+```
+
+# MCP Tools
+
+## Codex MCP
+
+When using `mcp__codex__codex`:
+- Do not manually specify the `model` parameter unless the user explicitly requests a specific model.
+- Let Codex's global config (`~/.codex/config.toml`) select the default model.
+- The MCP `model` field is a free string, not an enum of available models. Do not infer that a model is unavailable from examples in the tool schema.
+- If a model override is explicitly requested, use the exact model slug, for example `gpt-5.5`.
+- If Codex reports a model error, quote the actual tool/runtime error rather than guessing from the schema.
+
+# Principals
+
+- Assumptions are the enemy. Never guess numerical values - benchmark instead of estimating. When uncertain, measure.
+  Say "this needs to be measured" rather than inventing statistics.
+- **Interaction**: Clarify unclear requests, then proceed autonomously. Only ask for help when scripts timeout (>2min) or genuine blockers arise.
+- **Ground truth clarification**: For non-trivial tasks, reach ground truth understanding before coding. Simple tasks execute immediately.
+  Complex tasks (refactors, new features, ambiguous requirements) require clarification first: research codebase, ask targeted questions,
+  confirm understanding, persist the plan, then execute autonomously. 
+- **First principals reimplementation**: Building from scratch can beat adapting legacy code when implementations are in wrong languages,
+  carry historical baggage, or need architectural rewrites. Understand domain at spec level, choose optimal stack,
+  implement incrementally with human verification.
+- **Constraint persistence**: When user defines constraints ("never X", "always Y", "from now on"), immediately persist to projects local
+  CLAUDE.md. Acknowledge, write, confirm.
+
+<atari-managed>
+# BR Integration
+
+Use the br CLI to track work across sessions.
+
+See detailed rules in:
+- @rules/issue-tracking.md - br CLI patterns and issue management
+- @rules/session-protocol.md - Session procedures and quality gates
+
+## Quick Reference
+
+### Session Startup (User-Initiated Only)
+
+Run these commands ONLY when the user explicitly requests session initialization (e.g., "start session", "check for work", "what's ready?"). Do NOT run automatically after context compaction - if you were working on something before compaction, continue that work.
+
+```bash
+pwd && br prime && br ready --json && git log --oneline -5 && git status
+```
+
+### Issue Workflow
+
+```bash
+br ready --json                           # Find work
+br update bd-xxx --status in_progress     # Claim it
+# ... do work ...
+br close bd-xxx --reason "Completed..."   # Close with reason
+```
+
+### Git Commits
+
+Use `/commit` slash command for all commits - creates atomic, well-formatted commits matching project style.
+
+## Issue Tracking Summary
+
+Track all work with `br`. Create issues for test failures and bugs. Record meticulous notes for history.
+
+**Priority levels**: 0=critical, 1=high, 2=normal, 3=low, 4=backlog
+
+**Creating issues**: Title 50 chars max, imperative voice. Verbose descriptions with relevant files and snippets.
+
+**Closing issues**: Always provide `--reason` with what was done and how verified. Never close if tests fail or implementation is partial.
+
+**Dependencies**: `br dep add A B --type blocks` means A depends on B (B must complete before A can start).
+
+## Session Protocol Summary
+
+**Startup (user-initiated only)**: `br prime` -> `br ready` -> review git state. Do NOT run after context compaction.
+
+**Work**: One issue at a time. Commit after each. Verify end-to-end.
+
+**Completion**: File remaining work as issues. Close completed issues. Do NOT push.
+
+## CRITICAL: Bead Closure
+
+**You MUST close or reset beads before ending your session.** Beads left in_progress get stuck forever.
+
+- Work complete: `br close bd-xxx --reason "Completed: ..."`
+- Work incomplete: `br update bd-xxx --status open --notes "Needs: ..."`
+
+Never leave beads in_progress.
+
+## Quality Gates
+
+Before committing:
+- Code compiles/lints without errors
+- All tests pass
+- No hardcoded secrets
+- Changes are minimal and focused
+</atari-managed>
