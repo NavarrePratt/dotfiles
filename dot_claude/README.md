@@ -11,7 +11,6 @@ Personal `~/.claude` settings for [Claude Code](https://docs.anthropic.com/en/do
 | `rules/` | Modular instruction sets referenced from CLAUDE.md |
 | `skills/` | Custom slash-command skills (issue planning, code review, etc.) |
 | `commands/` | Lightweight slash commands (commit, discover, codex review) |
-| `mcp-servers/` | MCP server configuration (docker-compose + env) |
 | `agents/` | Agent definitions |
 
 ## Rules

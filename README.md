@@ -7,6 +7,7 @@ Personal dotfiles managed with chezmoi.
 - `dot_zshrc`: small shell entrypoint that initializes Oh My Zsh and loads modules.
 - `dot_config/dotfiles/shell/`: shell modules for paths, aliases, Kubernetes, and Teleport.
 - `dot_config/dotfiles/local/`: tracked examples for machine-local env files.
+- `dot_config/dotfiles/mcp-servers/`: shared local MCP server containers.
 - `dot_codex/`: managed Codex config, instructions, and personal skills.
 - `dot_claude/`: managed Claude Code instructions, skills, commands, and safe templates.
 - `scripts/`: validation helpers.
@@ -17,6 +18,7 @@ Real tokens live outside git at:
 
 ```sh
 ~/.config/dotfiles/local/env.zsh
+~/.config/dotfiles/mcp-servers/.env
 ```
 
 Use `dot_config/dotfiles/local/env.example.zsh` as the template. The live `.zshrc` sources the local file if it exists.

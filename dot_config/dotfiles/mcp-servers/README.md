@@ -8,7 +8,7 @@ remote MCP server.
 ## Quick Start
 
 ```bash
-cd ~/.claude/mcp-servers
+cd ~/.config/dotfiles/mcp-servers
 cp .env.example .env   # Fill in Slack tokens
 docker compose up -d
 ```
@@ -27,7 +27,7 @@ docker compose pull && docker compose up -d   # Update images
 ## Token Rotation
 
 1. Edit `.env` with new token values
-2. `docker compose restart slack-mcp`
+2. `docker compose restart slack-mcp slack-mcp-http`
 3. For `SLACK_MCP_API_KEY` changes: also update the bearer token in Claude MCP
    config (`claude mcp remove --scope user slack` then re-add with new header).
    Codex reads the same value from `SLACK_MCP_API_KEY`, so restart the shell
@@ -40,18 +40,16 @@ docker compose pull && docker compose up -d   # Update images
 | Connection refused | `docker compose ps` - verify the relevant container is running and port is bound |
 | Auth errors (401) | Verify `SLACK_MCP_API_KEY` in `.env` matches the Claude MCP `Authorization` header and the Codex shell environment |
 | Blank responses | `docker compose logs -f slack-mcp` - look for upstream API errors |
-| Cache stale | Remove contents of `data/slack/`, then `docker compose restart slack-mcp` |
+| Cache stale | Remove contents of `data/slack/`, then `docker compose restart slack-mcp slack-mcp-http` |
 
 ## Rollback
 
-To revert Slack to per-session container spawning:
+To stop the shared local Slack MCP services:
 
 ```bash
 claude mcp remove --scope user slack
 docker compose down
 ```
-
-Project-level `.mcp.json` entries resume as fallback.
 
 ## Architecture
 

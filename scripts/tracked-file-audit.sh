@@ -10,6 +10,8 @@ while IFS= read -r path; do
     dot_config/dotfiles/local/env.zsh|\
     dot_config/dotfiles/local/teleport.zsh|\
     dot_config/dotfiles/local/*.secret.zsh|\
+    dot_config/dotfiles/mcp-servers/dot_env|\
+    dot_config/dotfiles/mcp-servers/.env|\
     local/*|\
     dot_codex/auth.json|\
     dot_codex/history.jsonl|\

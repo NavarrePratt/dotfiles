@@ -40,7 +40,6 @@ while IFS= read -r path; do
     dot_claude/mcp-needs-auth-cache.json|\
     dot_claude/.credentials.json|\
     dot_claude/.claude.json|\
-    dot_claude/mcp-servers/.env|\
     dot_claude/*.local.json|\
     dot_claude/*.local.md|\
     dot_claude/skills/ask-o11yops/*|\

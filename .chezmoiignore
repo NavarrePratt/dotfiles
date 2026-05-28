@@ -2,6 +2,8 @@
 dot_config/dotfiles/local/env.zsh
 dot_config/dotfiles/local/teleport.zsh
 dot_config/dotfiles/local/*.secret.zsh
+dot_config/dotfiles/mcp-servers/dot_env
+dot_config/dotfiles/mcp-servers/.env
 
 # Repository-only files.
 README.md
