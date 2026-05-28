@@ -51,7 +51,7 @@ if _dotfiles_interactive_tty && [[ -f ~/.p10k.zsh ]]; then
 fi
 
 DOTFILES_SHELL_DIR="$HOME/.config/dotfiles/shell"
-for DOTFILES_SHELL_MODULE in path aliases kubernetes teleport ai-tools; do
+for DOTFILES_SHELL_MODULE in path aliases kubernetes teleport; do
   if [[ -r "$DOTFILES_SHELL_DIR/${DOTFILES_SHELL_MODULE}.zsh" ]]; then
     source "$DOTFILES_SHELL_DIR/${DOTFILES_SHELL_MODULE}.zsh"
   fi
