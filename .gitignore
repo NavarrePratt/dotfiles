@@ -14,7 +14,7 @@ local/
 *.swp
 *.swo
 
-# Codex runtime state. Keep only intended config, rules, and approved skills.
+# Codex runtime state. Keep only intended config and approved skills.
 dot_codex/auth.json
 dot_codex/history.jsonl
 dot_codex/installation_id
