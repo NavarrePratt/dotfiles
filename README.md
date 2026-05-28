@@ -5,7 +5,7 @@ Personal dotfiles managed with chezmoi.
 ## Layout
 
 - `dot_zshrc`: small shell entrypoint that initializes Oh My Zsh and loads modules.
-- `dot_config/dotfiles/shell/`: shell modules for paths, aliases, Kubernetes, Teleport, and AI tools.
+- `dot_config/dotfiles/shell/`: shell modules for paths, aliases, Kubernetes, and Teleport.
 - `dot_config/dotfiles/local/`: tracked examples for machine-local env files.
 - `dot_codex/`: managed Codex config, instructions, and personal skills.
 - `dot_claude/`: managed Claude Code instructions, skills, commands, and safe templates.
