@@ -7,6 +7,8 @@ dot_config/dotfiles/mcp-servers/.env
 
 # Repository-only files.
 README.md
+AGENTS.md
+CLAUDE.md
 Brewfile
 scripts/**
 local/**
