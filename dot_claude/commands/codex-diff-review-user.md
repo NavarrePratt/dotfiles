@@ -65,6 +65,8 @@ Evaluate each change against these criteria:
 
 ### Output Format
 
+Report every issue you find, including low-severity and uncertain ones - do not withhold findings below a severity bar. The fix step below decides what to act on; your job here is coverage.
+
 For each issue found, provide:
 - File: path and line number
 - Severity: Critical / High / Medium / Low

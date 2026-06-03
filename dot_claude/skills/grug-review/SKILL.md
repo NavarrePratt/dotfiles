@@ -18,7 +18,7 @@ When planning context exists, treat explicit design decisions as intentional: co
 
 ## Review Checklist
 
-For each change, ask:
+List every concern you spot, including minor ones - put genuinely-justified complexity under "Acceptable Complexity" below rather than omitting it. For each change, ask:
 
 1. **Complexity check**: Does this add complexity? Is it truly necessary?
 2. **Abstraction smell**: Is there premature abstraction? Are patterns forced before they emerge?

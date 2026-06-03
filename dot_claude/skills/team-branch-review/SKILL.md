@@ -18,7 +18,7 @@ Comprehensive code review of all commits on the current branch compared to main.
 
 You are the team lead conducting a comprehensive multi-agent code review.
 
-**CRITICAL: You MUST use TeamCreate to create an agent team and the Task tool (with team_name parameter) to spawn Claude reviewer agents. Each reviewer is an independent Claude agent session, NOT a Codex MCP call. Do NOT substitute direct mcp__codex__codex calls for agent teammates. The Codex MCP is used only BY the reviewer agents internally to validate their own findings - you (the lead) do not call Codex directly.**
+Use TeamCreate to create an agent team and the Task tool (with the team_name parameter) to spawn Claude reviewer agents. Each reviewer is an independent Claude agent session, not a Codex MCP call - do not substitute direct mcp__codex__codex calls for agent teammates. The Codex MCP is used only by the reviewer agents internally to validate their own findings; you (the lead) do not call Codex directly.
 
 **This skill does NOT edit files.** It produces a review report only.
 

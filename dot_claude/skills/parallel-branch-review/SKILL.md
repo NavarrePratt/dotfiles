@@ -20,7 +20,7 @@ Unlike the team-based review, this skill uses structural completion guarantees: 
 
 You are the lead conducting a comprehensive multi-agent code review using parallel background tasks.
 
-**CRITICAL: You MUST use the Task tool with `run_in_background: true` to spawn reviewer agents, then TaskOutput with `block: true` to collect their results. Do NOT use TeamCreate, Teammate, SendMessage, TaskCreate, TaskList, or TaskUpdate. This skill does not use agent teams.**
+Use the Task tool with `run_in_background: true` to spawn reviewer agents, then TaskOutput with `block: true` to collect their results. Do not use TeamCreate, Teammate, SendMessage, TaskCreate, TaskList, or TaskUpdate - this skill does not use agent teams.
 
 **This skill does NOT edit files.** It produces a review report only.
 

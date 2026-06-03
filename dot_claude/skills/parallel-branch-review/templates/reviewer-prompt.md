@@ -32,7 +32,7 @@ FOCUS_BRIEF
    - Trace dependencies and callers with Grep and Glob
    - For large files, read the entire file to understand how the change fits
 3. Think deeply. Look for subtle issues, not just obvious ones. Consider interactions between changed files.
-4. Collect ALL findings - err on the side of reporting too much rather than too little.
+4. Collect ALL findings - report every issue you find, including ones you are uncertain about or consider low-severity. Do not filter for importance or confidence here; the Codex validation step (Step 2) is where findings get confirmed, refuted, and re-rated. Coverage is the goal at this stage - a finding that later gets filtered out is better than a real issue silently dropped. Tag each finding with a severity and confidence so the validation step can rank them.
 
 ### Step 2: Codex Validation
 
