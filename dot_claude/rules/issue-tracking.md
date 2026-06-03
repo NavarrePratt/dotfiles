@@ -68,7 +68,7 @@ br update bd-002 --status open
 
 This ensures atari will not pick up any beads until the entire plan is ready and properly sequenced.
 
-**CRITICAL: No ANSI escape codes in issues.** Never copy colored terminal output into titles or descriptions. Write text from scratch - paraphrase rather than copy. ANSI codes (`\x1b[`, `^[[`) stored in issues propagate to commit messages as garbage characters.
+**No ANSI escape codes in issues.** Don't copy colored terminal output into titles or descriptions. Write text from scratch - paraphrase rather than copy. ANSI codes (`\x1b[`, `^[[`) stored in issues propagate to commit messages as garbage characters.
 
 ## Notes Format
 

@@ -27,16 +27,16 @@ Work on ONE issue at a time:
 
 Never batch multiple features into single commits.
 
-## CRITICAL: Bead Closure Requirement
+## Bead Closure
 
-**You MUST close beads before ending your session.** Failure to close beads causes them to get stuck in_progress forever, requiring manual intervention.
+Close beads before ending your session. A bead left in_progress gets stuck there until someone clears it manually.
 
 Before ending your session:
 1. Run `br show <id> --json` to verify the bead status
 2. If work is complete: `br close <id> --reason "Completed: <what was done>"`
 3. If work is NOT complete: `br update <id> --status open --notes "Needs: <what remains>"`
 
-Never leave a bead in_progress - either close it or reset it to open.
+Don't leave a bead in_progress - either close it or reset it to open.
 
 ## Session Completion
 

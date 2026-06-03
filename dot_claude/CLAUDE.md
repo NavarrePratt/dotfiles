@@ -33,7 +33,7 @@ See the git-commit skill for body length rules.
 
 After creating a bead (via /issue-create skill OR manual `br create`):
 - Report the bead ID
-- Return to previous task IMMEDIATELY
+- Return to the previous task
 - Do NOT start working on the newly created bead
 - Do NOT investigate, edit files, or implement anything for it
 
