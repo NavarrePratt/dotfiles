@@ -18,9 +18,7 @@ Personal `~/.claude` settings for [Claude Code](https://docs.anthropic.com/en/do
 - `comments.md` - When comments are acceptable (why, not what)
 - `git-spice.md` - Stacked PR workflow with `gs`
 - `grug-brain.md` - Anti-complexity development philosophy
-- `issue-tracking.md` - `br` CLI patterns for issue management
 - `python.md` - Python conventions (uv, style)
-- `session-protocol.md` - Session startup, progress, and completion
 - `testing.md` - Test real behavior, not coverage numbers
 
 ## Skills
@@ -35,7 +33,7 @@ Custom skills invoked via `/skill-name`:
 
 ## Key Conventions
 
-- All work tracked via [`br`](https://github.com/Dicklesworthstone/beads_rust) (beads_rust) - beads are picked up and implemented by [atari](https://github.com/NavarrePratt/atari)
+- Issue tracking is opt-in via the `issue-plan*` / `issue-create` skills (backed by [`br`](https://github.com/Dicklesworthstone/beads_rust)), not a global default
 - Commits created through `/commit` skill
 - No git push or GitHub writes without explicit approval
 - Python uses `uv` for everything

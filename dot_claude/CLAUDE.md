@@ -3,8 +3,6 @@
 This file documents workflow standards, issue tracking practices, and code quality expectations.
 
 See detailed rules in:
-- @rules/issue-tracking.md - br CLI patterns and issue management
-- @rules/session-protocol.md - Session procedures and quality gates
 - @rules/kubernetes-safety.md - Never run unscoped kubectl queries on large clusters
 
 # Quick Reference
@@ -29,42 +27,6 @@ cannot be inferred from the subject and diff. Do not use commit bodies
 for PR-level context, implementation walkthroughs, or test inventories.
 See the git-commit skill for body length rules.
 
-# Bead Creation Boundary
-
-After creating a bead (via /issue-create skill OR manual `br create`):
-- Report the bead ID
-- Return to the previous task
-- Do NOT start working on the newly created bead
-- Do NOT investigate, edit files, or implement anything for it
-
-The bead will be picked up later by atari or worked on in a future session.
-Exception: Only continue working if user explicitly says "and work on it now".
-
-# Bead Content Boundary
-
-Beads must NEVER include instructions that involve upstream/remote operations:
-- No `git push` or branch pushing
-- No `gh pr create` or PR creation
-- No `gh issue create` or GitHub issue creation
-- No posting comments, reviews, or any GitHub API writes
-
-Beads are for LOCAL work only: code changes, tests, local verification.
-Pushing commits and creating PRs are user-initiated actions that happen
-after reviewing the local work. This applies to both manual bead creation
-and beads created via /issue-plan-hybrid or similar planning skills.
-
-# Issue Tracking Summary
-
-Track all work with `br`. Create issues for test failures and bugs. Record meticulous notes for history.
-
-**Priority levels**: 0=critical, 1=high, 2=normal, 3=low, 4=backlog
-
-**Creating issues**: Title 50 chars max, imperative voice. Verbose descriptions with relevant files and snippets.
-
-**Closing issues**: Always provide `--reason` with what was done and how verified. Never close if tests fail or implementation is partial.
-
-**Dependencies**: `br dep add A B --type blocks` means A depends on B (B must complete before A can start).
-
 # Quality Gates
 
 Before committing:
@@ -77,7 +39,7 @@ Before committing:
 
 When creating or updating a local file specifically for user review, offer to open it with `cursor <path>` before asking the user to review or approve it.
 
-- Use this for review-gated drafts and artifacts such as issue drafts, PR bodies, bead descriptions, ExecPlans, handoff notes, review findings, and generated instructions.
+- Use this for review-gated drafts and artifacts such as issue drafts, PR bodies, ExecPlans, handoff notes, review findings, and generated instructions.
 - Show the path and the exact `cursor <path>` command.
 - Opening the file in Cursor is only for review convenience. It does not replace explicit approval for a GitHub write, remote push, message, deletion, or other gated action.
 
@@ -176,73 +138,3 @@ When using `mcp__codex__codex`:
   implement incrementally with human verification.
 - **Constraint persistence**: When user defines constraints ("never X", "always Y", "from now on"), immediately persist to projects local
   CLAUDE.md. Acknowledge, write, confirm.
-
-<atari-managed>
-# BR Integration
-
-Use the br CLI to track work across sessions.
-
-See detailed rules in:
-- @rules/issue-tracking.md - br CLI patterns and issue management
-- @rules/session-protocol.md - Session procedures and quality gates
-
-## Quick Reference
-
-### Session Startup (User-Initiated Only)
-
-Run these commands ONLY when the user explicitly requests session initialization (e.g., "start session", "check for work", "what's ready?"). Do NOT run automatically after context compaction - if you were working on something before compaction, continue that work.
-
-```bash
-pwd && br prime && br ready --json && git log --oneline -5 && git status
-```
-
-### Issue Workflow
-
-```bash
-br ready --json                           # Find work
-br update bd-xxx --status in_progress     # Claim it
-# ... do work ...
-br close bd-xxx --reason "Completed..."   # Close with reason
-```
-
-### Git Commits
-
-Use `/commit` slash command for all commits - creates atomic, well-formatted commits matching project style.
-
-## Issue Tracking Summary
-
-Track all work with `br`. Create issues for test failures and bugs. Record meticulous notes for history.
-
-**Priority levels**: 0=critical, 1=high, 2=normal, 3=low, 4=backlog
-
-**Creating issues**: Title 50 chars max, imperative voice. Verbose descriptions with relevant files and snippets.
-
-**Closing issues**: Always provide `--reason` with what was done and how verified. Never close if tests fail or implementation is partial.
-
-**Dependencies**: `br dep add A B --type blocks` means A depends on B (B must complete before A can start).
-
-## Session Protocol Summary
-
-**Startup (user-initiated only)**: `br prime` -> `br ready` -> review git state. Do NOT run after context compaction.
-
-**Work**: One issue at a time. Commit after each. Verify end-to-end.
-
-**Completion**: File remaining work as issues. Close completed issues. Do NOT push.
-
-## CRITICAL: Bead Closure
-
-**You MUST close or reset beads before ending your session.** Beads left in_progress get stuck forever.
-
-- Work complete: `br close bd-xxx --reason "Completed: ..."`
-- Work incomplete: `br update bd-xxx --status open --notes "Needs: ..."`
-
-Never leave beads in_progress.
-
-## Quality Gates
-
-Before committing:
-- Code compiles/lints without errors
-- All tests pass
-- No hardcoded secrets
-- Changes are minimal and focused
-</atari-managed>

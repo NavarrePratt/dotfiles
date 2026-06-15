@@ -1,7 +1,7 @@
 # No Fragile Counts
 
 Never include specific counts of items in commit messages, PR descriptions,
-or bead descriptions.
+or issue descriptions.
 
 Bad: "Add 7 tests", "Update 3 config files", "Fix 12 linting errors"
 Good: "Add tests for auth module", "Update config for new logging", "Fix linting errors in handlers"

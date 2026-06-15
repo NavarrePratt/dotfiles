@@ -72,7 +72,7 @@ Use local ExecPlan documents for durable planning. In this dotfiles repo, store 
 - Treat the ExecPlan document as the source of truth for planned work.
 - Track ownership, state, active worktree, milestones, verification, and progress in the plan itself.
 - Use `finish-plan` to verify lifecycle completion, mark plans done, archive them, and handle safe worktree cleanup.
-- Do not create a second source of truth in `br` unless the user explicitly asks for `br` on a specific task.
+- Do not stand up a parallel work tracker unless the user explicitly asks for one.
 - Detailed planning workflows should live in Codex skills. Do not recreate a Claude session protocol in this file.
 
 # Commits And PRs
@@ -82,7 +82,7 @@ When asked to commit, create atomic, well-formatted local commits matching the r
 - Keep most commit messages subject-only.
 - Add a body only for why or a non-obvious consequence that cannot be inferred from the subject and diff.
 - Do not use commit bodies for PR-level context, implementation walkthroughs, or test inventories.
-- Never include fragile counts in commit messages, PR descriptions, or bead descriptions. Write "Add tests for auth module", not "Add 7 tests".
+- Never include fragile counts in commit messages, PR descriptions, or issue descriptions. Write "Add tests for auth module", not "Add 7 tests".
 
 Every PR must have a meaningful description. Never create PRs with empty bodies.
 
