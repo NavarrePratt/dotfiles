@@ -31,6 +31,16 @@ dot_codex/sessions/
 dot_codex/shell_snapshots/
 dot_codex/.tmp/
 
+# OpenCode runtime state. Keep only intended config.
+dot_config/opencode/auth.json
+dot_config/opencode/.env
+dot_config/opencode/*.local.json
+dot_config/opencode/*.sqlite*
+dot_config/opencode/cache/
+dot_local/share/opencode/
+dot_local/state/opencode/
+dot_cache/opencode/
+
 # Claude runtime state. Keep only staged source config, rules, commands, agents,
 # examples, and approved skills.
 dot_claude/.claude/

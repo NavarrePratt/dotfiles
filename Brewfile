@@ -1,4 +1,4 @@
-tap "jdx/mise"
+tap "anomalyco/tap"
 
 brew "chezmoi"
 brew "jq"
@@ -13,3 +13,4 @@ brew "uv"
 brew "nvm"
 brew "powerlevel10k"
 brew "mise"
+brew "anomalyco/tap/opencode"

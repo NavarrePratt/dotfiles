@@ -27,6 +27,16 @@ while IFS= read -r path; do
     dot_codex/sessions/*|\
     dot_codex/shell_snapshots/*|\
     dot_codex/.tmp/*|\
+    dot_config/opencode/auth.json|\
+    dot_config/opencode/.env|\
+    dot_config/opencode/*.local.json|\
+    dot_config/opencode/*.sqlite|\
+    dot_config/opencode/*.sqlite-wal|\
+    dot_config/opencode/*.sqlite-shm|\
+    dot_config/opencode/cache/*|\
+    dot_local/share/opencode/*|\
+    dot_local/state/opencode/*|\
+    dot_cache/opencode/*|\
     private_dot_claude/*|\
     */.env|\
     *.pem|\

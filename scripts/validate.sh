@@ -8,6 +8,13 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 "$repo_root/scripts/secret-audit.sh"
 "$repo_root/scripts/tracked-file-audit.sh"
 
+if [ -d "$repo_root/dot_config/opencode" ]; then
+  while IFS= read -r -d '' json_file; do
+    jq empty "$json_file"
+  done < <(find "$repo_root/dot_config/opencode" -type f -name '*.json' -print0)
+fi
+echo "opencode-json-validate: ok"
+
 skill_validator="${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py"
 if [ -f "$skill_validator" ] && command -v uv >/dev/null 2>&1; then
   while IFS= read -r -d '' skill_file; do
