@@ -146,10 +146,12 @@ Codex may update `~/.codex/config.toml` outside chezmoi, such as trusted project
 
 # Model And Tool Selection
 
-When selecting Codex models, spawning Codex subagents, or invoking Codex-backed tools:
+When selecting Codex models, spawning Codex subagents, or invoking Codex-backed or cross-model MCP tools (`mcp__codex__codex`, `mcp__cross-agent__opencode_prompt`):
 
-- Do not manually specify the `model` parameter unless the user explicitly requests a specific model.
-- Let Codex's global config at `~/.codex/config.toml` select the default model.
+- Do not manually specify the `model` parameter unless the user explicitly requests a specific model. Let each backend use its configured default.
 - Model fields in tool schemas can be free strings, not complete enums of available models. Do not infer that a model is unavailable from examples in a tool schema.
 - If a model override is explicitly requested, use the exact model slug, for example `gpt-5.5`.
-- If Codex reports a model error, quote the actual tool or runtime error rather than guessing from the schema.
+- If a backend reports a model error, quote the actual tool or runtime error rather than guessing from the schema.
+- `read_only=True` is the default and correct for adversarial review.
+- Use `opencode_prompt` for cross-family diversity (GLM-5.2 reviewing GPT/Claude work).
+- For session continuation, pass the returned `session_id` to the matching `_continue` tool.

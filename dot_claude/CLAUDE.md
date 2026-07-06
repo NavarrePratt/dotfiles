@@ -116,14 +116,19 @@ gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments --jq '.[] | {id, user: .user.lo
 
 # MCP Tools
 
-## Codex MCP
+## Cross-Model MCP Tools
 
-When using `mcp__codex__codex`:
-- Do not manually specify the `model` parameter unless the user explicitly requests a specific model.
-- Let Codex's global config (`~/.codex/config.toml`) select the default model.
+Several MCP servers expose other AI coding agents for cross-family adversarial review and second opinions: `mcp__codex__codex` (GPT-5.5), `mcp__cross-agent__opencode_prompt` (GLM-5.2 via WANDB), and `mcp__cross-agent__claude_prompt` (Claude, different tier from your current session).
+
+When using any of these:
+- Do not manually specify the `model` parameter unless the user explicitly requests a specific model. Let each backend use its configured default.
 - The MCP `model` field is a free string, not an enum of available models. Do not infer that a model is unavailable from examples in the tool schema.
 - If a model override is explicitly requested, use the exact model slug, for example `gpt-5.5`.
-- If Codex reports a model error, quote the actual tool/runtime error rather than guessing from the schema.
+- If a backend reports a model error, quote the actual tool/runtime error rather than guessing from the schema.
+- `read_only=True` is the default and correct for adversarial review. Only set `read_only=False` if the user explicitly asks for write access.
+- Use `opencode_prompt` for cross-family diversity (GLM-5.2 reviewing Claude/GPT work).
+- Use `claude_prompt` when you need a Claude opinion from a different model tier (e.g., Opus reviewing Sonnet work) or from within opencode/codex.
+- For session continuation, pass the returned `session_id` to the matching `_continue` tool.
 
 # Principals
 
