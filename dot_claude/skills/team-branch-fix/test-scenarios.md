@@ -101,7 +101,7 @@ with commits ahead of main.
 ## Expected Behavior Traces
 
 ### Phase 0: Precondition Check
-- Branch `fix/auth-improvements` -> team name: `fix-fix-auth-improvemen-XXXXXX`
+- Branch `fix/auth-improvements` -> run id: `fix-fix-auth-improvemen-XXXXXX`
 - Verify clean working tree, commits ahead of main
 
 ### Phase 1: Parse findings
@@ -201,7 +201,7 @@ Scope: Med/Low findings where codex_status != "Disputed". Batch-approvals MUST N
   - Results file has ## Blocked Findings section with 2 fallbacks
   - Phase 7.5: AskUserQuestion with Fallback A / Fallback B / Skip
   - If fallback chosen: follow-up fixer spawned
-  - Re-enters Phase 6 polling
+  - Re-enters the Phase 6 wait
   - If follow-up also blocks: unresolved (max 1 re-entry)
   - Final report includes resolution status
 
