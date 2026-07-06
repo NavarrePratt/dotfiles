@@ -74,7 +74,7 @@ Record **HEAD_SHA** for use in comment posting.
 
 Obtain the review report from one of these sources (check in order):
 
-1. **Conversation context**: If a `/team-branch-review`, `/team-commit-review`, or `/parallel-branch-review` report exists in the conversation above, use it directly
+1. **Conversation context**: If a `/team-branch-review` or `/team-commit-review` report exists in the conversation above, use it directly
    - **Note**: team-commit-review reports use a different envelope format (`# Commit Review: COMMIT_SUMMARY`) than branch reviews (`# Branch Review: BRANCH_NAME`). Phase 6 currently renders all reports using branch-review format. This is a known limitation - commit-review headers will be rewritten to branch-review style in the posted review body.
 2. **$ARGUMENTS**: If arguments are provided, treat them as the report or a path to one
 3. **Ask the user**: If no report is available, ask the user to provide one
@@ -534,7 +534,7 @@ If the review failed, suggest the user check their `gh` authentication and PR pe
 ## Chaining from Review
 
 This skill works best when chained from a review:
-1. Run `/team-branch-review`, `/team-commit-review`, or `/parallel-branch-review` to generate findings
+1. Run `/team-branch-review` or `/team-commit-review` to generate findings
 2. Run `/team-branch-comment` to post findings as PR comments
 3. Optionally run `/team-branch-fix` to fix findings locally on your own branches
 

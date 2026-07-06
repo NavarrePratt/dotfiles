@@ -1,7 +1,7 @@
 # Blocked Findings
 
 Protocol for handling findings where the fixer agent could not implement the user's
-chosen approach. Covers the results file format, team lead resolution, and follow-up
+chosen approach. Covers the results file format, lead resolution, and follow-up
 fixer spawning.
 
 ## Blocked Finding Results Format
@@ -24,7 +24,7 @@ Key rules for fixers:
 - Do NOT silently pick an alternative when an approach is not viable
 - Mark the finding as Blocked and provide exactly 2 concrete fallback options
 - Continue with remaining findings normally
-- Mark task completed as usual - the team lead handles blocked findings
+- Report blocked findings in the results file as usual - the lead handles them
 
 ## Phase 7.5 Resolution Protocol
 
@@ -68,18 +68,15 @@ If all blocked findings were skipped, proceed to Phase 7.
 
 If any fallbacks were approved:
 
-1. Create follow-up tasks via TaskCreate with subject
-   "Follow-up: fix N findings with fallback approaches"
-2. Spawn follow-up fixer agents with the same prompt template as Phase 5. Differences:
+1. Spawn follow-up fixer agents with the Agent tool using the same prompt template as Phase 5 (send all Agent calls in one message so they run concurrently). Differences:
    - Each finding's `approach` and `approach_detail` reflect the user's chosen fallback
    - Same exclusive ownership rules (same files as original fixer)
-   - Results written to `/tmp/fix-TEAM_NAME/{fixer-name}-followup.md`
-3. Follow-up fixers go through the same Codex self-validation step
+   - Results written to `/tmp/RUN_ID/{fixer-name}-followup.md`
+2. Follow-up fixers go through the same Codex self-validation step
 
-### Step 4: Poll follow-up fixers
+### Step 4: Wait for follow-up fixers
 
-Re-enter the Phase 6 polling loop until all follow-up tasks show `completed`.
-Same timeout and follow-up message rules apply.
+Re-enter the Phase 6 flow: wait for each follow-up fixer's `<task-notification>` and read its results file once complete. The same timeout handling (`TaskStop` a stuck fixer) applies.
 
 ### Step 5: Check follow-up results
 
@@ -90,11 +87,11 @@ Read follow-up results files. If any follow-up fixer also reports Blocked:
 ## Iterative Orchestration Flow
 
 ```
-Phase 6 (poll original fixers)
+Phase 6 (wait for original fixers)
   -> collect results
   -> Phase 7.5 (check blocked findings)
      -> if blocked findings resolved with follow-ups:
-        -> Phase 6 polling (follow-up fixers only)
+        -> Phase 6 wait (follow-up fixers only)
         -> collect follow-up results
         -> Phase 7.5 re-check (max 1 re-entry; new blocks become unresolved)
      -> Phase 7 (verify all changes: original + follow-up)
@@ -104,7 +101,7 @@ Phase 6 (poll original fixers)
 
 - Same prompt template, same Codex self-validation, same results format
 - Write to same directory (different filename: `{name}-followup.md`)
-- Team lead NEVER directly implements fixes (preserves exclusive ownership,
+- The lead NEVER directly implements fixes (preserves exclusive ownership,
   validation workflow, and audit trail)
 - Max 1 re-entry: if follow-up fixer also blocks on the same finding, report as unresolved
 

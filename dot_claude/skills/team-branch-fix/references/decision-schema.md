@@ -47,7 +47,7 @@ finding:
     fallback_a: null               # first concrete alternative considered (blocked only)
     fallback_b: null               # second concrete alternative considered (blocked only)
 
-  # Blocked finding resolution (Phase 7.5 - set by team lead)
+  # Blocked finding resolution (Phase 7.5 - set by the lead)
   resolution:
     outcome: null                  # resolved_fallback | skipped_by_user | unresolved | null (not blocked)
     chosen_fallback: null          # "Fallback A" or "Fallback B" (resolved_fallback only)

@@ -26,7 +26,7 @@ Personal `~/.claude` settings for [Claude Code](https://docs.anthropic.com/en/do
 Custom skills invoked via `/skill-name`:
 
 - **Issue planning**: `issue-plan`, `issue-plan-codex`, `issue-plan-hybrid`, `issue-plan-user`
-- **Code review**: `team-branch-review`, `parallel-branch-review`, `grug-review`, `codex-*-review`
+- **Code review**: `team-branch-review`, `grug-review`, `codex-*-review`
 - **Review follow-up**: `team-branch-fix`, `team-branch-comment`, `pr-review-reply`, `pr-review-import`
 - **Workflow**: `git-commit`, `issue-create`, `remember`, `repo-explore`, `discover`
 - **Documentation**: `diataxis-documentation`, `humanizer`

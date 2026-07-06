@@ -89,13 +89,13 @@ Scenarios for team composition: reviewer count and specialization based on diff 
 
 - Run against a commit or range with 200-1000 lines added + removed
 - Expected: 4 reviewers spawned: `reviewer-security`, `reviewer-correctness`, `reviewer-architecture`, `reviewer-simplicity`
-- Verify: Exactly 4 agents created via TeamCreate
+- Verify: Exactly 4 reviewer agents spawned via the Agent tool
 
 ### 2.3 Large commit (1000+ lines changed)
 
 - Run against a commit or range with more than 1000 lines added + removed
 - Expected: 6 reviewers spawned: `reviewer-security`, `reviewer-correctness`, `reviewer-architecture`, `reviewer-simplicity`, `reviewer-performance`, `reviewer-testing`
-- Verify: Exactly 6 agents created via TeamCreate
+- Verify: Exactly 6 reviewer agents spawned via the Agent tool
 
 ### 2.4 Empty commit (no file changes)
 
@@ -108,24 +108,19 @@ Scenarios for team composition: reviewer count and specialization based on diff 
 
 ## 3. Precondition Checks
 
-### 3.1 Task tool unavailable (custom agent session)
+### 3.1 Agent tool unavailable (custom agent session)
 
-- Run skill from a `claude --agent` session where the Task tool is not available
-- Expected: Skill stops immediately with: "This skill requires the Task tool (subagent spawner) which is not available in custom agent sessions (claude --agent). Run this skill from a plain `claude` session instead."
+- Run skill from a `claude --agent` session where the Agent tool is not available
+- Expected: Skill stops immediately with: "This skill requires the Agent tool (subagent spawner) which is not available in custom agent sessions (claude --agent). Run this skill from a plain `claude` session instead."
 - Expected: No workarounds attempted (no CLI commands, no direct Codex calls)
 
-### 3.2 TeamCreate tool unavailable
-
-- Run skill without `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` set
-- Expected: Skill stops with: "Agent teams are required for this skill. Enable them by setting CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 in your Claude Code settings, then retry."
-
-### 3.3 Not inside a git repository
+### 3.2 Not inside a git repository
 
 - Run skill from a directory that is not a git working tree
 - Expected: `git rev-parse --is-inside-work-tree` fails
 - Expected: Skill stops with: "Not inside a git repository. Run this skill from within a git working tree."
 
-### 3.4 Uncommitted changes in working tree
+### 3.3 Uncommitted changes in working tree
 
 - Stage or modify files without committing, then run the skill
 - Expected: `git status --porcelain` returns output
@@ -155,13 +150,6 @@ Scenarios for team composition: reviewer count and specialization based on diff 
 - Expected: Each reviewer writes its findings to `TEMP_DIR/{reviewer-name}.md`
 - Expected: File format matches the template structure (Raw Findings, Codex Validation Results, Summary, Notable Observations)
 - Verify: File paths use the unique `TEMP_DIR` with timestamp suffix
-
-### 4.4 Cross-domain tips delivered
-
-- When a reviewer notices an issue in another reviewer's domain
-- Expected: Reviewer sends a fire-and-forget `SendMessage` tip to the relevant teammate
-- Expected: Reviewer also includes the finding in their own report tagged with `[cross-domain: THEIR_FOCUS_AREA]`
-- Verify: Tips do not block the sending reviewer's progress
 
 ---
 
@@ -224,9 +212,9 @@ Scenarios for team composition: reviewer count and specialization based on diff 
 - Expected: Gap noted in the final report ("reviewer-X did not produce findings")
 - Expected: Report proceeds with available findings from other reviewers
 
-### 6.6 TeamCreate unavailable at spawn time
+### 6.6 Agent spawn unavailable at spawn time
 
-- Team creation fails after precondition checks pass (runtime failure)
+- Agent spawning fails after precondition checks pass (runtime failure)
 - Expected: Skill falls back to single-agent review (runs codex-diff-review instead)
 - Expected: User informed of the fallback
 
@@ -248,8 +236,8 @@ Scenarios for team composition: reviewer count and specialization based on diff 
 - Expected: Skill appends a random suffix to avoid collision
 - Expected: Review proceeds normally
 
-### 6.10 Team name computation
+### 6.10 Run id computation
 
 - Run on a branch like `feat/add-auth` at HEAD `a1b2c3d`
-- Expected: Team name is `commit-review-feat-add-auth-a1b2c3` (branch slug: `/` replaced by `-`, truncated to 20 chars, plus `-` and first 6 chars of HEAD)
-- Verify: Team name is valid for TeamCreate (no special characters beyond hyphens)
+- Expected: RUN_ID is `commit-review-feat-add-auth-a1b2c3` (branch slug: `/` replaced by `-`, truncated to 20 chars, plus `-` and first 6 chars of HEAD)
+- Verify: RUN_ID is a valid directory name (no special characters beyond hyphens)

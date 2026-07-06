@@ -1,6 +1,6 @@
 ---
 name: team-branch-fix
-description: Implement fixes for code review findings using a parallel agent team. Accepts a review report (from /team-branch-review, /team-commit-review, or pasted), interviews the user on which findings to fix (or runs autonomously with --auto), then spawns agents to implement fixes in parallel with Codex validation.
+description: Implement fixes for code review findings using parallel agents. Accepts a review report (from /team-branch-review, /team-commit-review, or pasted), interviews the user on which findings to fix (or runs autonomously with --auto), then spawns agents to implement fixes in parallel with Codex validation.
 argument-hint: "[--auto] [--epic <EPIC_ID>] [review report or path to report]"
 ---
 
@@ -29,11 +29,11 @@ use the inline fallback instructions in the phase description.
 
 ## Instructions
 
-You are the team lead coordinating parallel implementation of code fixes from a review report. You will interview the user to decide which findings to fix, group work by file ownership, spawn fix agents, and verify the results.
+You are the lead coordinating parallel implementation of code fixes from a review report. You will interview the user to decide which findings to fix, group work by file ownership, spawn fix agents, and verify the results.
 
 **CRITICAL: You MUST use the AskUserQuestion tool for ALL user-facing questions in Phase 2. Do NOT print questions as text output and wait for free-form responses. Every question about whether to fix, skip, or defer a finding MUST be an AskUserQuestion tool call with structured options. This is the only way to give the user a proper interactive experience.**
 
-**CRITICAL: You MUST use the TeamCreate tool to create an agent team and the Task tool (with team_name parameter) to spawn fix agents. Each fixer is an independent Claude agent session. Do NOT attempt workarounds if these tools are missing.**
+**CRITICAL: You MUST use the Agent tool to spawn fix agents as background tasks (send all Agent calls in a single message so they run concurrently). Each fixer is an independent Claude agent session. Do NOT attempt workarounds if the Agent tool is missing.**
 
 ---
 
@@ -43,14 +43,11 @@ Before anything else, verify required tools and git state.
 
 **Step 1: Tool availability**
 
-1. **Check for the Task tool (subagent spawner).** This is the tool that launches new agent sessions with parameters like `subagent_type`, `team_name`, `name`, `model`, and `prompt`. It is NOT the same as TaskCreate/TaskList/TaskUpdate/TaskGet (those manage a task list). Look at your available tools - if you do not have a tool called "Task" that spawns subagents, STOP IMMEDIATELY and tell the user:
+**Check for the Agent tool (subagent spawner).** This is the tool that launches new agent sessions with parameters like `subagent_type`, `description`, and `prompt`. It is NOT the same as TaskCreate/TaskList/TaskUpdate/TaskGet (those manage a task list). Look at your available tools - if you do not have a tool called "Agent" that spawns subagents, STOP IMMEDIATELY and tell the user:
 
-   "This skill requires the Task tool (subagent spawner) which is not available in custom agent sessions (claude --agent). Run this skill from a plain `claude` session instead."
+   "This skill requires the Agent tool (subagent spawner) which is not available in custom agent sessions (claude --agent). Run this skill from a plain `claude` session instead."
 
    Do NOT attempt workarounds. Just stop.
-
-2. **Check for the TeamCreate tool.** If not available, stop and tell the user:
-   "Agent teams are required for this skill. Enable them by setting CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 in your Claude Code settings, then retry."
 
 **Step 2: Git state**
 
@@ -67,13 +64,13 @@ git log --oneline $(git merge-base HEAD origin/main 2>/dev/null || git merge-bas
 
 Do NOT proceed past this phase unless both conditions are met.
 
-**Step 3: Compute team name**
+**Step 3: Compute run id**
 
-Compute a unique team name: take the branch name, replace `/` with `-`, truncate to 30 chars, then prefix with `fix-` and append `-` plus the first 6 chars of HEAD's commit hash. Example: branch `feat/add-auth` at commit `a1b2c3d` becomes `fix-feat-add-auth-a1b2c3`. Record this as **TEAM_NAME** and use it everywhere a team_name is needed.
+Compute a unique run id: take the branch name, replace `/` with `-`, truncate to 30 chars, then prefix with `fix-` and append `-` plus the first 6 chars of HEAD's commit hash. Example: branch `feat/add-auth` at commit `a1b2c3d` becomes `fix-feat-add-auth-a1b2c3`. Record this as **RUN_ID**; the fixer results directory is `/tmp/RUN_ID`.
 
 Create temp directory for fixer results:
 ```bash
-mkdir -p /tmp/fix-TEAM_NAME
+mkdir -p /tmp/RUN_ID
 ```
 
 ### Phase 0.5: Parse Auto Mode and Planning Context Flags
@@ -449,45 +446,25 @@ For each category, find the EXACT command:
 
 Store discovered commands for Phase 6.
 
-### Phase 5: Spawn Fix Team
+### Phase 5: Spawn Fix Agents
 
-**If team creation fails** (TeamCreate returns an error): fall back to spawning a single Agent (no team) that implements all fixes sequentially. Use the same fixer prompt template but include all findings in one prompt. Skip team-related operations (TaskCreate, TaskList polling). Read the single agent's results directly.
+Spawn one fix agent per work unit from Phase 3 as background tasks. If there is only one work unit, spawn a single agent - the flow is identical.
 
-1. **Create the team**:
-   ```
-   TeamCreate(team_name: "TEAM_NAME", description: "Fix implementation for BRANCH_NAME")
-   ```
+**Spawn ALL fix agents in parallel** (send all Agent calls in a single message):
 
-2. **Create tasks** for each agent using TaskCreate:
-   - Subject: "Fix N findings in [file list summary]"
-   - Description: Structured payload with file list and per-finding approach directives:
-     ```
-     Files: [file list]
+```
+Agent(
+  subagent_type: "general-purpose",
+  description: "Fix findings in [files]",
+  prompt: "[Fix Agent Prompt Template]"
+)
+```
 
-     Finding f-N: [title]
-       File: path:line
-       Issue: [description]
-       Suggested fix: [reviewer's suggestion]
-       Approach: [user's chosen approach or "Use suggested fix"]
-       Approach source: default | user_choice | codex_validated
-     ```
-   - activeForm: "Fixing [file list summary]"
-
-3. **Spawn ALL fix agents in parallel** (all Task calls in a single message):
-
-   ```
-   Task(
-     subagent_type: "general-purpose",
-     team_name: "TEAM_NAME",
-     name: "fixer-1",
-     description: "Fix findings in [files]",
-     prompt: "[Fix Agent Prompt Template]"
-   )
-   ```
+Each fixer's exclusive file set and its findings (with per-finding approach directives) are embedded directly in its prompt via the Fix Agent Prompt Template below - there is no shared task list to claim from. Each call returns an `agentId` and completes with a `<task-notification>`; record the `agentId`s for Phase 6.
 
 ### Fix Agent Prompt Template
 
-Each fix agent receives this prompt (substitute FILE_LIST, FINDINGS, CWD, TEAM_NAME, FIXER_NAME, and PLANNING_CONTEXT):
+Each fix agent receives this prompt (substitute FILE_LIST, FINDINGS, CWD, RUN_ID, FIXER_NAME, and PLANNING_CONTEXT):
 
 ```
 You are implementing code fixes for specific review findings. You have exclusive ownership of your assigned files - no other agent will touch them.
@@ -519,16 +496,13 @@ Each finding includes:
 
 ## Process
 
-### Step 1: Claim Your Task
-Check TaskList for your assigned task. Claim it with TaskUpdate (set owner to your name, status to in_progress).
-
-### Step 2: Understand Context
+### Step 1: Understand Context
 For each file you own:
 1. Read the full file with the Read tool
 2. Understand the surrounding code, not just the flagged lines
 3. Check how your files relate to each other (imports, callers)
 
-### Step 3: Implement Fixes
+### Step 2: Implement Fixes
 For each finding, in order of severity (Critical first, then High, Medium, Low):
 1. Re-read the file BEFORE each fix - line numbers from the review report may have shifted due to earlier fixes in the same file
 2. Find the actual code referenced by the finding (match by content, not just line number)
@@ -539,7 +513,7 @@ For each finding, in order of severity (Critical first, then High, Medium, Low):
 **Fix approach precedence** (use the first applicable rule):
 1. **User's chosen approach** (when approach_source is `user_choice` or `codex_validated`): implement exactly what the approach describes. The user selected this approach for a reason.
 2. **Suggested fix from review report** (when approach is "Use suggested fix" or approach_source is `default`): apply the reviewer's suggested fix.
-3. **Session default style** (inferred by team lead in Phase 2 Step 0): if neither above applies, follow the session's default fix style (minimal_patch, refactor, or defensive).
+3. **Session default style** (inferred by the lead in Phase 2 Step 0): if neither above applies, follow the session's default fix style (minimal_patch, refactor, or defensive).
 4. **Minimal-change** (last resort): fix the issue with the smallest correct change.
 
 **When the chosen approach allows refactoring** (e.g., "defensive refactor", "restructure"):
@@ -551,7 +525,7 @@ For each finding, in order of severity (Critical first, then High, Medium, Low):
 - Match existing code style exactly
 - Don't add unnecessary comments explaining the fix
 
-### Step 3.5: Handle Infeasible Approaches
+### Step 2.5: Handle Infeasible Approaches
 
 After attempting all fixes, check if any finding's chosen approach was not viable after reading the code in context. This applies to both individually-approved findings and "Fix all" batch-approved findings.
 
@@ -560,11 +534,11 @@ After attempting all fixes, check if any finding's chosen approach was not viabl
 2. Include: why the approach is not viable given the actual code
 3. Provide 2 concrete fallback options you considered (with brief descriptions)
 4. Continue with remaining findings normally
-5. Mark your task completed as usual - blocked findings are handled by the team lead
+5. Report blocked findings in your results file as usual - the lead handles them
 
 This is the safety net for hidden complexity. It is better to report a finding as blocked than to improvise a fix the user did not approve.
 
-### Step 4: Self-Validate with Codex
+### Step 3: Self-Validate with Codex
 
 After implementing all fixes, validate your changes using the Codex MCP tool.
 
@@ -594,11 +568,11 @@ Review these code changes for correctness. The changes implement fixes for speci
 
 If Codex finds issues with your fixes, correct them and re-validate.
 
-If the Codex MCP tool is unavailable or times out, skip validation and note in your results file under Codex Validation: "Codex MCP unavailable - fixes not validated." Continue to Step 5.
+If the Codex MCP tool is unavailable or times out, skip validation and note in your results file under Codex Validation: "Codex MCP unavailable - fixes not validated." Continue to Step 4.
 
-### Step 5: Write Results to File
+### Step 4: Write Results to File
 
-Write your results to `/tmp/fix-TEAM_NAME/FIXER_NAME.md` using the Write tool. Use this exact format:
+Write your results to `/tmp/RUN_ID/FIXER_NAME.md` using the Write tool. Use this exact format:
 
 ## Fixes Applied
 For each fix:
@@ -625,41 +599,25 @@ For each finding where the chosen approach was not viable:
 ## Skipped Findings
 [Any findings skipped due to conflicts with higher-priority fixes, with explanation]
 
-After writing the results file, mark your task completed via TaskUpdate (status: completed). The team lead will read your results from the file after all fixers have finished.
-
-After marking your task completed, your work is done. Do not wait for further instructions, attempt additional fixes, or offer to help with other tasks.
+After writing the results file, your work is complete - the written file is your completion signal. The lead will read your results after all fixers have finished. Do not wait for further instructions, attempt additional fixes, or offer to help with other tasks.
 ```
 
 ### Phase 6: Wait for All Agents to Complete
 
-**CRITICAL: You MUST NOT call TaskUpdate to change the status of any fixer task.** Only the fixer agent that owns a task may call TaskUpdate on it. If you believe a fixer is stuck, send them a message - do not mark their task completed yourself.
+Wait for every fixer's background task to complete. Each spawned Agent fires a `<task-notification>` when it finishes. Do NOT poll with bash loops and sleep - this violates the monitoring rule in `~/.claude/rules/monitoring.md`.
 
-Wait for fixer agents to complete using idle notifications (the same pattern as team-branch-review Phase 4). Do NOT use a tight TaskList polling loop.
-
-**How it works:** Teammates send idle notifications automatically when their turn ends. As each fixer goes idle, check TaskList to see if their task status is `completed`. Track which fixers have completed.
-
-**Completion check flow:**
-1. Wait for a fixer idle notification
-2. Call TaskList() to check current task statuses
-3. If ALL tasks show `completed`, proceed to collecting results
-4. If some tasks are still `in_progress`, wait for the next idle notification
-
-**You MUST NOT do any of the following while any task is not `completed`:**
+**You MUST NOT do any of the following until ALL fixers have completed:**
 - Run verification commands
-- Send shutdown requests to any fixer
 - Proceed to Phase 7.5, Phase 7, or Phase 8
 - Present results to the user
-- Call TaskUpdate on any fixer task
 
-**Messages from fixers are NOT completion signals.** The task status `completed` (visible via TaskList) is the only exit condition.
+**Timeout handling:** If a fixer runs far longer than its peers and appears stuck, abort it with `TaskStop` using its `agentId`, then proceed without its results (note the gap in the report).
 
-**Timeout handling:** If a fixer has sent 3+ idle notifications without their task reaching `completed` status, send ONE follow-up message asking for status. If the fixer goes idle 3 more times after the follow-up without completing, declare that fixer failed and proceed without their results (note the gap in the report).
-
-**Collecting results:** Once ALL tasks show status `completed`, read each fixer's results file:
+**Collecting results:** Once ALL fixers have completed, read each fixer's results file. Findings come from these files - do NOT read the agent `.output` file (it is the raw JSONL transcript and will overflow your context).
 
 ```
 For each fixer:
-    Read /tmp/fix-TEAM_NAME/{fixer-name}.md
+    Read /tmp/RUN_ID/{fixer-name}.md
 ```
 
 Compile a summary of all results:
@@ -680,7 +638,7 @@ See [blocked-findings.md](references/blocked-findings.md) for the full resolutio
 2. If none, skip to Phase 7
 3. For each blocked finding, call AskUserQuestion with Fallback A, Fallback B, and Skip options
 4. If any fallbacks approved: spawn follow-up fixers (same prompt template, same ownership, results to `{name}-followup.md`)
-5. Poll follow-up fixers via Phase 6 loop
+5. Wait for follow-up fixers to complete via the Phase 6 flow
 6. If follow-up fixer also blocks: report as **unresolved** (max 1 re-entry, no infinite loops)
 7. Proceed to Phase 7
 
@@ -688,7 +646,7 @@ See [blocked-findings.md](references/blocked-findings.md) for the full resolutio
 
 ### Phase 7: Verify
 
-**Gating condition:** Only enter this phase when no pending follow-up fixer tasks remain. If Phase 7.5 spawned follow-up fixers, their polling and results collection must complete before verification runs. Verification covers ALL changes (original fixes + follow-up fixes).
+**Gating condition:** Only enter this phase when no follow-up fixers are still running. If Phase 7.5 spawned follow-up fixers, their completion and results collection must finish before verification runs. Verification covers ALL changes (original fixes + follow-up fixes).
 
 Run the discovered verification commands:
 
@@ -707,22 +665,10 @@ If verification fails:
 
 ### Phase 8: Cleanup
 
-Shut down all teammates in parallel (all shutdown requests in a single message):
+The fixer background tasks self-terminate when they finish, so there is nothing to shut down. Remove the temp results directory:
 
-```
-SendMessage(type: "shutdown_request", recipient: "fixer-1", content: "Fixes complete")
-SendMessage(type: "shutdown_request", recipient: "fixer-2", content: "Fixes complete")
-# ... all remaining fixers simultaneously
-```
-
-After all teammates confirm shutdown:
-```
-TeamDelete()
-```
-
-Clean up temp directory:
 ```bash
-rm -rf /tmp/fix-TEAM_NAME
+rm -rf /tmp/RUN_ID
 ```
 
 ### Phase 9: Final Report and Commit Strategy
@@ -801,7 +747,7 @@ Call AskUserQuestion tool with:
 Once the user selects a strategy (other than "Don't commit"), spawn a subagent to handle the commits:
 
 ```
-Task(
+Agent(
   subagent_type: "general-purpose",
   model: "sonnet",
   description: "Commit review fixes",
@@ -880,7 +826,7 @@ Report back what commits were created.
 | Codex unavailable during approach validation | Note unvalidated in option description, proceed without |
 | Markdown previews don't render | Fall back to description-only options |
 | Verification fails | Report failure details, do NOT auto-fix |
-| Team spawn fails | Fall back to single-agent fix implementation |
+| Agent spawn unavailable | Fall back to single-agent fix implementation |
 | No findings approved by user | Report "No fixes to apply" and exit |
 | User declines all fallback options for blocked finding | Mark as skipped in final report |
 | Follow-up fixer also blocked (max re-entry) | Report as unresolved, user handles manually |
@@ -897,11 +843,10 @@ Report back what commits were created.
 - **Parallel execution**: Spawn ALL fix agents simultaneously in one message
 - **Respect approach precedence**: User's chosen approach > suggested fix > session default > minimal-change
 - **Preserve user decisions**: Only fix what the user approved. Block (don't improvise) when approach is not viable.
-- **Report blocked findings**: Fixer agents mark infeasible approaches as Blocked with fallback options for the team lead.
+- **Report blocked findings**: Fixer agents mark infeasible approaches as Blocked with fallback options for the lead.
 - **Self-validate**: Each agent validates with Codex before reporting done
 - **Don't auto-fix verification failures**: Report and let the user decide
-- **Never mark fixer tasks**: You MUST NOT call TaskUpdate on any fixer task. Only fixers mark their own tasks completed.
-- **Results come from files**: Fixers write results to `/tmp/fix-TEAM_NAME/`. Do not use message content as results.
+- **Results come from files**: Fixers write results to `/tmp/RUN_ID/`. Do not use message content or the agent `.output` transcript as results.
 - **Bounded iteration**: Phase 7.5 allows at most 1 follow-up round. If a follow-up fixer also blocks, the finding becomes unresolved. No infinite loops.
 - **Verify after all fixes**: Phase 7 verification runs only after all fixers (original + follow-up) have completed.
 - **Auto-mode safety**: --auto skips disputed and blocked findings rather than guessing. Human judgment is required for disagreements.
