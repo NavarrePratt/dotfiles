@@ -146,7 +146,7 @@ Codex may update `~/.codex/config.toml` outside chezmoi, such as trusted project
 
 # Model And Tool Selection
 
-When selecting Codex models, spawning Codex subagents, or invoking Codex-backed or cross-model MCP tools (`mcp__codex__codex`, `mcp__cross-agent__opencode_prompt`):
+When selecting Codex models, spawning Codex subagents, or invoking Codex-backed or cross-model MCP tools such as the Codex MCP tool or `mcp__cross-agent__opencode_prompt`:
 
 - Do not manually specify the `model` parameter unless the user explicitly requests a specific model. Let each backend use its configured default.
 - Model fields in tool schemas can be free strings, not complete enums of available models. Do not infer that a model is unavailable from examples in a tool schema.
