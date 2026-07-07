@@ -32,6 +32,15 @@
     }
   },
   "mcp": {
+    "slack": {
+      "type": "remote",
+      "url": "http://127.0.0.1:3003/mcp",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {env:SLACK_MCP_API_KEY}"
+      }
+    },
     "codex": {
       "type": "local",
       "command": ["codex", "mcp-server"],
