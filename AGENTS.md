@@ -59,17 +59,39 @@ OpenCode automatically inherits `~/.claude/CLAUDE.md` as its global instructions
 it gives OpenCode the same git commit, PR, code style, and safety guidance as
 Claude Code without duplication.
 
+**OpenCode does NOT resolve `@` imports.** Claude Code expands `@rules/foo.md`
+references in CLAUDE.md and inlines the file content into the system prompt.
+OpenCode loads CLAUDE.md as raw text: `@rules/` references appear as literal
+strings, and the rule file content is NOT loaded. Any rule referenced via `@`
+in CLAUDE.md must also be added to the `instructions` array in `opencode.json`
+for OpenCode to receive its content.
+
+OpenCode DOES auto-load Claude skills from `~/.claude/skills/<name>/SKILL.md`
+(unless `OPENCODE_DISABLE_CLAUDE_CODE_SKILLS=1` is set). Skills do not need to
+be duplicated in the `instructions` array.
+
 However, `~/.config/opencode/AGENTS.md` uses **first-match-wins**, not merge.
 If it exists, it completely replaces the inherited CLAUDE.md. Do NOT create
 `dot_config/opencode/AGENTS.md` unless you intend to fully override CLAUDE.md.
 
 For opencode-specific guidance that should be **additive** (merged with, not
 replacing, the inherited CLAUDE.md), use the `instructions` array in
-`dot_config/opencode/opencode.json` instead. Place each instruction file under
-`dot_config/opencode/instructions/` and reference it by relative path:
+`dot_config/opencode/opencode.json` instead. This array supports three path
+types:
+
+- Relative paths (e.g. `instructions/cross-model-mcp.md`) - resolved relative to
+  the opencode config directory
+- Home-relative paths (e.g. `~/.claude/rules/dependency-selection.md`) - resolved
+  against `$HOME`; use this to share Claude rule files with OpenCode without
+  duplication
+- Absolute paths - resolved as-is
 
 ```json
-"instructions": ["instructions/cross-model-mcp.md"]
+"instructions": [
+  "instructions/cross-model-mcp.md",
+  "~/.claude/rules/dependency-selection.md",
+  "~/.claude/rules/kubernetes-safety.md"
+]
 ```
 
 These are additive to the inherited CLAUDE.md, not replacements for it.
