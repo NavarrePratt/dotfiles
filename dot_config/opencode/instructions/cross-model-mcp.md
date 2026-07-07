@@ -1,16 +1,11 @@
-# OpenCode Global Instructions
-
-This file provides opencode-specific guidance. It takes precedence over the
-inherited ~/.claude/CLAUDE.md for opencode sessions.
-
-# Cross-Model MCP Tools
+# Cross-Model MCP Tools (OpenCode-specific)
 
 You have two MCP servers for cross-family adversarial review:
 
 - **codex** (`mcp__codex__codex`): GPT-5.5. Use when you need a GPT opinion on your work.
 - **cross-agent** (`claude_prompt` / `claude_continue` / `claude_abort`): Claude. Use when you need a Claude opinion on your work.
 
-Note: The `cross-agent_opencode_*` tools are disabled in your config to prevent
+The `cross-agent_opencode_*` tools are disabled in your config to prevent
 recursion (you ARE opencode). Do not attempt to call them.
 
 When using cross-model MCP tools:

@@ -51,3 +51,25 @@ Do not confuse it with the global agent instructions this repo also manages:
 
 Those are global and heavy; change them deliberately. This file is the place for
 guidance that only matters when working on the dotfiles themselves.
+
+## OpenCode instruction inheritance
+
+OpenCode automatically inherits `~/.claude/CLAUDE.md` as its global instructions
+(unless `disableClaudeCodePrompt` is set in `opencode.json`). This is desirable:
+it gives OpenCode the same git commit, PR, code style, and safety guidance as
+Claude Code without duplication.
+
+However, `~/.config/opencode/AGENTS.md` uses **first-match-wins**, not merge.
+If it exists, it completely replaces the inherited CLAUDE.md. Do NOT create
+`dot_config/opencode/AGENTS.md` unless you intend to fully override CLAUDE.md.
+
+For opencode-specific guidance that should be **additive** (merged with, not
+replacing, the inherited CLAUDE.md), use the `instructions` array in
+`dot_config/opencode/opencode.json` instead. Place each instruction file under
+`dot_config/opencode/instructions/` and reference it by relative path:
+
+```json
+"instructions": ["instructions/cross-model-mcp.md"]
+```
+
+These are additive to the inherited CLAUDE.md, not replacements for it.
