@@ -30,5 +30,20 @@
         }
       }
     }
+  },
+  "mcp": {
+    "codex": {
+      "type": "local",
+      "command": ["codex", "mcp-server"],
+      "enabled": true
+    },
+    "cross-agent": {
+      "type": "local",
+      "command": ["uvx", "--from", "git+https://github.com/NavarrePratt/cross-agent-mcp[claude]", "cross-agent-mcp"],
+      "enabled": true
+    }
+  },
+  "tools": {
+    "cross-agent_opencode_*": false
   }
 }
