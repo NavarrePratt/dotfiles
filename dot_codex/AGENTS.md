@@ -154,4 +154,5 @@ When selecting Codex models, spawning Codex subagents, or invoking Codex-backed 
 - If a backend reports a model error, quote the actual tool or runtime error rather than guessing from the schema.
 - `read_only=True` is the default and correct for adversarial review.
 - Use `opencode_prompt` for cross-family diversity (GLM-5.2 reviewing GPT/Claude work).
+- Use `claude_prompt` when you need a Claude opinion from a different model tier (e.g., Opus reviewing GPT work).
 - For session continuation, pass the returned `session_id` to the matching `_continue` tool.
