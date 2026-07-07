@@ -18,4 +18,5 @@ When using cross-model MCP tools:
 - `read_only=True` is the default and correct for adversarial review.
 - Use `claude_prompt` when the user asks for a Claude opinion or review.
 - Use `codex` when the user asks for a Codex/GPT opinion or review.
+- For non-trivial cross-model calls (full reviews, multi-file analysis), dispatch the MCP call inside a subagent so the main conversation isn't blocked. For trivial calls (quick question, one-liner check), call the MCP tool directly.
 - For session continuation, pass the returned `session_id` to the matching `_continue` tool.

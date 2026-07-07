@@ -127,6 +127,7 @@ When using any of these:
 - If a backend reports a model error, quote the actual tool/runtime error rather than guessing from the schema.
 - `read_only=True` is the default and correct for adversarial review. Only set `read_only=False` if the user explicitly asks for write access.
 - Use `opencode_prompt` for cross-family diversity (GLM-5.2 reviewing Claude/GPT work).
+- For non-trivial cross-model calls (full reviews, multi-file analysis), dispatch the MCP call inside a subagent so the main conversation isn't blocked. For trivial calls (quick question, one-liner check), call the MCP tool directly.
 - For session continuation, pass the returned `session_id` to the matching `_continue` tool.
 
 # Principals
