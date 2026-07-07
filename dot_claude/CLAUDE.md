@@ -3,6 +3,7 @@
 This file documents workflow standards, issue tracking practices, and code quality expectations.
 
 See detailed rules in:
+- @rules/dependency-selection.md - Choose dependencies by total system complexity, not dependency count
 - @rules/kubernetes-safety.md - Never run unscoped kubectl queries on large clusters
 
 # Quick Reference

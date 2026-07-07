@@ -16,6 +16,7 @@ Personal `~/.claude` settings for [Claude Code](https://docs.anthropic.com/en/do
 ## Rules
 
 - `comments.md` - When comments are acceptable (why, not what)
+- `dependency-selection.md` - Choose dependencies by total system complexity
 - `git-spice.md` - Stacked PR workflow with `gs`
 - `grug-brain.md` - Anti-complexity development philosophy
 - `python.md` - Python conventions (uv, style)

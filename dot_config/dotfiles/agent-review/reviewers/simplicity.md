@@ -18,6 +18,7 @@ Evaluate whether the change is more complicated than the current problem require
 - Multiple indirection layers where a direct call would work.
 - Builders, registries, event systems, or dependency injection where simple construction is enough.
 - Dense framework-like patterns in a small local workflow.
+- Custom mini-implementations of solved library problems when a proven dependency would remove edge cases and code.
 
 **Locality of behavior**
 - Related logic scattered across files without a real ownership boundary.
@@ -41,6 +42,10 @@ For each new abstraction or pattern, ask:
 2. What is the simplest thing that could work instead?
 3. If the abstraction were removed, what specifically would break?
 4. Would a new contributor understand this without extra explanation?
+
+Do not equate fewer dependencies with simpler code. A small local
+implementation can be more complex than a mature package when the package
+matches the problem and absorbs real edge cases.
 
 Do not flag ordinary, localized code as complex just because it has branches. Prefer findings where a simpler alternative is clear.
 

@@ -31,6 +31,7 @@ Evaluate structural decisions: how code is organized, how components interact, a
 **Consistency and extensibility**
 - New code contradicting established local patterns.
 - Reimplementation of functionality that already exists nearby.
+- Reimplementation of standard library or established dependency functionality when reuse would reduce total complexity.
 - Hardcoded values at known extension points.
 - Changes that make likely future modifications harder.
 
@@ -44,6 +45,7 @@ Ask:
 2. If requirements change in a plausible way, how much code must change?
 3. Does this match the project's established level of abstraction?
 4. Is the abstraction earned by current complexity or real variation?
+5. Is custom code solving a problem that the standard library, project helpers, or an appropriate dependency already solve better?
 
 ## Severity Guidance
 

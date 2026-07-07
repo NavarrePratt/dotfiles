@@ -9,6 +9,7 @@ task-specific workflows belong in Codex skills.
 - Match existing patterns for naming, structure, formatting, and test style.
 - Keep changes minimal and focused. Delete unused code completely.
 - Prefer simple, direct implementations over premature abstraction.
+- For dependency decisions, follow `rules/dependency-selection.md`: optimize for total system complexity, not dependency count.
 - Measure before claiming performance or scale facts. When uncertain, say what needs to be measured.
 - For non-trivial work, reach ground truth in the repo before coding. Ask only targeted questions when the answer cannot be safely inferred.
 - When the user defines a persistent constraint such as "never X" or "always Y", write it to the active project instruction file and tell the user where it was saved.

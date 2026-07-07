@@ -8,6 +8,7 @@ Evaluate the change with a broad senior-engineering lens: does the design work, 
 - Code organized around how it will be maintained.
 - Clear responsibilities and ownership boundaries.
 - Local patterns followed where they exist.
+- Mature project-appropriate dependencies used when they reduce total custom logic.
 - APIs that callers can use naturally.
 - Error behavior consistent with the surrounding codebase.
 
@@ -22,6 +23,7 @@ Evaluate the change with a broad senior-engineering lens: does the design work, 
 - Parameters or extension points no caller uses.
 - Wrapper code that adds ceremony without improving clarity.
 - Work split across files for aesthetics rather than ownership.
+- Custom implementations of solved ecosystem problems where a proven package would be simpler.
 
 **Maintainability**
 - Code future maintainers can modify without reconstructing too much context.
@@ -36,7 +38,7 @@ Ask:
 
 1. Does this solve the actual problem in front of us?
 2. Are there obvious gaps that a user or operator will hit?
-3. Did the implementation choose the simplest robust path available in this codebase?
+3. Did the implementation choose the simplest robust path available, including standard library, existing helpers, or proven dependencies?
 4. What would you ask the author to change before trusting the branch?
 
 Report concrete fixes. Avoid broad taste commentary.

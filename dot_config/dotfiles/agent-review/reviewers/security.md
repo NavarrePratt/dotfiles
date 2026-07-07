@@ -26,7 +26,8 @@ Evaluate the change for exploitable behavior, missing trust-boundary checks, and
 - Custom cryptography where a standard library or project helper exists.
 
 **Dependency and configuration risk**
-- New dependencies with known risk or unnecessary attack surface.
+- New dependencies with known risk, unnecessary attack surface, weak maintenance, or license concerns.
+- Custom security-sensitive implementations where a vetted standard library, project helper, or established dependency exists.
 - Overly permissive CORS, CSP, network, filesystem, or Kubernetes access.
 - Debug flags or development defaults that could leak into production or shared environments.
 
@@ -40,6 +41,9 @@ Trace data flow across changed and nearby files. For each changed boundary, ask:
 4. If this code fails, what information or authority is exposed?
 
 Security findings must identify a concrete path, sink, or missing check. Do not inflate speculative hardening notes into blocking findings.
+
+For dependency findings, assess the specific risk. Do not treat a new package as
+a vulnerability merely because it is new.
 
 ## Severity Guidance
 
