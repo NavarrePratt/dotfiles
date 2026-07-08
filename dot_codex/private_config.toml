@@ -65,6 +65,7 @@ bearer_token_env_var = "SLACK_MCP_API_KEY"
 [mcp_servers.cross-agent]
 command = "uvx"
 args = ["--from", "git+https://github.com/NavarrePratt/cross-agent-mcp[claude]", "cross-agent-mcp"]
+tool_timeout_sec = 1200
 
 [plugins."gmail@openai-curated"]
 enabled = true
