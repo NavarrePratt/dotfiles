@@ -55,6 +55,9 @@ trust_level = "trusted"
 [projects."/Users/npratt/git/llm-optimizations"]
 trust_level = "trusted"
 
+[projects."/Users/npratt/git/cross-agent-mcp"]
+trust_level = "trusted"
+
 [mcp_servers.slack]
 url = "http://127.0.0.1:3003/mcp"
 bearer_token_env_var = "SLACK_MCP_API_KEY"

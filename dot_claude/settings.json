@@ -21,7 +21,8 @@
   "hooks": {},
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true
+    "skill-creator@claude-plugins-official": true,
+    "kynes-guide@cw-claude-code-plugins": true
   },
   "extraKnownMarketplaces": {
     "claude-code-plugins": {
@@ -29,10 +30,18 @@
         "source": "github",
         "repo": "anthropics/claude-code"
       }
+    },
+    "cw-claude-code-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "coreweave/agent-plugins"
+      }
     }
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
+  "tui": "fullscreen",
   "autoDreamEnabled": true,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "skipWorkflowUsageWarning": true
 }
