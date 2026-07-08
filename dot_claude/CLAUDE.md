@@ -127,6 +127,7 @@ When using any of these:
 - If a model override is explicitly requested, use the exact model slug, for example `gpt-5.5`.
 - If a backend reports a model error, quote the actual tool/runtime error rather than guessing from the schema.
 - `read_only=True` is the default and correct for adversarial review. Only set `read_only=False` if the user explicitly asks for write access.
+- Do not set the `timeout` parameter on cross-model MCP tool calls. The harness and backend defaults are already tuned for long-running reviews. Setting an explicit timeout (e.g. 300s) will kill reviews mid-flight. Only override if the user explicitly requests a specific timeout.
 - Do not paste large diffs or file contents into the prompt. The reviewing agent has read-only tools (Read, Glob, Grep, WebFetch) and can read files itself. Give it the working directory or file paths to review and let it explore on its own. This keeps prompts short and lets the reviewer form its own understanding.
 - Use `opencode_prompt` for cross-family diversity (GLM-5.2 reviewing Claude/GPT work).
 - For non-trivial cross-model calls (full reviews, multi-file analysis), dispatch the MCP call inside a subagent so the main conversation isn't blocked. For trivial calls (quick question, one-liner check), call the MCP tool directly.
