@@ -49,12 +49,14 @@
     "codex": {
       "type": "local",
       "command": ["codex", "mcp-server"],
-      "enabled": true
+      "enabled": true,
+      "timeout": 1200000
     },
     "cross-agent": {
       "type": "local",
       "command": ["uvx", "--from", "git+https://github.com/NavarrePratt/cross-agent-mcp[claude]", "cross-agent-mcp"],
-      "enabled": true
+      "enabled": true,
+      "timeout": 1200000
     }
   },
   "tools": {
