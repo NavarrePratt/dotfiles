@@ -5,13 +5,13 @@
 # rather than templating the file directly. This script runs after chezmoi applies
 # files. chezmoi only re-runs it when the script content changes.
 #
-# Sets a 10-minute (600000ms) tool execution timeout so Codex agent loops don't
+# Sets a 20-minute (1200000ms) tool execution timeout so Codex agent loops don't
 # get killed mid-review.
 
 set -euo pipefail
 
 SERVER_NAME="codex"
-TIMEOUT_MS=600000
+TIMEOUT_MS=1200000
 
 # Check if codex is already in ~/.claude.json.
 if python3 -c "
