@@ -154,6 +154,7 @@ When selecting Codex models, spawning Codex subagents, or invoking Codex-backed 
 - If a model override is explicitly requested, use the exact model slug, for example `gpt-5.5`.
 - If a backend reports a model error, quote the actual tool or runtime error rather than guessing from the schema.
 - `read_only=True` is the default and correct for adversarial review.
+- Do not paste large diffs or file contents into the prompt. The reviewing agent has read-only tools (Read, Glob, Grep, WebFetch) and can read files itself. Give it the working directory or file paths to review and let it explore on its own. This keeps prompts short and lets the reviewer form its own understanding.
 - Use `opencode_prompt` for cross-family diversity (GLM-5.2 reviewing GPT/Claude work).
 - Use `claude_prompt` when you need a Claude opinion from a different model tier (e.g., Opus reviewing GPT work).
 - For non-trivial cross-model calls (full reviews, multi-file analysis), dispatch the MCP call inside a subagent so the main conversation isn't blocked. For trivial calls (quick question, one-liner check), call the MCP tool directly.
