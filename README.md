@@ -8,6 +8,7 @@ Personal dotfiles managed with chezmoi.
 - `dot_config/dotfiles/shell/`: shell modules for paths, aliases, Kubernetes, and Teleport.
 - `dot_config/dotfiles/local/`: tracked examples for machine-local env files.
 - `dot_config/dotfiles/mcp-servers/`: shared local MCP server containers.
+- `dot_config/opencode/`: managed OpenCode config and additive instruction files.
 - `dot_codex/`: managed Codex config, instructions, and personal skills.
 - `dot_claude/`: managed Claude Code instructions, skills, commands, and safe templates.
 - `scripts/`: validation helpers.
@@ -24,6 +25,23 @@ Real tokens live outside git at:
 Use `dot_config/dotfiles/local/env.example.zsh` as the template. The live `.zshrc` sources the local file if it exists.
 
 Runtime state, histories, auth files, caches, sessions, SQLite databases, and local env files are intentionally ignored and should not be tracked.
+
+## Local Planning Artifacts
+
+Codex ExecPlans and worktrees are local-only repo artifacts:
+
+```text
+.codex/plans/
+.codex/worktrees/
+```
+
+Keep those paths in `.git/info/exclude`, not tracked `.gitignore`, unless they are intentionally promoted later. Use the Codex plan skills to inspect or close them:
+
+```sh
+$plans
+$finish-plan .codex/plans/<slug>.md
+$clean-plans
+```
 
 ## Validate
 

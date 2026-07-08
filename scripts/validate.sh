@@ -8,6 +8,14 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 "$repo_root/scripts/secret-audit.sh"
 "$repo_root/scripts/tracked-file-audit.sh"
 
+while IFS= read -r -d '' shell_file; do
+  bash -n "$shell_file"
+done < <(
+  find "$repo_root/scripts" -type f -name '*.sh' -print0
+  find "$repo_root" -maxdepth 1 -type f -name 'run_*.sh' -print0
+)
+echo "bash-script-validate: ok"
+
 if [ -d "$repo_root/dot_config/opencode" ]; then
   while IFS= read -r -d '' json_file; do
     jq empty "$json_file"

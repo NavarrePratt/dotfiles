@@ -51,6 +51,11 @@ while IFS= read -r path; do
   esac
 done < <(git ls-files -co --exclude-standard)
 
+while IFS= read -r path; do
+  echo "tracked-file-audit: tracked file is ignored by git excludes: $path" >&2
+  bad=1
+done < <(git ls-files -ci --exclude-standard)
+
 if (( bad )); then
   exit 1
 fi
