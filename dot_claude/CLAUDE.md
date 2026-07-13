@@ -1,42 +1,30 @@
-# Global Instructions
+# Global Claude Instructions
 
-This file documents workflow standards, issue tracking practices, and code quality expectations.
+This file contains concise persistent global guidance. Task-specific procedures belong in skills.
 
-See detailed rules in:
-- @rules/dependency-selection.md - Choose dependencies by total system complexity, not dependency count
-- @rules/kubernetes-safety.md - Never run unscoped kubectl queries on large clusters
+# Working Style
 
-# Quick Reference
+- Read before modifying. Understand the existing code, tests, and project instructions first.
+- Match existing patterns for naming, structure, formatting, and test style.
+- Keep changes minimal and focused. Delete unused code completely.
+- Prefer simple, direct implementations over premature abstraction.
+- Treat implementation requests as pointers to the intended outcome, not proof that the proposed mechanism is correct. You own the simplest coherent design that satisfies the underlying goal.
+- When repository evidence reveals a material contradiction, broken assumption, or workaround that would add structural complexity, stop and surface it. Re-derive the approach and present the divergence instead of silently adding flags, shims, special cases, parallel paths, or weakened tests.
+- Do not silently override explicit safety, authorization, compatibility, legal, or user-confirmed hard constraints. Ask before changing observable behavior, approved scope, or a material tradeoff.
+- Measure before claiming performance, scale, or numerical facts. When uncertain, say what needs to be measured.
+- For non-trivial work, establish ground truth in the repository before coding. Ask targeted questions only when the answer cannot be safely inferred.
+- When the user clearly makes a constraint durable, write it to the narrowest applicable instruction file and report where it was saved. Ask when its durability or scope is ambiguous.
 
-## Git Commits
+# Communication
 
-Use `/commit` slash command for all commits—creates atomic, well-formatted commits matching project style.
+- Be explicit and direct.
+- Explain why when context matters.
+- Be concise. Avoid filler.
+- Use positive framing.
+- Do not use emojis.
+- Do not use em dashes. Use hyphens or colons.
 
-# PR Description Standards
-
-Every PR must have a meaningful description. Never create PRs with empty bodies.
-
-When writing PR descriptions:
-- Explain why the change was made, not what changed. We can read the code.
-- Link relevant Slack threads, JIRA tickets, and design documents
-- Write for the future: the on-call engineer debugging at 3am will not know about your Slack discussion. PRs serve future readers, not just current reviewers.
-- Include enough context that someone unfamiliar with the work can understand the motivation from the PR alone
-
-Commit messages are different: keep them brief. Most commits should be
-subject-only. Add a body only for why or a non-obvious consequence that
-cannot be inferred from the subject and diff. Do not use commit bodies
-for PR-level context, implementation walkthroughs, or test inventories.
-See the git-commit skill for body length rules.
-
-# Quality Gates
-
-Before committing:
-- Code compiles/lints without errors
-- All tests pass
-- No hardcoded secrets
-- Changes are minimal and focused
-
-# Local Review Artifacts
+## Local Review Artifacts
 
 When creating or updating a local file specifically for user review, offer to open it with `cursor <path>` before asking the user to review or approve it.
 
@@ -44,105 +32,74 @@ When creating or updating a local file specifically for user review, offer to op
 - Show the path and the exact `cursor <path>` command.
 - Opening the file in Cursor is only for review convenience. It does not replace explicit approval for a GitHub write, remote push, message, deletion, or other gated action.
 
-# Code Style
+# Code And Tests
 
-- Read before modifying
-- Match existing patterns
-- Minimal changes only
-- Delete unused code completely
-- No over-engineering
-- No emojis. No em dashes - use hyphens or colons instead.
+- Prefer self-documenting code. Use comments for why, public API contracts, non-obvious constraints, legal requirements, or TODOs with issue references.
+- Delete commented-out code and stale update notes. Avoid comments that restate the next line.
+- Avoid over-engineering. Three similar lines can be better than an abstraction.
+- Use `uv` for Python workflows. Avoid unnecessary inline imports, excessive `try`/`except` blocks, and catching base exceptions for normal errors.
+- Test behavior users depend on, especially user-facing APIs, CLI commands, likely errors, core operations, and end-to-end workflows.
+- Use coverage to find missing user-facing behavior, not as a target.
+- Before committing, run the relevant available compile, lint, type-check, and test commands and check for hardcoded secrets.
 
-# Communication
+# Dependency Selection
 
-- Be explicit and direct
-- Provide context (why, not just what)
-- Use positive framing
-- Be concise
+Optimize for total system complexity, not dependency count.
 
-# GitHub Interactions
+- Before hand-rolling non-trivial behavior, check the standard library, current project dependencies and helpers, and established packages that solve the problem.
+- Prefer a maintained, license-compatible, reasonably scoped dependency when it removes meaningful edge-case-heavy logic.
+- Prefer local code when behavior is tiny and stable, a canonical helper exists, or the dependency adds more build, runtime, security, or operational complexity than it removes.
+- Briefly explain non-obvious dependency choices in the final response or PR description.
 
-**NEVER perform write operations to GitHub without explicit user approval.**
+# Kubernetes Safety
 
-This includes:
-- Creating issues (`gh issue create`)
-- Creating PRs (`gh pr create`)
-- Posting comments or replies
-- Deleting issues, PRs, branches
-- Any other GitHub API write operations
+- Assume Kubernetes clusters may be large.
+- Never run broad all-namespace queries such as `kubectl get pods -A` unless the user explicitly asks for that scope.
+- Scope queries by namespace, label, field selector, or concrete resource name.
+- If the namespace or scope is unclear, ask before querying.
+- Bounded cluster metadata such as `kubectl get nodes` is acceptable when directly relevant.
 
-Before any GitHub write operation:
-1. Show the user exactly what will be created/posted
-2. Wait for explicit approval (e.g., "yes", "go ahead", "create it")
-3. Only then execute the API call
+# Tool Preferences
 
-# Git Remote Operations
+- Prefer `rg` or `rg --files` for text and file search.
+- Prefer `ygrep` when extracting a structured YAML block by key or partial path. Use `yq` for known scalar paths or YAML edits.
+- Use the `git-spice` skill for stacked branch work involving `gs`.
 
-**NEVER push to remote repositories without explicit user approval.**
+# Commits And PRs
 
-This includes pushing commits, tags, or any branch updates to remote.
+Use the `git-commit` skill to create atomic local commits matching repository style. Keep most messages subject-only; add a body only for why or a non-obvious consequence that cannot be inferred from the diff. Do not use commit bodies for PR-level walkthroughs or test inventories.
 
-Before running `git push`:
-1. Show what will be pushed (commits, branch)
-2. Wait for explicit approval
-3. Only then execute the push
+Avoid incidental counts in commit messages, PR descriptions, and issue descriptions. Every PR needs a meaningful body that explains why, links relevant context when available, and gives future readers enough background to understand the motivation.
 
-**ESPECIALLY CRITICAL**: Never run `git push --force` or `git push --force-with-lease` without approval, as these can destroy work on shared branches.
+# Remote Operations
 
-Local operations (commit, branch, stash, rebase) are fine without approval.
+Never perform a GitHub write, remote push, or Git-Spice submit without explicit user approval. This includes creating or deleting issues, PRs, comments, replies, or branches; other GitHub API writes; pushing commits or tags; and `gs branch submit`, `gs stack submit`, `gs bs`, or `gs ss`.
+
+Before a remote write, show exactly what will be created, posted, pushed, or submitted and its destination. Wait for explicit approval, then perform only the approved action. Never force-push without explicit approval.
+
+Local Git and Git-Spice operations are allowed unless project instructions say otherwise.
 
 ## Comment Formatting
 
-- Always prefix comments with `[via Claude]` to indicate they were written by Claude
-- When replying to an existing comment, post as a reply (not a new comment in the main thread)
+- Prefix GitHub comments with `[via Agent]`.
+- When replying to an existing PR review comment, post as a threaded reply, not a new top-level comment.
 
-## Replying to PR Review Comments
+# External Communication Tools
 
-To reply to a PR review comment, POST to the pull comments endpoint with `in_reply_to`:
+Treat personal-account communication tools such as Slack or Gmail as read-oriented by default. Before sending, show the exact text and destination and wait for explicit approval, unless the user already supplied both in the same request. Never work around a server-side destination restriction.
 
-```bash
-# CORRECT - posts as a threaded reply to an existing review comment
-jq -n --arg body "[via Claude] Your reply here" '{body: $body, in_reply_to: COMMENT_ID}' | \
-  gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments --input - -X POST
+# Configuration Hygiene
 
-# WRONG - posts as a new comment in the main thread
-gh api repos/OWNER/REPO/issues/PR_NUMBER/comments \
-  -X POST -f body="[via Claude] Your reply here"
-```
+Keep local secrets, histories, databases, caches, sessions, shell snapshots, model caches, installation IDs, and local environment files out of git.
 
-To find comment IDs, fetch PR comments first:
-```bash
-gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments --jq '.[] | {id, user: .user.login, body: .body[:80]}'
-```
+# Cross-Model Review
 
-# MCP Tools
+Use cross-model tools for adversarial review and second opinions.
 
-## Cross-Model MCP Tools
-
-Several MCP servers expose other AI coding agents for cross-family adversarial review and second opinions: `mcp__codex__codex` (GPT-5.5), `mcp__cross-agent__opencode_prompt` (GLM-5.2 via WANDB), and `mcp__cross-agent__claude_prompt` (Claude, different tier from your current session).
-
-When using any of these:
-- Do not manually specify the `model` parameter unless the user explicitly requests a specific model. Let each backend use its configured default.
-- The MCP `model` field is a free string, not an enum of available models. Do not infer that a model is unavailable from examples in the tool schema.
-- If a model override is explicitly requested, use the exact model slug, for example `gpt-5.5`.
-- If a backend reports a model error, quote the actual tool/runtime error rather than guessing from the schema.
-- `read_only=True` is the default and correct for adversarial review. Only set `read_only=False` if the user explicitly asks for write access.
-- Do not set the `timeout` parameter on cross-model MCP tool calls. The harness and backend defaults are already tuned for long-running reviews. Setting an explicit timeout (e.g. 300s) will kill reviews mid-flight. Only override if the user explicitly requests a specific timeout.
-- Do not paste large diffs or file contents into the prompt. The reviewing agent has read-only tools (Read, Glob, Grep, WebFetch) and can read files itself. Give it the working directory or file paths to review and let it explore on its own. This keeps prompts short and lets the reviewer form its own understanding.
-- Use `opencode_prompt` for cross-family diversity (GLM-5.2 reviewing Claude/GPT work).
-- For non-trivial cross-model calls (full reviews, multi-file analysis), dispatch the MCP call inside a subagent so the main conversation isn't blocked. For trivial calls (quick question, one-liner check), call the MCP tool directly.
-- For session continuation, pass the returned `session_id` to the matching `_continue` tool.
-
-# Principals
-
-- Assumptions are the enemy. Never guess numerical values - benchmark instead of estimating. When uncertain, measure.
-  Say "this needs to be measured" rather than inventing statistics.
-- **Interaction**: Clarify unclear requests, then proceed autonomously. Only ask for help when scripts timeout (>2min) or genuine blockers arise.
-- **Ground truth clarification**: For non-trivial tasks, reach ground truth understanding before coding. Simple tasks execute immediately.
-  Complex tasks (refactors, new features, ambiguous requirements) require clarification first: research codebase, ask targeted questions,
-  confirm understanding, persist the plan, then execute autonomously. 
-- **First principals reimplementation**: Building from scratch can beat adapting legacy code when implementations are in wrong languages,
-  carry historical baggage, or need architectural rewrites. Understand domain at spec level, choose optimal stack,
-  implement incrementally with human verification.
-- **Constraint persistence**: When user defines constraints ("never X", "always Y", "from now on"), immediately persist to projects local
-  CLAUDE.md. Acknowledge, write, confirm.
+- Let subagents and cross-model backends use their configured models unless the user explicitly requests an exact override. Tool-schema examples are not exhaustive model lists; report actual runtime errors instead of guessing availability.
+- Keep adversarial reviews read-only unless the user explicitly authorizes writes.
+- Do not set a timeout on cross-model calls unless the user explicitly requests one. Backend defaults are tuned for long-running reviews.
+- Give the reviewer the working directory or relevant paths and let it inspect them. Do not paste large diffs or file contents into the prompt.
+- Prefer a different model family when diversity matters. Use another tier from the same family only when that perspective is useful or requested.
+- Dispatch substantial or multi-file reviews through a subagent; make quick calls directly.
+- Continue a session with its returned session ID and matching continuation tool.

@@ -33,6 +33,13 @@ real source is this repo. Always pass it explicitly:
 `scripts/validate.sh` wraps `chezmoi --source "$repo_root" doctor` + `diff`. Do not
 trust or `cd` to whatever `chezmoi source-path` prints.
 
+## Managed Codex config
+
+Before applying `~/.codex/config.toml`, review its targeted
+`chezmoi --source "$PWD" diff`. Preserve wanted live-only settings in
+`dot_codex/private_config.toml` before applying. Use `--force` only after that
+review and only for the specific Codex target.
+
 ## Don't commit runtime state
 
 Most `dot_claude/` and `dot_codex/` subdirectories (projects/, sessions/, cache/,
@@ -51,6 +58,16 @@ Do not confuse it with the global agent instructions this repo also manages:
 
 Those are global and heavy; change them deliberately. This file is the place for
 guidance that only matters when working on the dotfiles themselves.
+
+## Global harness parity
+
+Keep `dot_claude/CLAUDE.md` and `dot_codex/AGENTS.md` semantically aligned by
+default. Shared behavior, quality standards, and safety boundaries belong in
+both files. Diverge only for documented harness differences such as instruction
+discovery, available tools or skills, workflow support, and attribution. When
+changing one file, review the other and preserve equivalent policy unless the
+difference is intentional. Keep both files explicit and independently readable;
+do not replace them with shared generation without an explicit decision.
 
 ## OpenCode instruction inheritance
 
@@ -81,16 +98,14 @@ types:
 
 - Relative paths (e.g. `instructions/cross-model-mcp.md`) - resolved relative to
   the opencode config directory
-- Home-relative paths (e.g. `~/.claude/rules/dependency-selection.md`) - resolved
+- Home-relative paths (e.g. `~/.claude/rules/shared-policy.md`) - resolved
   against `$HOME`; use this to share Claude rule files with OpenCode without
   duplication
 - Absolute paths - resolved as-is
 
 ```json
 "instructions": [
-  "instructions/cross-model-mcp.md",
-  "~/.claude/rules/dependency-selection.md",
-  "~/.claude/rules/kubernetes-safety.md"
+  "instructions/cross-model-mcp.md"
 ]
 ```
 

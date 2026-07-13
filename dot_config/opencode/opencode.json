@@ -3,9 +3,7 @@
   "autoupdate": false,
   "model": "wandb/zai-org/GLM-5.2",
   "instructions": [
-    "instructions/cross-model-mcp.md",
-    "~/.claude/rules/dependency-selection.md",
-    "~/.claude/rules/kubernetes-safety.md"
+    "instructions/cross-model-mcp.md"
   ],
   "provider": {
     "wandb": {

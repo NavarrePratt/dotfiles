@@ -4,21 +4,20 @@
     "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "true",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_WORKFLOWS": "1",
-    "ENABLE_TOOL_SEARCH": "false",
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "40"
   },
-  "includeCoAuthoredBy": false,
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
   "permissions": {
-    "deny": [
-      "mcp__codex__codex-reply"
-    ],
     "defaultMode": "auto",
     "additionalDirectories": [
       "/Users/npratt/git"
     ]
   },
   "model": "opus[1m]",
-  "hooks": {},
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,

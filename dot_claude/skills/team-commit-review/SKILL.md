@@ -230,7 +230,7 @@ Substitute these placeholders before passing to each reviewer:
 
 ### Phase 4: Wait for All Reviewers to Complete
 
-Wait for every reviewer's background task to complete. Each spawned Agent fires a `<task-notification>` when it finishes. Do NOT poll with bash loops and sleep - this violates the monitoring rule in `~/.claude/rules/monitoring.md`.
+Wait for every reviewer's background task to complete. Each spawned Agent fires a `<task-notification>` when it finishes.
 
 Once ALL reviewers have completed, read each reviewer's findings file at `TEMP_DIR/{reviewer-name}.md` and compile all findings into a single list tagged by reviewer. Findings come from these files - do NOT read the agent `.output` file (it is the raw JSONL transcript and will overflow your context).
 

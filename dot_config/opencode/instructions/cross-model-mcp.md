@@ -1,19 +1,14 @@
-# Cross-Model MCP Tools (OpenCode-specific)
+# Cross-Model Review
 
-You have two MCP servers for cross-family adversarial review:
-
-- **codex** (`mcp__codex__codex`): GPT-5.5. Use when you need a GPT opinion on your work.
-- **cross-agent** (`claude_prompt` / `claude_continue` / `claude_abort`): Claude. Use when you need a Claude opinion on your work.
+Use the Codex and Claude tools for adversarial review and second opinions.
 
 The `cross-agent_opencode_*` tools are disabled in your config to prevent
-recursion (you ARE opencode). Do not attempt to call them.
+recursion. Do not call the current OpenCode harness through itself.
 
-When using cross-model MCP tools:
-- Do not manually specify the `model` parameter unless the user explicitly requests a specific model. Let each backend use its configured default.
-- `read_only=True` is the default and correct for adversarial review.
-- Do not set the `timeout` parameter on cross-model MCP tool calls. The harness and backend defaults are already tuned for long-running reviews. Setting an explicit timeout (e.g. 300s) will kill reviews mid-flight. Only override if the user explicitly requests a specific timeout.
-- Do not paste large diffs or file contents into the prompt. The reviewing agent has read-only tools (Read, Glob, Grep, WebFetch) and can read files itself. Give it the working directory or file paths to review and let it explore on its own. This keeps prompts short and lets the reviewer form its own understanding.
-- Use `claude_prompt` when the user asks for a Claude opinion or review.
-- Use `codex` when the user asks for a Codex/GPT opinion or review.
-- For non-trivial cross-model calls (full reviews, multi-file analysis), dispatch the MCP call inside a subagent so the main conversation isn't blocked. For trivial calls (quick question, one-liner check), call the MCP tool directly.
-- For session continuation, pass the returned `session_id` to the matching `_continue` tool.
+- Let each backend use its configured model unless the user explicitly requests an exact override.
+- Keep reviews read-only unless the user explicitly authorizes writes.
+- Do not set a timeout unless the user explicitly requests one. Backend defaults are tuned for long-running reviews.
+- Give the reviewer the working directory or relevant paths and let it inspect them. Do not paste large diffs or file contents into the prompt.
+- Prefer a different model family when diversity matters.
+- Dispatch substantial or multi-file reviews through a subagent; make quick calls directly.
+- Continue a session with its returned session ID and matching continuation tool.

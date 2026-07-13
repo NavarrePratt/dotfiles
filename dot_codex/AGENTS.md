@@ -1,7 +1,6 @@
 # Global Codex Instructions
 
-This file contains persistent global guidance for Codex. Keep it concise:
-task-specific workflows belong in Codex skills.
+This file contains concise persistent global guidance. Task-specific procedures belong in skills.
 
 # Working Style
 
@@ -9,10 +8,12 @@ task-specific workflows belong in Codex skills.
 - Match existing patterns for naming, structure, formatting, and test style.
 - Keep changes minimal and focused. Delete unused code completely.
 - Prefer simple, direct implementations over premature abstraction.
-- For dependency decisions, follow `rules/dependency-selection.md`: optimize for total system complexity, not dependency count.
-- Measure before claiming performance or scale facts. When uncertain, say what needs to be measured.
-- For non-trivial work, reach ground truth in the repo before coding. Ask only targeted questions when the answer cannot be safely inferred.
-- When the user defines a persistent constraint such as "never X" or "always Y", write it to the active project instruction file and tell the user where it was saved.
+- Treat implementation requests as pointers to the intended outcome, not proof that the proposed mechanism is correct. You own the simplest coherent design that satisfies the underlying goal.
+- When repository evidence reveals a material contradiction, broken assumption, or workaround that would add structural complexity, stop and surface it. Re-derive the approach and present the divergence instead of silently adding flags, shims, special cases, parallel paths, or weakened tests.
+- Do not silently override explicit safety, authorization, compatibility, legal, or user-confirmed hard constraints. Ask before changing observable behavior, approved scope, or a material tradeoff.
+- Measure before claiming performance, scale, or numerical facts. When uncertain, say what needs to be measured.
+- For non-trivial work, establish ground truth in the repository before coding. Ask targeted questions only when the answer cannot be safely inferred.
+- When the user clearly makes a constraint durable, write it to the narrowest applicable instruction file and report where it was saved. Ask when its durability or scope is ambiguous.
 
 # Communication
 
@@ -31,132 +32,84 @@ When creating or updating a local file specifically for user review, offer to op
 - Show the path and the exact `cursor <path>` command.
 - Opening the file in Cursor is only for review convenience. It does not replace explicit approval for a GitHub write, remote push, message, deletion, or other gated action.
 
-# Code Style
+# Code And Tests
 
-- Prefer self-documenting code over explanatory comments.
-- Use comments to explain why, public API contracts, non-obvious constraints, legal requirements, or TODOs with issue references.
-- Do not leave commented-out code, stale update notes, or comments that merely restate the next line of code.
+- Prefer self-documenting code. Use comments for why, public API contracts, non-obvious constraints, legal requirements, or TODOs with issue references.
+- Delete commented-out code and stale update notes. Avoid comments that restate the next line.
 - Avoid over-engineering. Three similar lines can be better than an abstraction.
+- Use `uv` for Python workflows. Avoid unnecessary inline imports, excessive `try`/`except` blocks, and catching base exceptions for normal errors.
+- Test behavior users depend on, especially user-facing APIs, CLI commands, likely errors, core operations, and end-to-end workflows.
+- Use coverage to find missing user-facing behavior, not as a target.
+- Before committing, run the relevant available compile, lint, type-check, and test commands and check for hardcoded secrets.
 
-## Python
+# Dependency Selection
 
-- Use `uv` for Python workflows: `uv run`, `uv pip`, and `uv venv`.
-- Avoid inline imports unless they are necessary or add clear value.
-- Avoid excessive `try`/`catch` blocks.
-- Do not catch base exceptions for normal error handling.
+Optimize for total system complexity, not dependency count.
 
-## Testing
-
-- Test behavior users depend on, not implementation details.
-- Prioritize user-facing APIs, CLI commands, error handling users will hit, core operations, and end-to-end workflows.
-- Use coverage as a guide to find untested user-facing behavior, not as a goal by itself.
-- Before committing, verify the relevant compile, lint, type-check, and test commands pass when they are available.
+- Before hand-rolling non-trivial behavior, check the standard library, current project dependencies and helpers, and established packages that solve the problem.
+- Prefer a maintained, license-compatible, reasonably scoped dependency when it removes meaningful edge-case-heavy logic.
+- Prefer local code when behavior is tiny and stable, a canonical helper exists, or the dependency adds more build, runtime, security, or operational complexity than it removes.
+- Briefly explain non-obvious dependency choices in the final response or PR description.
 
 # Kubernetes Safety
 
 - Assume Kubernetes clusters may be large.
 - Never run broad all-namespace queries such as `kubectl get pods -A` unless the user explicitly asks for that scope.
-- Scope Kubernetes queries by namespace, label, field selector, or concrete resource name.
-- If the namespace or scope is unclear, ask for it before querying.
-- Bounded cluster metadata such as `kubectl get nodes` is acceptable when it is directly relevant.
+- Scope queries by namespace, label, field selector, or concrete resource name.
+- If the namespace or scope is unclear, ask before querying.
+- Bounded cluster metadata such as `kubectl get nodes` is acceptable when directly relevant.
 
 # Tool Preferences
 
 - Prefer `rg` or `rg --files` for text and file search.
-- Prefer `ygrep` over `grep` or complex `yq` when extracting structured blocks from YAML by key or partial path.
-- Use the `git-spice` Codex skill for stacked branch work involving `gs`.
+- Prefer `ygrep` when extracting a structured YAML block by key or partial path. Use `yq` for known scalar paths or YAML edits.
+- Use the `git-spice` skill for stacked branch work involving `gs`.
 
 # Local Planning
 
-Use local ExecPlan documents for durable planning. In this dotfiles repo, store them under `.codex/plans/` and keep that directory in the repo's local Git exclude file, not tracked `.gitignore`, unless the user explicitly chooses to track plans later.
+Use local ExecPlan documents for durable planning. Store each plan under that repository's `.codex/plans/` directory, and add that directory to the repository's local Git exclude (`.git/info/exclude`), not a tracked `.gitignore`, unless the user explicitly chooses to track plans.
 
 - Treat the ExecPlan document as the source of truth for planned work.
 - Track ownership, state, active worktree, milestones, verification, and progress in the plan itself.
 - Use `finish-plan` to verify lifecycle completion, mark plans done, archive them, and handle safe worktree cleanup.
 - Do not stand up a parallel work tracker unless the user explicitly asks for one.
-- Detailed planning workflows should live in Codex skills. Do not recreate a Claude session protocol in this file.
+- Detailed planning workflows belong in Codex skills.
 
 # Commits And PRs
 
-When asked to commit, create atomic, well-formatted local commits matching the repository style.
+Use the `commit` skill to create atomic local commits matching repository style. Keep most messages subject-only; add a body only for why or a non-obvious consequence that cannot be inferred from the diff. Do not use commit bodies for PR-level walkthroughs or test inventories.
 
-- Keep most commit messages subject-only.
-- Add a body only for why or a non-obvious consequence that cannot be inferred from the subject and diff.
-- Do not use commit bodies for PR-level context, implementation walkthroughs, or test inventories.
-- Never include fragile counts in commit messages, PR descriptions, or issue descriptions. Write "Add tests for auth module", not "Add 7 tests".
+Avoid incidental counts in commit messages, PR descriptions, and issue descriptions. Every PR needs a meaningful body that explains why, links relevant context when available, and gives future readers enough background to understand the motivation.
 
-Every PR must have a meaningful description. Never create PRs with empty bodies.
+# Remote Operations
 
-When writing PR descriptions:
+Never perform a GitHub write, remote push, or Git-Spice submit without explicit user approval. This includes creating or deleting issues, PRs, comments, replies, or branches; other GitHub API writes; pushing commits or tags; and `gs branch submit`, `gs stack submit`, `gs bs`, or `gs ss`.
 
-- Explain why the change was made, not what changed.
-- Link relevant Slack threads, JIRA tickets, and design documents when available.
-- Write for future readers who do not know the original discussion.
-- Include enough context that someone unfamiliar with the work can understand the motivation from the PR alone.
+Before a remote write, show exactly what will be created, posted, pushed, or submitted and its destination. Wait for explicit approval, then perform only the approved action. Never force-push without explicit approval.
 
-# GitHub And Remote Safety
-
-Never perform write operations to GitHub without explicit user approval.
-
-This includes:
-
-- Creating issues.
-- Creating PRs.
-- Posting comments or replies.
-- Deleting issues, PRs, or branches.
-- Any other GitHub API write operation.
-
-Before any GitHub write operation:
-
-1. Show the user exactly what will be created or posted.
-2. Wait for explicit approval, such as "yes", "go ahead", or "create it".
-3. Only then execute the operation.
-
-Never push to remote repositories without explicit user approval. This includes commits, tags, branch updates, and Git-Spice submit commands.
-
-For this dotfiles repo, keep changes local by default. The user prefers a thorough manual review before any push or other remote publication.
-
-Before running `git push`, `gs branch submit`, `gs stack submit`, `gs bs`, or `gs ss`:
-
-1. Show what will be pushed or submitted.
-2. Wait for explicit approval.
-3. Only then execute the command.
-
-Never run `git push --force` or `git push --force-with-lease` without explicit approval.
-
-Local operations such as commit, branch, stash, rebase, Git-Spice branch creation, navigation, restacking, and local sync are allowed unless project instructions say otherwise.
+Local Git and Git-Spice operations are allowed unless project instructions say otherwise.
 
 ## Comment Formatting
 
-- Prefix GitHub comments with `[via Codex]`.
+- Prefix GitHub comments with `[via Agent]`.
 - When replying to an existing PR review comment, post as a threaded reply, not a new top-level comment.
 
 # External Communication Tools
 
-Treat personal-account communication tools such as Slack or Gmail as read-oriented by default.
-
-- Do not send messages, replies, or emails unless the user explicitly asks.
-- Before sending, show the exact text and destination.
-- Wait for explicit approval before sending unless the user has already provided the exact text and destination in the same request.
+Treat personal-account communication tools such as Slack or Gmail as read-oriented by default. Before sending, show the exact text and destination and wait for explicit approval, unless the user already supplied both in the same request. Never work around a server-side destination restriction.
 
 # Configuration Hygiene
 
-Keep local secrets, histories, SQLite databases, caches, sessions, shell snapshots, model caches, installation IDs, and local env files out of git.
+Keep local secrets, histories, databases, caches, sessions, shell snapshots, model caches, installation IDs, and local environment files out of git.
 
-Codex may update `~/.codex/config.toml` outside chezmoi, such as trusted projects, feature flags, and UI state. Before applying managed Codex config, review the targeted `chezmoi diff`; reconcile live-only settings into `dot_codex/private_config.toml` or consciously discard them. Use `chezmoi --force apply` only after that review, and only for the specific Codex files being applied.
+# Cross-Model Review
 
-# Model And Tool Selection
+Use cross-model tools for adversarial review and second opinions.
 
-When selecting Codex models, spawning Codex subagents, or invoking Codex-backed or cross-model MCP tools such as the Codex MCP tool or `mcp__cross-agent__opencode_prompt`:
-
-- Do not manually specify the `model` parameter unless the user explicitly requests a specific model. Let each backend use its configured default.
-- Model fields in tool schemas can be free strings, not complete enums of available models. Do not infer that a model is unavailable from examples in a tool schema.
-- If a model override is explicitly requested, use the exact model slug, for example `gpt-5.5`.
-- If a backend reports a model error, quote the actual tool or runtime error rather than guessing from the schema.
-- `read_only=True` is the default and correct for adversarial review.
-- Do not set the `timeout` parameter on cross-model MCP tool calls. The harness and backend defaults are already tuned for long-running reviews. Setting an explicit timeout (e.g. 300s) will kill reviews mid-flight. Only override if the user explicitly requests a specific timeout.
-- Do not paste large diffs or file contents into the prompt. The reviewing agent has read-only tools (Read, Glob, Grep, WebFetch) and can read files itself. Give it the working directory or file paths to review and let it explore on its own. This keeps prompts short and lets the reviewer form its own understanding.
-- Use `opencode_prompt` for cross-family diversity (GLM-5.2 reviewing GPT/Claude work).
-- Use `claude_prompt` when you need a Claude opinion from a different model tier (e.g., Opus reviewing GPT work).
-- For non-trivial cross-model calls (full reviews, multi-file analysis), dispatch the MCP call inside a subagent so the main conversation isn't blocked. For trivial calls (quick question, one-liner check), call the MCP tool directly.
-- For session continuation, pass the returned `session_id` to the matching `_continue` tool.
+- Let subagents and cross-model backends use their configured models unless the user explicitly requests an exact override. Tool-schema examples are not exhaustive model lists; report actual runtime errors instead of guessing availability.
+- Keep adversarial reviews read-only unless the user explicitly authorizes writes.
+- Do not set a timeout on cross-model calls unless the user explicitly requests one. Backend defaults are tuned for long-running reviews.
+- Give the reviewer the working directory or relevant paths and let it inspect them. Do not paste large diffs or file contents into the prompt.
+- Prefer a different model family when diversity matters. Use another tier from the same family only when that perspective is useful or requested.
+- Dispatch substantial or multi-file reviews through a subagent; make quick calls directly.
+- Continue a session with its returned session ID and matching continuation tool.

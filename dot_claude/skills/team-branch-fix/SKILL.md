@@ -604,7 +604,7 @@ After writing the results file, your work is complete - the written file is your
 
 ### Phase 6: Wait for All Agents to Complete
 
-Wait for every fixer's background task to complete. Each spawned Agent fires a `<task-notification>` when it finishes. Do NOT poll with bash loops and sleep - this violates the monitoring rule in `~/.claude/rules/monitoring.md`.
+Wait for every fixer's background task to complete. Each spawned Agent fires a `<task-notification>` when it finishes.
 
 **You MUST NOT do any of the following until ALL fixers have completed:**
 - Run verification commands
