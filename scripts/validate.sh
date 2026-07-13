@@ -23,6 +23,13 @@ if [ -d "$repo_root/dot_config/opencode" ]; then
 fi
 echo "opencode-json-validate: ok"
 
+jq empty "$repo_root/dot_claude/settings.json"
+if jq -e 'has("includeCoAuthoredBy")' "$repo_root/dot_claude/settings.json" >/dev/null; then
+  echo "claude-settings-json-validate: deprecated includeCoAuthoredBy setting found" >&2
+  exit 1
+fi
+echo "claude-settings-json-validate: ok"
+
 skill_validator="${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py"
 if [ -f "$skill_validator" ] && command -v uv >/dev/null 2>&1; then
   while IFS= read -r -d '' skill_file; do
@@ -41,7 +48,7 @@ find "$repo_root/dot_config/dotfiles/shell" -type f -name '*.zsh' -print0 |
 if command -v chezmoi >/dev/null 2>&1; then
   chezmoi --source "$repo_root" doctor
   chezmoi --source "$repo_root" diff >/dev/null
-  echo "chezmoi diff: ok"
+  echo "chezmoi doctor/render: ok"
 else
   echo "validate: chezmoi not installed; skipping chezmoi doctor/diff" >&2
 fi
