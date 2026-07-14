@@ -68,6 +68,9 @@ args = ["--from", "git+https://github.com/NavarrePratt/cross-agent-mcp[claude]",
 tool_timeout_sec = 1200.0
 env_vars = ["WANDB_API_KEY", "WANDB_INFERENCE_PROJECT"]
 
+[mcp_servers.cross-agent.env]
+CROSS_AGENT_OPENCODE_AGENT = "cross-agent-readonly"
+
 [mcp_servers.openaiDeveloperDocs]
 url = "https://developers.openai.com/mcp"
 

@@ -34,6 +34,27 @@
       }
     }
   },
+  "agent": {
+    "cross-agent-readonly": {
+      "description": "Generic non-interactive read-only agent for cross-agent MCP.",
+      "mode": "primary",
+      "permission": {
+        "*": "deny",
+        "read": {
+          "*": "allow",
+          "*.env": "deny",
+          "*.env.*": "deny",
+          "*.env.example": "allow"
+        },
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "webfetch": "allow",
+        "websearch": "allow",
+        "external_directory": "allow"
+      }
+    }
+  },
   "mcp": {
     "slack": {
       "type": "remote",
@@ -54,7 +75,10 @@
       "type": "local",
       "command": ["uvx", "--from", "git+https://github.com/NavarrePratt/cross-agent-mcp[claude]", "cross-agent-mcp"],
       "enabled": true,
-      "timeout": 1200000
+      "timeout": 1200000,
+      "environment": {
+        "CROSS_AGENT_OPENCODE_AGENT": "cross-agent-readonly"
+      }
     }
   },
   "tools": {
