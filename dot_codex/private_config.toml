@@ -86,3 +86,6 @@ memories = true
 prevent_idle_sleep = true
 goals = true
 default_mode_request_user_input = true
+
+[tui.model_availability_nux]
+"gpt-5.6-sol" = 4

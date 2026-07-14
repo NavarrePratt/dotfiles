@@ -44,7 +44,8 @@
           "*": "allow",
           "*.env": "deny",
           "*.env.*": "deny",
-          "*.env.example": "allow"
+          "*.env.example": "allow",
+          "mcp:*": "deny"
         },
         "glob": "allow",
         "grep": "allow",
