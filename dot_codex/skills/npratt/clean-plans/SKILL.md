@@ -23,11 +23,11 @@ Archive location:
 
 ## Safety
 
+- Operate only on archived repository-local plan state and artifacts.
 - Never delete active plans outside `.codex/plans/archive/`.
 - Never delete dirty worktrees.
 - Never remove a plan or artifact directory without showing what will be removed and getting explicit approval.
 - Prefer preserving over deleting when context is unclear.
-- Do not push, create PRs, post comments, or perform GitHub writes.
 
 ## Output
 

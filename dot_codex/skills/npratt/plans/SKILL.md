@@ -91,7 +91,6 @@ Never delete plans from this skill. Use `$clean-plans` for archive cleanup.
 
 ## Safety
 
-- Keep plans local-only.
-- Do not push, create PRs, post comments, or perform GitHub writes.
+- Operate only on repository-local plan state and artifacts.
 - Do not mark a plan `done` just because local code was written or a PR was opened.
 - When unsure whether a plan is complete, leave it active and record the next required step.

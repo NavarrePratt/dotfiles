@@ -9,7 +9,7 @@ Run a report-only code review using parallel Codex reviewer subagents. The diff 
 
 ## Safety Boundary
 
-- This skill does not implement fixes, edit production files, commit, push, create PRs, post comments, submit Git-Spice branches, or perform any remote write.
+- Treat this as a report-only review. Write local review artifacts when required, but do not edit production files, commit fixes, or change remote state.
 - Invoking `$review-branch` explicitly authorizes the required parallel reviewer subagents.
 - If triggered by ambiguous natural language, ask one explicit confirmation question before spawning reviewers: `Run the parallel review-branch reviewer team for this local diff?`
 - If Codex subagents are unavailable, stop. Do not fall back to a single-agent review.
@@ -347,5 +347,3 @@ Report:
 - artifact paths, if any
 - limitations or missing reviewer coverage
 - next steps
-
-Repeat that no remote write was performed.

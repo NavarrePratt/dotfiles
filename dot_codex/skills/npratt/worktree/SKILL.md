@@ -15,7 +15,7 @@ Use this for PR review, branch inspection, or edit work when the user wants an i
 
 ## Safety Boundary
 
-- Never push, create PRs, post comments, submit Git-Spice branches, or perform any GitHub write operation as part of this skill.
+- Fetch refs when needed for resolution, but create or modify only local branches and worktrees. Do not publish branches or modify GitHub state from this skill.
 - Add `.codex/worktrees/` only to the current repository's local Git exclude file, never to tracked `.gitignore` unless the user explicitly asks.
 - Use `git rev-parse --show-toplevel` to resolve the current repo root.
 - Use `git rev-parse --git-path info/exclude` to resolve the local exclude file because `.git` may be a file in linked worktrees.

@@ -1,6 +1,6 @@
 ---
 name: commit
-description: Create logically grouped, atomic local git commits with well-formatted commit messages. Use when the user asks to commit changes, run a commit workflow, or use /commit-style behavior. Before committing, inspect current changes and recent history, group changes intentionally, surface unresolved decisions to the user when they materially affect the commit, and never push without explicit approval.
+description: Create logically grouped, atomic local git commits with well-formatted commit messages. Use when the user asks to commit changes, run a commit workflow, or use /commit-style behavior. Before committing, inspect current changes and recent history, group changes intentionally, and surface unresolved decisions when they materially affect the commit.
 ---
 
 # Git Commit Skill
@@ -26,7 +26,7 @@ Create well-structured, atomic local git commits with commit messages that match
    - Verify each commit with `git show --stat --oneline HEAD`
 5. Finish with `git status` and report the commit SHA(s).
 
-Never push to a remote, open a PR, or perform any GitHub write as part of this skill unless the user explicitly approves that separate operation.
+Stop after creating and verifying local commits. Treat publishing those commits as a separate operation governed by the global Remote Operations policy.
 
 ## Message Style
 

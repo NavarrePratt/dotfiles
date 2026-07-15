@@ -17,10 +17,10 @@ This file contains concise persistent global guidance. Task-specific procedures 
 
 # Communication
 
-- Be explicit and direct.
-- Explain why when context matters.
-- Be concise. Avoid filler.
-- Use positive framing.
+- Lead with the conclusion. Be explicit and direct.
+- Explain why when it affects a decision, tradeoff, risk, or next action.
+- Preserve required facts, evidence, material caveats, decisions, and next steps. Trim filler, repetition, generic reassurance, routine process narration, and optional background first.
+- Use constructive wording. State what to do, not only what to avoid.
 - Do not use emojis.
 - Do not use em dashes. Use hyphens or colons.
 
@@ -83,11 +83,11 @@ Avoid incidental counts in commit messages, PR descriptions, and issue descripti
 
 # Remote Operations
 
-Never perform a GitHub write, remote push, or Git-Spice submit without explicit user approval. This includes creating or deleting issues, PRs, comments, replies, or branches; other GitHub API writes; pushing commits or tags; and `gs branch submit`, `gs stack submit`, `gs bs`, or `gs ss`.
+Local Git and Git-Spice operations and read-only remote queries are allowed unless project instructions say otherwise.
 
-Before a remote write, show exactly what will be created, posted, pushed, or submitted and its destination. Wait for explicit approval, then perform only the approved action. Never force-push without explicit approval.
+External writes require explicit user approval. This includes remote branch and tag updates, GitHub issue, PR, comment, reply, and branch writes, and Git-Spice submit commands.
 
-Local Git and Git-Spice operations are allowed unless project instructions say otherwise.
+Before requesting approval, show the exact action, destination, and content or refs. After approval, perform only that action. Ask again only if those material details change. Never force-push unless the user specifically approves the force-push.
 
 ## Comment Formatting
 

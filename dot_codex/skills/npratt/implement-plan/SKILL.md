@@ -79,7 +79,7 @@ Useful artifacts:
 - `pr-title.txt`
 - `pr-body.md`
 
-Local PR artifacts are useful, but do not push or create a PR without explicit approval.
+Produce local commits and PR artifacts as needed. Treat branch publication, PR creation, and comments as separate operations governed by the global Remote Operations policy.
 
 ## Review Boundary
 
@@ -128,7 +128,5 @@ Do not archive from this skill unless the user explicitly confirms the lifecycle
 
 ## Safety
 
-- Never push, create PRs, post comments, submit Git-Spice branches, or perform GitHub writes without explicit approval.
-- Before any remote write, show exactly what will happen and wait for approval.
 - Keep plan files and artifacts local unless the user explicitly asks otherwise.
 - Do not create or use `br` issues as a second source of truth.

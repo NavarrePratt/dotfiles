@@ -1,15 +1,17 @@
 ---
 name: git-spice
-description: Manage stacked branches with Git-Spice (`gs`). Use when the user asks about stacked PRs, `gs` commands, creating, navigating, restacking, syncing, or diagnosing a Git-Spice stack. Never submit branches or stacks unless the user explicitly approves that remote operation.
+description: Manage stacked branches with Git-Spice (`gs`). Use when the user asks about stacked PRs, `gs` commands, creating, navigating, restacking, syncing, diagnosing, or submitting a Git-Spice stack.
 ---
 
 # Git Spice
 
 Use Git-Spice (`gs`) to manage stacked branches and stacked PR workflows.
 
-## Safety Boundary
+## Operation Boundary
 
-Never run a Git-Spice submit command without explicit user approval:
+Run local navigation, branch creation, restacking, and synchronization without approval unless project instructions say otherwise.
+
+Treat these submit commands as remote writes:
 
 - `gs branch submit`
 - `gs stack submit`
@@ -19,12 +21,10 @@ Never run a Git-Spice submit command without explicit user approval:
 
 Submit commands push branches to a remote and create or update PRs. Before submitting:
 
-1. Show the user which branch or stack will be submitted.
-2. Show the commits or stack shape when relevant.
-3. Wait for explicit approval such as "yes", "go ahead", or "submit it".
-4. Run the submit command only after approval.
-
-Local operations are allowed unless project instructions say otherwise.
+1. Show the exact submit command.
+2. Show the branch or stack, destination remote, commits or stack shape, and expected PR effect.
+3. Wait for explicit approval.
+4. Run only the approved submit command.
 
 ## Orientation
 

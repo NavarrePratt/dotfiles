@@ -56,7 +56,7 @@ For each candidate worktree from `Active worktree` or `.codex/worktrees/<slug>`:
 git -C <worktree> status --branch --short
 ```
 
-Use read-only GitHub checks when the plan references GitHub lifecycle state such as PR merge status, checks, workflow runs, releases, tags, or deployments. Prefer the GitHub app, GitHub skills, `gh` reads, or API reads already available in the environment. Never perform GitHub writes.
+Use read-only GitHub checks when the plan references GitHub lifecycle state such as PR merge status, checks, workflow runs, releases, tags, or deployments. Prefer the GitHub app, GitHub skills, `gh` reads, or API reads already available in the environment. Do not change remote state from this skill.
 
 Treat unchecked milestones, missing verification, unresolved documentation, open follow-ups, unmerged PRs, pending CI, pending deploy, pending release, or pending rollout validation as incomplete unless the user explicitly explains why they no longer apply. Ask targeted questions for lifecycle facts that cannot be proven locally or through allowed read-only checks.
 
@@ -134,7 +134,5 @@ Report:
 ## Safety
 
 - Keep plans and artifacts local-only.
-- Do not push, create PRs, post comments, submit Git-Spice branches, merge, update remote branches, or perform any GitHub write operation.
-- Before any remote write requested by the user, show exactly what would happen and wait for explicit approval.
 - Do not create a second source of truth in `br`.
 - Prefer asking over inferring completion. Missing lifecycle information keeps the plan active.
