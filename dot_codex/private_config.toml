@@ -1,19 +1,19 @@
 model = "gpt-5.6-sol"
 model_reasoning_effort = "xhigh"
 model_reasoning_summary = "detailed"
-model_context_window = 1000000
-model_auto_compact_token_limit = 400000
 model_verbosity = "medium"
 file_opener = "none"
 show_raw_agent_reasoning = true
 sandbox_mode = "danger-full-access"
 approval_policy = "never"
-tool_output_token_limit = 25000
 personality = "pragmatic"
 service_tier = "fast"
 web_search = "live"
 plan_mode_reasoning_effort = "xhigh"
 suppress_unstable_features_warning = true
+approvals_reviewer = "auto_review"
+
+notify = ["/Users/npratt/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
 
 [shell_environment_policy]
 inherit = "all"
@@ -58,6 +58,12 @@ trust_level = "trusted"
 [projects."/Users/npratt/git/cross-agent-mcp"]
 trust_level = "trusted"
 
+[projects."/Users/npratt/git/harbor"]
+trust_level = "trusted"
+
+[projects."/Users/npratt/git/harbor-datasets"]
+trust_level = "trusted"
+
 [mcp_servers.slack]
 url = "http://127.0.0.1:3003/mcp"
 bearer_token_env_var = "SLACK_MCP_API_KEY"
@@ -78,6 +84,9 @@ url = "https://developers.openai.com/mcp"
 enabled = true
 
 [plugins."github@openai-curated"]
+enabled = true
+
+[plugins."sites@openai-bundled"]
 enabled = true
 
 [features]
