@@ -1,0 +1,4 @@
+interface:
+  display_name: "Understand Changes"
+  short_description: "Learn and retain how recent changes work."
+  default_prompt: "Use $understand to teach me the changes we just made and verify that I can explain them."
