@@ -1,0 +1,6 @@
+interface:
+  display_name: "Simplified Technical English"
+  short_description: "Write clear and controlled technical prose."
+  default_prompt: "Use $simplified-technical-english to rewrite this technical text for clarity without changing its meaning."
+policy:
+  allow_implicit_invocation: true
