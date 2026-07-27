@@ -25,6 +25,10 @@ This file contains concise persistent global guidance. Task-specific procedures 
 - Do not use emojis.
 - Do not use em dashes. Use hyphens or colons.
 
+## User Questions
+
+- Never enable timed or automatic resolution for a user-question tool. In particular, never set `autoResolutionMs` on `request_user_input` calls. Every question must remain pending until the user responds explicitly or interrupts the task.
+
 ## Local Review Artifacts
 
 When creating or updating a local file specifically for user review, offer to open it with `cursor <path>` before asking the user to review or approve it.
