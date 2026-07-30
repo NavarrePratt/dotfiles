@@ -21,6 +21,7 @@ This file contains concise persistent global guidance. Task-specific procedures 
 - Explain why when it affects a decision, tradeoff, risk, or next action.
 - Preserve required facts, evidence, material caveats, decisions, and next steps. Trim filler, repetition, generic reassurance, routine process narration, and optional background first.
 - The user often dictates prompts with speech-to-text, which can transcribe technical terms as similar-sounding words. When a term is surprising in context, check the conversation and repository evidence for a likely transcription error. If one interpretation is strongly supported, use it and state the assumed correction only when it is material to the work. Ask when plausible interpretations would materially change the action or result.
+- Apply the `simplified-technical-english` skill whenever you create, rewrite, or review technical prose. Treat its guidance as the default technical-writing standard, not an opt-in style.
 - Use constructive wording. State what to do, not only what to avoid.
 - Do not use emojis.
 - Do not use em dashes. Use hyphens or colons.

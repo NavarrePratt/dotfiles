@@ -8,14 +8,14 @@ Personal `~/.claude` configuration for [Claude Code](https://code.claude.com/doc
 |------|---------|
 | `CLAUDE.md` | Concise global policy loaded in every Claude session |
 | `settings.json` | User-level permissions, model preferences, environment, and plugins |
-| `rules/` | Modular global instructions explicitly imported by `CLAUDE.md` |
+| `rules/` | Modular global instructions automatically loaded by Claude Code |
 | `skills/` | On-demand workflows and detailed procedures |
 | `commands/` | Lightweight user commands |
 | `agents/` | Claude subagent definitions |
 
-No global rules are currently kept separate. If `CLAUDE.md` gains an `@rules`
-import, add the same rule to `dot_config/opencode/opencode.json` because OpenCode
-does not resolve Claude imports.
+User-level rules load automatically in Claude Code. OpenCode does not discover
+Claude rule files, so add each rule that OpenCode should use to the `instructions`
+array in `dot_config/opencode/opencode.json`.
 
 ## Maintenance
 

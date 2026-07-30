@@ -69,6 +69,12 @@ changing one file, review the other and preserve equivalent policy unless the
 difference is intentional. Keep both files explicit and independently readable;
 do not replace them with shared generation without an explicit decision.
 
+Technical-writing guidance intentionally uses harness-specific loading. Claude
+loads `~/.claude/rules/simplified-technical-english.md` as an unconditional user
+rule, and OpenCode loads the same file through its `instructions` array. Codex
+keeps the detailed guidance in the `simplified-technical-english` skill and its
+global `AGENTS.md` requires that skill for technical prose.
+
 ## OpenCode instruction inheritance
 
 OpenCode automatically inherits `~/.claude/CLAUDE.md` as its global instructions
@@ -76,12 +82,12 @@ OpenCode automatically inherits `~/.claude/CLAUDE.md` as its global instructions
 it gives OpenCode the same git commit, PR, code style, and safety guidance as
 Claude Code without duplication.
 
-**OpenCode does NOT resolve `@` imports.** Claude Code expands `@rules/foo.md`
-references in CLAUDE.md and inlines the file content into the system prompt.
-OpenCode loads CLAUDE.md as raw text: `@rules/` references appear as literal
-strings, and the rule file content is NOT loaded. Any rule referenced via `@`
-in CLAUDE.md must also be added to the `instructions` array in `opencode.json`
-for OpenCode to receive its content.
+**OpenCode does NOT auto-load Claude rule files or resolve `@` imports.** Claude
+Code loads user rules under `~/.claude/rules/` automatically and expands
+`@rules/foo.md` references in CLAUDE.md. OpenCode loads CLAUDE.md as raw text:
+`@rules/` references appear as literal strings, and automatically loaded Claude
+rules are absent. Add each Claude rule that OpenCode should receive to the
+`instructions` array in `opencode.json`.
 
 OpenCode DOES auto-load Claude skills from `~/.claude/skills/<name>/SKILL.md`
 (unless `OPENCODE_DISABLE_CLAUDE_CODE_SKILLS=1` is set). Skills do not need to
