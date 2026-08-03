@@ -83,6 +83,8 @@ Use local ExecPlan documents for durable planning. Store each plan under that re
 
 # Commits And PRs
 
+Prefix every Git branch you create with `npratt/`, not `codex/`.
+
 Use the `commit` skill to create atomic local commits matching repository style. Keep most messages subject-only; add a body only for why or a non-obvious consequence that cannot be inferred from the diff. Do not use commit bodies for PR-level walkthroughs or test inventories.
 
 Avoid incidental counts in commit messages, PR descriptions, and issue descriptions. Every PR needs a meaningful body that explains why, links relevant context when available, and gives future readers enough background to understand the motivation.
