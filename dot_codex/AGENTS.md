@@ -95,6 +95,8 @@ Local Git and Git-Spice operations and read-only remote queries are allowed unle
 
 External writes require explicit user approval. This includes remote branch and tag updates, GitHub issue, PR, comment, reply, and branch writes, and Git-Spice submit commands.
 
+After the user approves PR publication, create or submit the PR as ready for review by default. Use draft status only when the user explicitly requests a draft.
+
 Before requesting approval, show the exact action, destination, and content or refs. After approval, perform only that action. Ask again only if those material details change. Never force-push unless the user specifically approves the force-push.
 
 ## Comment Formatting
