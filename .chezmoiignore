@@ -27,6 +27,7 @@ dot_codex/log/**
 dot_codex/sessions/**
 dot_codex/shell_snapshots/**
 dot_codex/.tmp/**
+dot_codex/plugins/**
 
 # OpenCode local-only config files are intentionally unmanaged.
 dot_config/opencode/auth.json

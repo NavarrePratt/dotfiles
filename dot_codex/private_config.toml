@@ -89,6 +89,9 @@ enabled = true
 [plugins."sites@openai-bundled"]
 enabled = true
 
+[plugins."kynes-guide@cw-claude-code-plugins"]
+enabled = true
+
 [features]
 terminal_resize_reflow = true
 memories = true
@@ -98,6 +101,11 @@ default_mode_request_user_input = true
 
 [tui.model_availability_nux]
 "gpt-5.6-sol" = 4
+
+[marketplaces.cw-claude-code-plugins]
+source_type = "git"
+source = "https://github.com/coreweave/agent-plugins.git"
+ref = "main"
 
 [agents]
 max_concurrent_threads_per_session = 50
