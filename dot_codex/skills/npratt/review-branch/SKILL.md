@@ -289,6 +289,8 @@ Spawn all reviewers in parallel. Each reviewer gets:
 - exact diff commands
 - artifact path it owns
 
+Keep the target worktree quiescent until every reviewer has completed and the round is synthesized. For sequential stack reviews, do not navigate to the next branch while a reviewer is reading the current branch. If the reviewed SHA changes, mark the prior review as superseded and start a fresh bounded review. Do not continue a review session across a moving target. Use separate worktrees if branch reviews must overlap.
+
 Set a per-reviewer completion budget before spawning. A reasonable default is 20 minutes for normal diffs. If a reviewer exceeds the budget, close that reviewer if practical, synthesize with explicit degraded-review language, and list the missing coverage.
 
 Tell every reviewer:
