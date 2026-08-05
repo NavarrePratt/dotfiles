@@ -84,7 +84,7 @@ url = "https://developers.openai.com/mcp"
 enabled = true
 
 [plugins."github@openai-curated"]
-enabled = true
+enabled = false
 
 [plugins."sites@openai-bundled"]
 enabled = true
