@@ -73,7 +73,9 @@ Technical-writing guidance intentionally uses harness-specific loading. Claude
 loads `~/.claude/rules/simplified-technical-english.md` as an unconditional user
 rule, and OpenCode loads the same file through its `instructions` array. Codex
 keeps the detailed guidance in the `simplified-technical-english` skill and its
-global `AGENTS.md` requires that skill for technical prose.
+global `AGENTS.md` requires that skill for the same scope. Each harness applies
+the guidance to human-facing technical artifacts and user-requested write-ups,
+explanations, or summaries, but not to routine session communication.
 
 ## OpenCode instruction inheritance
 

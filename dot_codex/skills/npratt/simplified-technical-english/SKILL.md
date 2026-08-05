@@ -1,6 +1,6 @@
 ---
 name: simplified-technical-english
-description: Rewrite or review technical writing in controlled, plain English while preserving exact technical meaning, evidence, terminology, and normative force. Use when creating or improving runbooks, code comments, API documentation, pull request descriptions, troubleshooting text, procedures, and technical summaries, especially when the user asks for clearer, simpler, more precise, or easier-to-follow technical prose.
+description: Create, rewrite, or review human-facing technical writing in controlled, plain English while preserving exact technical meaning, evidence, terminology, and normative force. Use for code comments, documentation, runbooks, pull request and issue text, troubleshooting procedures, and user-requested write-ups, explanations, or summaries. Do not use for routine conversational replies, progress updates, planning notes, or tool narration unless the user asks to turn that content into polished human-facing prose.
 ---
 
 # Simplified Technical English

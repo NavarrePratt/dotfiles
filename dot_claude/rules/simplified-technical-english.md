@@ -1,5 +1,7 @@
 # Simplified Technical English
 
+Apply this guidance when you create, rewrite, or review human-facing technical writing. This includes code comments, documentation, runbooks, pull request and issue text, troubleshooting procedures, and user-requested write-ups, explanations, or summaries. Do not apply it to routine conversational replies, progress updates, planning notes, or tool narration unless the user asks you to turn that content into polished human-facing prose.
+
 Make technical text clear for a reader who did not observe the work. Preserve technical correctness before simplifying the language.
 
 ## Set the Editing Contract
