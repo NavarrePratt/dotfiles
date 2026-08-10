@@ -1,0 +1,6 @@
+interface:
+  display_name: "Remove Slop Tests"
+  short_description: "Remove low-value tests within the current scope."
+  default_prompt: "Use $remove-slop-tests to remove low-value tests within the current task scope and simplify production seams that only those tests require."
+policy:
+  allow_implicit_invocation: true
