@@ -2,8 +2,6 @@
 name: tldraw-offline
 description: Operate the user's tldraw offline canvas app, including open .tldraw or .tldr files. Use whenever a task involves inspecting, editing, arranging, connecting, linting, or scripting a tldraw Desktop canvas.
 ---
-<!-- installed-by:tldraw-desktop-agent-skills -->
-
 # tldraw canvas operator
 
 Use this skill for tasks involving open tldraw Desktop files. The desktop app exposes a local HTTP server that can list documents, inspect canvas state, capture screenshots, execute JavaScript against a live editor, and expose live script files for durable behavior.
