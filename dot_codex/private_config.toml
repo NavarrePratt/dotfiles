@@ -80,6 +80,10 @@ CROSS_AGENT_OPENCODE_AGENT = "cross-agent-readonly"
 [mcp_servers.openaiDeveloperDocs]
 url = "https://developers.openai.com/mcp"
 
+[mcp_servers.o11yops]
+url = "https://o11yops.us-west.core-internal.ingress.int.coreweave.com/mcp"
+http_headers = { "X-Grafana-Org-Id" = "1" }
+
 [plugins."gmail@openai-curated"]
 enabled = true
 
