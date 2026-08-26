@@ -32,13 +32,21 @@ If the status block is malformed, report the missing fields and ask before repai
 
 ## Lifecycle Verification
 
-Read the full plan, including goal, scope, non-goals, decisions, documentation, milestones, verification, risks, and progress log. Inspect `.codex/plans/<slug>/` if it exists.
+Read the full plan, including goal, scope, non-goals, documentation, decisions,
+open questions, implementation approach, milestones, verification, risks, and
+progress log. Inspect `.codex/plans/<slug>/` if it exists.
 
 Build a checklist from the plan content:
 
-- milestone checkboxes
+- structured milestone blocks, when present
+  - require the `Milestone N complete` roll-up checkbox
+  - require every nested acceptance checkbox
+  - require every nested milestone-verification checkbox
+  - treat a checked roll-up with an unchecked nested requirement as incomplete
+- legacy flat milestone checkboxes, when no structured milestone headings exist
 - verification commands and their latest known results
 - documentation decisions
+- unresolved open questions
 - PR, review, CI, release, deploy, rollout, or follow-up references
 - explicit remaining lifecycle steps recorded during handoff
 - artifacts such as PR drafts, review output, or summaries

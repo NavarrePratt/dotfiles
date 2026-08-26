@@ -55,13 +55,30 @@ If the worktree path exists, inspect it and ask before reuse. Do not overwrite, 
 
 ## Execution
 
-1. Read the full plan, including goal, scope, non-goals, decisions, milestones, verification, risks, documentation, and progress log.
-2. Build an execution checklist from `## Milestones`.
-3. Implement milestone by milestone.
-4. Use subagents only when the user explicitly authorized delegated or parallel implementation and write scopes are independent. Subagents write artifacts under `.codex/plans/<slug>/`; the lead session updates the top-level plan.
-5. Run relevant verification commands from the plan after each meaningful slice when practical, and run final verification before handoff.
-6. Update milestone checkboxes and the progress log as the lead session.
-7. If blocked, set `State: blocked`, write the blocker, and record the next required action.
+1. Read the full plan, including goal, scope, non-goals, documentation,
+   decisions, open questions, implementation approach, milestones,
+   verification, risks, and progress log.
+2. Inspect the `## Milestones` format:
+   - For structured plans, each `### Milestone` heading block is one execution
+     unit. Track its roll-up checkbox, acceptance criteria, and
+     milestone-specific verification together.
+   - For legacy flat plans, treat each milestone checkbox as one execution unit.
+3. Build the execution checklist from those units. An unchecked open question
+   that prevents coherent implementation blocks the affected milestone.
+4. Implement milestone by milestone. In a structured milestone, use the files,
+   patterns, implementation work, dependencies, gotchas, and boundaries as the
+   execution contract.
+5. Use subagents only when the user explicitly authorized delegated or parallel
+   implementation and write scopes are independent. Subagents write artifacts
+   under `.codex/plans/<slug>/`; the lead session updates the top-level plan.
+6. Run milestone-specific verification after each meaningful slice when
+   practical, and run the final `## Verification` commands before handoff.
+7. For a structured milestone, check `Milestone N complete` only after every
+   nested acceptance and milestone-verification checkbox passes. Update legacy
+   flat checkboxes according to their existing meaning.
+8. Update the progress log as the lead session.
+9. If blocked, set `State: blocked`, write the blocker, and record the next
+   required action.
 
 ## Artifacts
 
