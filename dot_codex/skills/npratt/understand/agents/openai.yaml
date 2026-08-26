@@ -1,4 +1,4 @@
 interface:
-  display_name: "Understand Changes"
-  short_description: "Learn and retain how recent changes work."
-  default_prompt: "Use $understand to teach me the changes we just made and verify that I can explain them."
+  display_name: "Interactive Change Lesson"
+  short_description: "Run a mastery lesson for substantial code changes."
+  default_prompt: "Use $understand to design an interactive mastery lesson for this PR and verify that I can explain it."

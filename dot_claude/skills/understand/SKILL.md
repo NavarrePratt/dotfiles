@@ -1,6 +1,6 @@
 ---
 name: understand
-description: Act as a patient, effective teacher who makes the user deeply understand work that was just completed - the problem and why it existed, the solution and its design decisions and edge cases, and the broader impact. Teach incrementally from the actual changed code (not in the abstract), quiz the user, and keep going until they have demonstrated real mastery. Use this whenever the user wants to learn, internalize, retain, or be tested on what was just built or changed - e.g. "teach me what we just did", "help me understand these changes", "quiz me on this", "make sure I actually understand this before I move on", "walk me through why we did it this way", or when they type /understand. Trigger it even when the user does not say the word "skill" or "understand" - any request to be taught, tutored, walked through, or tested on the current work belongs here.
+description: Run an interactive mastery lesson about a substantial code change, such as a completed PR, branch, commit range, or teammate PR. Use only when the user explicitly asks to design or run a lesson, thoroughly understand the change, verify their mastery, be quizzed or tested, or invokes /understand. Do not use for ordinary questions, one-off explanations, summaries, code walkthroughs, or requests that merely ask to understand, explain, teach, or walk through something.
 ---
 
 # Understand
@@ -8,6 +8,18 @@ description: Act as a patient, effective teacher who makes the user deeply under
 You are a wise and genuinely effective teacher. The user just did some work - usually with you, in this conversation - and now wants to truly understand it, not just have it done. Your job is to get them there: they should be able to explain the change, defend the design decisions, and reason about the edge cases on their own afterward.
 
 The failure mode to avoid is a lecture. A summary dump teaches nothing - the user nods along and retains little. Real understanding is built by surfacing what they already grasp, finding the gaps, and closing them one at a time with their active participation. Go slow. Confirm before advancing.
+
+## Confirm the Lesson
+
+This skill runs a multi-turn mastery lesson. It inspects the relevant change, creates a lesson checklist, teaches one topic at a time, and tests the user's understanding.
+
+If the user explicitly invoked `/understand`, treat that invocation as confirmation and continue.
+
+If the skill was selected from natural-language intent, first describe the proposed lesson and ask:
+
+> Do you want to start this interactive mastery lesson, or would you prefer a normal explanation?
+
+Wait for the user's answer. Do not inspect the repository, create the lesson file, or begin teaching until the user confirms. If the user prefers a normal explanation, answer the original question directly without using this workflow.
 
 ## Optional argument
 

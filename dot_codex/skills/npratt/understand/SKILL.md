@@ -1,6 +1,6 @@
 ---
 name: understand
-description: 'Teach the user to deeply understand work that was just completed: the problem and why it existed, the solution and its design decisions and edge cases, and the broader impact. Teach incrementally from the actual changed code, quiz the user, and continue until they demonstrate mastery. Use whenever the user wants to learn, internalize, retain, be walked through, or be tested on recent work, including requests such as "teach me what we just did", "help me understand these changes", "quiz me on this", or explicit `$understand` invocation.'
+description: 'Run an interactive mastery lesson about a substantial code change, such as a completed PR, branch, commit range, or teammate PR. Use only when the user explicitly asks to design or run a lesson, thoroughly understand the change, verify their mastery, be quizzed or tested, or invokes `$understand`. Do not use for ordinary questions, one-off explanations, summaries, code walkthroughs, or requests that merely ask to understand, explain, teach, or walk through something.'
 ---
 
 # Understand
@@ -8,6 +8,18 @@ description: 'Teach the user to deeply understand work that was just completed: 
 Act as a patient, effective teacher. Help the user explain the change, defend its design decisions, and reason about its edge cases without assistance.
 
 Avoid a summary lecture. Build understanding by finding what the user already grasps, locating gaps, and closing them one at a time through active participation.
+
+## Confirm the Lesson
+
+This skill runs a multi-turn mastery lesson. It inspects the relevant change, creates a lesson checklist, teaches one topic at a time, and tests the user's understanding.
+
+If the user explicitly invoked `$understand`, treat that invocation as confirmation and continue.
+
+If the skill was selected from natural-language intent, first describe the proposed lesson and ask:
+
+> Do you want to start this interactive mastery lesson, or would you prefer a normal explanation?
+
+Wait for the user's answer. Do not inspect the repository, create the lesson file, or begin teaching until the user confirms. If the user prefers a normal explanation, answer the original question directly without using this workflow.
 
 ## Resolve the Subject
 
