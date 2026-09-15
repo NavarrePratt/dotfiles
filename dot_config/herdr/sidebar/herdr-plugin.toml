@@ -1,0 +1,13 @@
+id = "npratt.sidebar"
+name = "Sidebar summaries"
+version = "0.1.0"
+min_herdr_version = "0.9.0"
+platforms = ["macos", "linux"]
+
+[[startup]]
+command = ["python3", "sidebar.py", "--start"]
+
+[[actions]]
+id = "start"
+title = "Start sidebar summaries"
+command = ["python3", "sidebar.py", "--start"]
