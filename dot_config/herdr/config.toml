@@ -1,2 +1,30 @@
+onboarding = false
+
+[keys]
+previous_agent = "prefix+up"
+next_agent = "prefix+down"
+
+[[keys.command]]
+key = "prefix+f1"
+type = "shell"
+command = '"$HOME/.config/herdr/open-view.sh" --pane "$HERDR_ACTIVE_PANE_ID" env LESS= less -P "q: close reference" "$HOME/.config/herdr/hotkeys.txt"'
+
+[[keys.command]]
+key = "prefix+d"
+type = "shell"
+command = '"$HERDR_BIN_PATH" plugin pane open --plugin persiyanov.reviewr --entrypoint pane --placement split --direction right --target-pane "$HERDR_ACTIVE_PANE_ID" --cwd "$HERDR_ACTIVE_PANE_CWD" --focus'
+
+[theme]
+name = "dracula"
+auto_switch = false
+
+[ui]
+status_indicators = "symbols"
+agent_panel_sort = "priority"
+sidebar_width = 30
+
 [ui.sidebar.agents.rows_by_agent]
 codex = [["state_icon", "terminal_title_stripped"], ["agent", "$usage"]]
+
+[ui.toast]
+delivery = "system"

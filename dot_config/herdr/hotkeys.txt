@@ -1,0 +1,30 @@
+HERDR: EVERYDAY KEYS
+
+Press Ctrl+B, release, then a key below.
+Repeat Ctrl+B for each action.
+
+TASK TABS
+  1-9          Jump to task tab
+  n / p        Next / previous tab
+  c            New task tab
+  Shift+T      Rename task tab
+
+PANES
+  v / -        Split right / down
+  h j k l      Focus left/down/up/right
+  Tab          Cycle panes
+  z            Zoom / restore pane
+  r            Resize mode
+
+AGENTS
+  Up / Down    Previous / next agent
+
+MORE
+  F1           Open this reference
+  d            Reviewr split
+  w            Workspace navigation
+  ?            Full shortcut help
+
+Mouse: click panes; drag dividers.
+Close a spare shell by typing exit.
+In this reference, press q to close.

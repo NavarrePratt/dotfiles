@@ -75,3 +75,6 @@ dot_claude/*.local.json
 dot_claude/*.local.md
 dot_claude/skills/ask-o11yops/**
 dot_claude/skills/bd-to-br-migration/**
+
+# Source-only Herdr instructions.
+.config/herdr/AGENTS.md
