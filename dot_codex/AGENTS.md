@@ -102,7 +102,6 @@ Before requesting approval, show the exact action, destination, and content or r
 
 ## Comment Formatting
 
-- Prefix GitHub comments with `[via Agent]`.
 - When replying to an existing PR review comment, post as a threaded reply, not a new top-level comment.
 
 # External Communication Tools
