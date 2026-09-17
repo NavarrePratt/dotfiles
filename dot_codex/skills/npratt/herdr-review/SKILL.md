@@ -11,6 +11,14 @@ For general pane control beyond this workflow, read `herdr --skill`.
 
 ## Open Reviewr
 
+Check the caller environment with:
+
+```sh
+printf 'HERDR_ENV=%s\nHERDR_PANE_ID=%s\n' "${HERDR_ENV:-}" "${HERDR_PANE_ID:-}"
+```
+
+macOS `printenv` accepts one variable name; passing both names only prints the first.
+Do not infer a missing pane ID from that output or create a spare pane to obtain one.
 Use this workflow only when `HERDR_ENV=1` and `HERDR_PANE_ID` is present.
 Otherwise, provide the artifact path and explain that this session cannot open a Herdr pane.
 
