@@ -28,7 +28,8 @@ This file contains concise persistent global guidance. Task-specific procedures 
 
 ## User Questions
 
-- Never enable timed or automatic resolution for a user-question tool. In particular, never set `autoResolutionMs` on `request_user_input` calls. Every question must remain pending until the user responds explicitly or interrupts the task.
+- Ask every user question through ordinary chat and wait for an explicit response or interruption.
+- Do not use the request_user_input tool. Client-side timeouts can otherwise return unanswered questions as empty decisions.
 
 ## Local Review Artifacts
 
