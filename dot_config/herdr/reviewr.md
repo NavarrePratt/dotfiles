@@ -29,5 +29,5 @@ Comments are held in memory: copy them before closing the pane.
 The plugin also supports `s` to send comments; this trial uses clipboard feedback.
 
 Exact file/line launch targeting and programmatic commit selection remain
-unverified. Keep the existing Cursor review instructions until those workflows
-have been tested. Plugin binaries and runtime data stay outside this repository.
+unverified. The `herdr-review` skill documents checkout opening and manual target
+selection. Plugin binaries and runtime data stay outside this repository.

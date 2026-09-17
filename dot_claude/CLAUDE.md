@@ -27,11 +27,12 @@ This file contains concise persistent global guidance. Task-specific procedures 
 
 ## Local Review Artifacts
 
-When creating or updating a local file specifically for user review, offer to open it with `cursor <path>` before asking the user to review or approve it.
+When creating or updating a local file specifically for user review, offer to open it in Herdr Reviewr using the `herdr-review` skill.
 
-- Use this for review-gated drafts and artifacts such as issue drafts, PR bodies, ExecPlans, handoff notes, review findings, and generated instructions.
-- Show the path and the exact `cursor <path>` command.
-- Opening the file in Cursor is only for review convenience. It does not replace explicit approval for a GitHub write, remote push, message, deletion, or other gated action.
+- Use this for issue drafts, PR bodies, ExecPlans, handoff notes, review findings, and generated instructions.
+- Show the exact artifact path. Use its actual checkout when opening Reviewr, even if the agent session started elsewhere.
+- Outside Herdr, provide the path for manual review.
+- Opening Reviewr is for review convenience. It does not replace explicit approval for a GitHub write, remote push, message, deletion, or other gated action.
 
 # Code And Tests
 
