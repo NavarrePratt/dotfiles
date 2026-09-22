@@ -34,14 +34,29 @@ herdr plugin pane open --plugin persiyanov.reviewr --entrypoint pane \
   --cwd "$review_root" --no-focus
 ```
 
+For a specific document, set `review_file` to its absolute path and add the
+per-launch environment variable:
+
+```sh
+herdr plugin pane open --plugin persiyanov.reviewr --entrypoint pane \
+  --placement split --direction right --target-pane "$HERDR_PANE_ID" \
+  --cwd "$review_root" --env "HERDR_REVIEWR_OPEN=$review_file" --no-focus
+```
+
+The installed personal Reviewr fork opens that file directly in the Files view,
+including Git-ignored plans and artifacts. The file must exist inside `review_root`.
+Use this direct launch for known files instead of searching or opening a plain-text pager.
+The standalone equivalent is `herdr-reviewr "$review_root" --open "$review_file"`.
+Fork provenance and rollback are documented in `~/.config/herdr/reviewr.md`.
+
 Keep existing review panes intact: they may contain unsent comments.
-Report the checkout and exact file path or commit SHA for the user to select.
-The configured viewer does not have a verified direct file/line or commit launch option;
-do not claim it selected a target just because the pane opened.
+Report the checkout and file opened. Confirm selection from the pane output when possible.
+Line-number targeting and programmatic commit selection are not implemented;
+report the commit SHA for the user to select.
 
 ## Guide the review
 
-- Documents: `2` opens All files, `/` searches, and `m` previews Markdown.
+- Documents: direct opening selects the file in source view; `m` toggles Markdown preview. `2` opens All files. `/` search can still omit ignored files; direct opening does not depend on search indexing.
 - Diffs: `u` selects uncommitted work, `b` branch changes, and `g` commit review; `G` opens the commit picker.
 - Feedback: `v` selects lines, `c` comments, and `y` copies comments back to chat.
 - Copy comments before `q` closes the pane; comments live in memory.

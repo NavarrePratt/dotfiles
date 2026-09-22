@@ -23,3 +23,13 @@ locks, sessions, and other runtime state out of Git.
 - Keep detailed Git status out of workspace sidebar rows. Bind future Git views
   to an explicit pane checkout; use shell-prompt context and `git status --short
   --branch` as presentation references. Session usage is useful in agent rows.
+
+## Reviewr fork maintenance
+
+Keep the personal Reviewr fork's patch limited to agent-driven
+exact-file opening inside the Reviewr TUI, including Git-ignored plans and artifacts.
+Document the reason, upstream base, installed fork revision, related upstream work,
+installation steps, and return-to-upstream criteria in `reviewr.md`. Check upstream
+before updating the fork; prefer removing the patch when upstream meets the same
+behavioral requirements. Record local implementation and installed revisions
+separately. Keep fork source and build outputs outside dotfiles.
