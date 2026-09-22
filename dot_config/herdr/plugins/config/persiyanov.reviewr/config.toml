@@ -1,4 +1,5 @@
 theme = "dracula"
+editor = "vim +{line} {file}"
 auto_open = false
 default_scope = "uncommitted"
 navigator_position = "left"
