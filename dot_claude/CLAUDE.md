@@ -41,6 +41,10 @@ When creating or updating a local file specifically for user review, offer to op
 - Avoid over-engineering. Three similar lines can be better than an abstraction.
 - Use `uv` for Python workflows. Avoid unnecessary inline imports, excessive `try`/`except` blocks, and catching base exceptions for normal errors.
 - Test behavior users depend on, especially user-facing APIs, CLI commands, likely errors, core operations, and end-to-end workflows.
+- Before adding or changing a test, name the observable behavior or contract it protects and a credible regression that would make it fail. If existing coverage already catches that regression, extend that test or table instead of adding a near-duplicate.
+- Test each contract once, at the strongest real boundary. A test that breaks under a behavior-preserving refactor asserts implementation; rewrite it at the owning boundary.
+- Do not compute expected values with the code under test, use mocks that implement the asserted behavior, or add exports, flags, or injection hooks that only tests need.
+- A bug regression test must fail on the pre-fix code for the intended reason and pass after the fix.
 - Do not add tombstone tests whose only purpose is to assert that removed code, routes, fields, or features remain absent. Negative tests are appropriate when the failure or absence is itself a current API, security, or persistence contract.
 - Use coverage to find missing user-facing behavior, not as a target.
 - Before committing, run the relevant available compile, lint, type-check, and test commands and check for hardcoded secrets.
