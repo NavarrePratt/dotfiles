@@ -59,7 +59,7 @@ class Usage:
     def __init__(self):
         self.files = {}
         self.readers = {}
-        self.scanned = 0
+        self.scanned = float("-inf")
 
     def summary(self, session):
         if not session:
