@@ -40,6 +40,17 @@ Before applying `~/.codex/config.toml`, review its targeted
 `dot_codex/private_config.toml` before applying. Use `--force` only after that
 review and only for the specific Codex target.
 
+## The `devin/` personal plugin
+
+`devin/` is a Devin plugin installed at the user's **personal** scope from
+`NavarrePratt/dotfiles#devin`. Its `AGENTS.md` is an always-on rule in every
+cloud Devin session; `skills/` under it would sync the same way. Edit it here,
+push to `main`, then reindex via app.devin.ai/customize → Personal → Plugin
+settings (new cloud sessions fetch plugin content at start regardless of index
+state). The directory is chezmoi-ignored and is never applied to `$HOME`. Keep
+it scoped to portable, harness-agnostic guidance — local-only workflows stay in
+`dot_claude/` and `dot_codex/`.
+
 ## Don't commit runtime state
 
 Most `dot_claude/` and `dot_codex/` subdirectories (projects/, sessions/, cache/,
