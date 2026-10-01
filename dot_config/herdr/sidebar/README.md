@@ -9,14 +9,16 @@ to agent sidebar rows. It does not change agent state.
   parent-and-child total. Claude subagent transcripts are excluded. `tok ?`
   means no matching session usage is available.
 - `~$` is estimated API-equivalent cost using the standard short-context rates in
-  `pricing.json`. The rates were checked against OpenAI pricing on 2026-09-15
-  and Claude pricing on 2026-09-29. Cached input and cache writes use separate
+  `pricing.json`. The rates were checked against OpenAI and Claude pricing on
+  2026-10-01. Cached input and cache writes use separate
   rates, and Claude 1-hour cache writes use their own rate. Reasoning is included
   in output. The estimate follows recorded model changes per request. Claude
   Fast mode uses the multiplier in `pricing.json`; Codex Fast mode is excluded.
   The estimate also excludes long-context uplifts, data-residency multipliers,
   tool charges, subscription billing, and child sessions. Unknown models retain
   the token-only display. Restart the worker after editing rates.
+  `gpt-reserve` and `codex-auto-review` have no verified published rates and
+  retain the token-only display.
 - Claude sessions report through the Herdr Claude integration hook in
   `~/.claude/hooks/herdr-agent-state.sh`. Sessions started before the hook was
   installed show no usage until they are resumed.
