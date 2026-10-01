@@ -12,6 +12,8 @@ CLAUDE.md
 Brewfile
 scripts/**
 local/**
+devin
+devin/**
 
 # Codex runtime files are intentionally unmanaged.
 dot_codex/auth.json
