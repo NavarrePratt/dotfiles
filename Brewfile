@@ -1,6 +1,7 @@
 tap "anomalyco/tap"
 
 brew "chezmoi"
+brew "gh"
 brew "jq"
 brew "fzf"
 brew "eza"
