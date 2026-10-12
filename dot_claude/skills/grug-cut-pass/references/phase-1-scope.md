@@ -16,10 +16,16 @@ If `file-list.txt` is empty, report "no commits on this branch vs $BASE_REF, not
 
 ## Stacked branches: ask for scope
 
-If `STACKED=true` AND the current branch has upstack or downstack siblings in the gs stack, call AskUserQuestion:
+If `STACKED=true`, capture the stack. `branches[]` is ordered bottom to top and excludes trunk:
+
+```bash
+gh stack view --json > "$TMP_DIR/stack.json"
+```
+
+If the current branch has upstack or downstack siblings in the stack, call AskUserQuestion:
 
 ```
-question: "This branch is part of a git-spice stack. Scope the cut pass to which level?"
+question: "This branch is part of a gh stack. Scope the cut pass to which level?"
 header: "Stack scope"
 options:
   - { label: "Current branch only", description: "Review only this branch's commits. Simpler, faster. Cuts amend only into this branch's commits." }
@@ -28,8 +34,8 @@ options:
 
 Detecting "has siblings":
 ```bash
-# Number of branches in the stack minus 1 (the current branch)
-siblings=$(gs ls --json 2>/dev/null | jq '[.branches[] | select(.name != env.CURRENT_BRANCH)] | length')
+# Number of unmerged branches in the stack minus 1 (the current branch)
+siblings=$(jq '[.branches[] | select(.isMerged | not)] | length - 1' "$TMP_DIR/stack.json")
 ```
 
 If `siblings == 0`, skip the question and use single-branch scope.
@@ -38,17 +44,19 @@ If `siblings == 0`, skip the question and use single-branch scope.
 
 When user selects whole-stack:
 
-1. List all branches in the stack from trunk up:
+1. Pair each unmerged branch with its parent. The parent is the previous branch, or trunk for the bottom branch. `base` in the JSON is a commit SHA, not a parent name.
    ```bash
-   gs ll > "$TMP_DIR/stack-log.txt"
+   jq -r '([.trunk] + [.branches[] | select(.isMerged | not) | .name]) as $n
+     | range(1; $n | length) | "\($n[. - 1]) \($n[.])"' \
+     "$TMP_DIR/stack.json" > "$TMP_DIR/stack-pairs.txt"
    ```
 
-2. For each branch, capture its diff vs its parent:
+2. Log each branch's commits and capture its changed files vs its parent:
    ```bash
-   for branch in $(gs ls --json | jq -r '.branches[].name'); do
-       parent=$(gs ls --json | jq -r ".branches[] | select(.name == \"$branch\") | .parent")
-       git diff --name-only "$parent"..."$branch" > "$TMP_DIR/branch-$branch-files.txt"
-   done
+   while read -r parent branch; do
+       { echo "## $branch (parent: $parent)"; git log --oneline "$parent..$branch"; } >> "$TMP_DIR/stack-log.txt"
+       git diff --name-only "$parent"..."$branch" > "$TMP_DIR/branch-${branch//\//-}-files.txt"
+   done < "$TMP_DIR/stack-pairs.txt"
    ```
 
 3. Build the cross-reference (which of *this branch's* files are also touched by other branches in the stack):

@@ -100,15 +100,15 @@ If a `git rebase --continue` fails with a conflict:
 
 ## Step 5: Stacked-branch restack
 
-If `SCOPE == "whole-stack"`, after finishing cuts on a branch:
+If `SCOPE == "whole-stack"`, after finishing cuts on a branch, check out that branch and run:
 
 ```bash
-gs stack restack
+gh stack rebase --upstack --no-trunk
 ```
 
-This propagates the amends through the rest of the stack locally. Do NOT run `gs stack submit` or any remote-facing gs command.
+This propagates the amends through the rest of the stack locally without fetching trunk. Do NOT run `gh stack submit`, `push`, `sync`, `link`, `merge`, or any other remote-writing `gh stack` command.
 
-If restack fails, same handling as Step 4 (abort or user resolves).
+If the rebase exits 3 (conflict), use the same handling as Step 4. Abort with `gh stack rebase --abort`, which restores every stack branch. To resolve manually, the user resolves the files, runs `git add`, and runs `gh stack rebase --continue`.
 
 ## Step 6: Update findings state
 

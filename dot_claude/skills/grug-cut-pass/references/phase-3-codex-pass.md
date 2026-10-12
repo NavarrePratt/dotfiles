@@ -9,7 +9,7 @@ Read `templates/codex-prompt.md` and replace these placeholders with Phase 1 out
 | Placeholder | Source |
 |-------------|--------|
 | `{{BASE_REF}}` | From Phase 0 |
-| `{{SCOPE_DESCRIPTION}}` | "current branch only" or "whole git-spice stack" |
+| `{{SCOPE_DESCRIPTION}}` | "current branch only" or "whole gh stack" |
 | `{{COMMITS}}` | Contents of `$TMP_DIR/commits.txt` |
 | `{{FILE_LIST}}` | Contents of `$TMP_DIR/file-list.txt` |
 | `{{DIFF_TEXT}}` | Contents of `$TMP_DIR/diff.patch` |

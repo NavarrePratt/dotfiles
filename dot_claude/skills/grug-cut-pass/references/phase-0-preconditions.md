@@ -53,21 +53,15 @@ If none of these resolve, AskUserQuestion for the base branch name. Abort if use
 
 Set `BASE_REF=origin/<detected_branch>`.
 
-## Step 5: Git-spice detection
+## Step 5: Stack detection
 
 ```bash
-git show-ref --verify --quiet refs/spice/data && echo STACKED || echo SINGLE
+gh stack view --json >/dev/null 2>&1 && echo STACKED || echo SINGLE
 ```
 
-Set `STACKED=true` if the ref exists. This is used in Phase 1 to offer stack-aware scoping.
+Set `STACKED=true` if the command succeeds. It exits 2 when the current branch is not in a stack. Phase 1 uses this flag to offer stack-aware scoping.
 
-If STACKED=true, also capture the current branch's stack neighbors:
-
-```bash
-gs ls 2>/dev/null
-```
-
-If `gs` is not on PATH but `refs/spice/data` exists, fall back to `SINGLE` mode and note the warning in the final report. Do not abort - just degrade gracefully.
+If `gh stack` is not installed but `"$(git rev-parse --git-common-dir)/gh-stack"` exists, fall back to `SINGLE` mode and note the warning in the final report. Do not abort - just degrade gracefully.
 
 ## Step 6: Branch slug for temp directory
 

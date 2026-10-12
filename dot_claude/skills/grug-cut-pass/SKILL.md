@@ -61,7 +61,7 @@ Load [phase-0-preconditions.md](references/phase-0-preconditions.md) and run its
 - Working tree clean (stash or abort if dirty)
 - Codex MCP available
 - BASE_REF discovery
-- Git-spice detection (sets STACKED flag)
+- Stack detection with `gh stack` (sets STACKED flag)
 
 If any check fails, stop with an actionable message. Do not attempt workarounds.
 
@@ -69,7 +69,7 @@ If any check fails, stop with an actionable message. Do not attempt workarounds.
 
 Load [phase-1-scope.md](references/phase-1-scope.md).
 
-Default scope: current branch vs BASE_REF. If STACKED and current branch is part of a gs stack, ask the user (AskUserQuestion) whether to scope to current branch only or whole stack. Whole-stack adds an upstack impact map to the findings context passed to Codex.
+Default scope: current branch vs BASE_REF. If STACKED and the current stack has other active branches, ask the user (AskUserQuestion) whether to scope to current branch only or whole stack. Whole-stack adds an upstack impact map to the findings context passed to Codex.
 
 Build FILE_LIST from `git diff --name-only <BASE_REF>..HEAD`. If the file list is empty, report "no commits on branch" and exit.
 
@@ -81,7 +81,7 @@ If `--rebase` flag is set, run rebase automatically. Otherwise AskUserQuestion: 
 
 If user chose Rebase:
 - `git fetch origin <DEFAULT_BRANCH>`
-- `git rebase origin/<DEFAULT_BRANCH>` (single branch) or `gs repo sync && gs stack restack` (whole stack)
+- `git rebase origin/<DEFAULT_BRANCH>` (single branch) or `gh stack rebase` (whole stack; fetches and rebases locally, never pushes)
 - On conflict: stop the pipeline, surface conflicted files, instruct user to resolve and re-invoke
 
 Skip cleanly if branch is already up to date.
@@ -138,8 +138,8 @@ Load [phase-5-apply-cuts.md](references/phase-5-apply-cuts.md).
 
 **Stacked branches (whole-stack scope):**
 - Apply cuts per branch
-- Run `gs stack restack` after each branch's cuts land
-- Never `gs stack submit` (no remote ops)
+- Run `gh stack rebase --upstack --no-trunk` after each branch's cuts land
+- Never run `gh stack submit`, `push`, `sync`, `link`, or `merge` (no remote ops)
 
 ### Phase 6: Verify
 
