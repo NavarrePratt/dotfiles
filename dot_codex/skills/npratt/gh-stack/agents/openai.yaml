@@ -1,0 +1,4 @@
+interface:
+  display_name: "gh stack"
+  short_description: "Use gh stack for stacked branches and stacked PRs."
+  default_prompt: "Use gh stack to inspect or manage this stack."

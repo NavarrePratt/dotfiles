@@ -70,7 +70,7 @@ Optimize for total system complexity, not dependency count.
 
 - Prefer `rg` or `rg --files` for text and file search.
 - Prefer `ygrep` when extracting a structured YAML block by key or partial path. Use `yq` for known scalar paths or YAML edits.
-- Use the `git-spice` skill for stacked branch work involving `gs`.
+- Use the `gh-stack` skill for stacked branch and stacked PR work.
 
 # Commits And PRs
 
@@ -80,9 +80,9 @@ Avoid incidental counts in commit messages, PR descriptions, and issue descripti
 
 # Remote Operations
 
-Local Git and Git-Spice operations and read-only remote queries are allowed unless project instructions say otherwise.
+Local Git operations, local `gh stack` operations, and read-only remote queries are allowed unless project instructions say otherwise.
 
-External writes require explicit user approval. This includes remote branch and tag updates, GitHub issue, PR, comment, reply, and branch writes, and Git-Spice submit commands.
+External writes require explicit user approval. This includes remote branch and tag updates, GitHub issue, PR, comment, reply, and branch writes, and remote-writing `gh stack` commands such as `submit`, `push`, `sync`, `link`, `merge`, and `unstack` without `--local`.
 
 After the user approves PR publication, create or submit the PR as ready for review by default. Use draft status only when the user explicitly requests a draft.
 
