@@ -175,14 +175,16 @@ or fixup changes the number and the message becomes a lie. Describe what was don
 4. Identify logical groupings of changes
 5. For each logical group:
    - Stage the relevant changes (use `git add -p` if needed)
-   - Create the commit. Single-line: `git commit -m "subject"`. Multi-line: pass a heredoc directly to `-m`:
+   - Create the commit. Single-line: `git commit -m "subject"`. Multi-line: write the message to a temp file and pass it with `-F`, because a heredoc inside `-m "$(...)"` can pick up ANSI escape codes from the terminal:
      ```bash
-     git commit -m "$(cat <<'EOF'
+     msg="$(mktemp)"
+     cat > "$msg" <<'EOF'
      subject line
 
      body paragraph explaining why
      EOF
-     )"
+     git commit -F "$msg"
+     rm "$msg"
      ```
    - Verify the commit with `git show`
 6. After all commits, run `git status` to verify nothing important was missed
