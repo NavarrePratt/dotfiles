@@ -19,8 +19,16 @@
   "model": "opus",
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": false,
     "kynes-guide@cw-claude-code-plugins": true
+  },
+  "skillOverrides": {
+    "amps-bites": "off",
+    "cc-scout": "off",
+    "diataxis-documentation": "off",
+    "grug-review": "off",
+    "repo-explore": "off",
+    "thermo-nuclear-code-quality-review": "off"
   },
   "extraKnownMarketplaces": {
     "claude-code-plugins": {
