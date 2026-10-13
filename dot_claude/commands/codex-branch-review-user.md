@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(git *), Edit, Read, mcp__codex__codex, AskUserQuestion
+allowed-tools: Bash(git *), Edit, Read, mcp__cross-agent__codex_prompt, AskUserQuestion
 description: Interactive code review of branch changes - confirms fixes with user before applying
 ---
 
@@ -15,14 +15,13 @@ Thorough code review of all commits on the current branch compared to main using
 
 ## Instructions
 
-You are conducting a rigorous code review using the Codex MCP tool (`mcp__codex__codex`), but with user approval for all changes. This ensures the user maintains control over what gets modified.
+You are conducting a rigorous code review using the cross-agent Codex tool (`mcp__cross-agent__codex_prompt`), but with user approval for all changes. This ensures the user maintains control over what gets modified.
 
 ### Step 1: Initial Review Request
 
-Call `mcp__codex__codex` with these parameters:
-- `sandbox`: `read-only`
-- `approval-policy`: `never`
-- `cwd`: The current working directory (from Context above)
+Call `mcp__cross-agent__codex_prompt` with these parameters:
+- `read_only`: `true`
+- `directory`: The current working directory (from Context above)
 - `prompt`: The review prompt below (substitute BRANCH_NAME and BASE_COMMIT from Context above)
 
 **Review Prompt for Codex:**
@@ -132,7 +131,7 @@ For disagreements, document the user's reasoning for the re-review.
 
 ### Step 4: Re-Review Loop
 
-After making fixes, call `mcp__codex__codex` again with the same parameters and a prompt containing:
+After making fixes, call `mcp__cross-agent__codex_prompt` again with the same parameters and a prompt containing:
 
 1. Statement: "Review iteration [N] - re-reviewing after fixes"
 2. List of issues addressed and how each was fixed

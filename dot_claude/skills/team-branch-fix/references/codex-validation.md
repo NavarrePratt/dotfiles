@@ -26,12 +26,11 @@ options: [
 
 ### Step 2: If user selects "Validate with Codex"
 
-1. **Call Codex MCP** with the approaches and code context:
+1. **Call Codex** with the approaches and code context:
 
 ```
-mcp__codex__codex:
-  sandbox: "read-only"
-  approval-policy: "never"
+mcp__cross-agent__codex_prompt:
+  read_only: true
   prompt: |
     Review these proposed fix approaches for a code review finding.
 
@@ -79,12 +78,12 @@ options: [
 
 - It does not add new approaches (Codex evaluates, it does not generate alternatives)
 - It does not override the user's choice (the user always makes the final call)
-- It does not block progress (if Codex MCP is unavailable, inform the user and
+- It does not block progress (if Codex is unavailable, inform the user and
   re-present without assessments - let them choose based on the original descriptions)
 
 ## Error Handling
 
-If Codex MCP is unavailable or times out:
+If Codex is unavailable or times out:
 
 ```
 "Codex validation unavailable. Proceeding with the original approaches."

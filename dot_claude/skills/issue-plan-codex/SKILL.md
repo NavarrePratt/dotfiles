@@ -17,7 +17,7 @@ This command receives context from two sources:
 
 - **Task (Explore subagent)** - Thorough codebase exploration (inherits global model)
 - **Task (Plan subagent)** - Implementation design (inherits global model)
-- **mcp__codex__codex** - Cross-reference discovery (uses Codex global default)
+- **mcp__cross-agent__codex_prompt** - Cross-reference discovery (uses the cross-agent default Codex model)
 - **br CLI** - Issue creation, status management, and dependencies
 
 ---
@@ -40,9 +40,9 @@ Use the Explore subagent with "very thorough" setting to understand:
 Run a focused Explore query using the verification command discovery process in `../shared/bead-workflow.md` (see "Verification Command Discovery" section).
 
 ### Codex Discovery
-Use the codex MCP tool for additional discovery:
+Use the cross-agent Codex tool for additional discovery:
 ```
-mcp__codex__codex
+mcp__cross-agent__codex_prompt
 prompt: "Explore [topic]. Find all relevant code, patterns, edge cases, and potential issues. Report findings comprehensively."
 ```
 Cross-reference Codex findings with Explore results to ensure nothing is missed.
@@ -69,7 +69,7 @@ Claude (Opus) and Codex debate back-and-forth to refine the plan:
 
 **Round 1 - Dual Critique**:
 - **Claude (Opus)**: List 5-10 specific gaps, risks, or edge cases in the plan. For each, explain why it matters.
-- **Codex**: Use `mcp__codex__codex`:
+- **Codex**: Use `mcp__cross-agent__codex_prompt`:
   ```
   prompt: "Review this implementation plan: [plan]. List 5-10 specific gaps, conflicts, or risks. For each issue: (1) What could break? (2) What assumption might be wrong? (3) Suggest a concrete mitigation."
   ```
@@ -77,7 +77,7 @@ Claude (Opus) and Codex debate back-and-forth to refine the plan:
 
 **Round 2 - Address & Counter**:
 - **Claude (Opus)**: Propose specific revisions for each Round 1 concern. State which you accept, reject (with rationale), or defer.
-- **Codex**: Use `mcp__codex__codex`:
+- **Codex**: Use `mcp__cross-agent__codex_prompt`:
   ```
   prompt: "Claude proposes these revisions: [revisions]. For each: (1) Does it actually solve the concern? (2) What breaks if Claude's assumption is wrong? (3) Suggest 1-2 concrete alternatives for weak points."
   ```
@@ -85,7 +85,7 @@ Claude (Opus) and Codex debate back-and-forth to refine the plan:
 
 **Round 3 - Final Consensus** (skip if Round 2 achieved consensus):
 - **Claude (Opus)**: Present refined plan with all incorporated feedback. List any unresolved disagreements.
-- **Codex**: Use `mcp__codex__codex`:
+- **Codex**: Use `mcp__cross-agent__codex_prompt`:
   ```
   prompt: "Final plan review: [plan]. Verify: (1) All discovered edge cases addressed or explicitly deferred? (2) Error/failure paths defined? (3) Testing strategy clear? (4) Dependencies sequenced correctly? List any gaps."
   ```
@@ -125,7 +125,7 @@ Compose the transcript from the debate rounds above, using this structure. Omit 
 [verbatim list from Round 1]
 
 ### Codex response
-[verbatim from mcp__codex__codex output]
+[verbatim from mcp__cross-agent__codex_prompt output]
 
 ### Synthesis
 [what overlapped, what was accepted, what was deferred]

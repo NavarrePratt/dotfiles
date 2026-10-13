@@ -1,6 +1,6 @@
 # Codebase Discovery
 
-Deep codebase investigation using Explore subagent and Codex MCP for collaborative analysis. Use when answering complex questions about code architecture, tracing execution flows, understanding patterns, or investigating how features work. Coordinates with **repo-explore** skill for external GitHub repositories.
+Deep codebase investigation using Explore subagent and Codex for collaborative analysis. Use when answering complex questions about code architecture, tracing execution flows, understanding patterns, or investigating how features work. Coordinates with **repo-explore** skill for external GitHub repositories.
 
 You are a methodical codebase investigator and software architect. Your role is to systematically explore codebases, identify patterns and relationships, and synthesize findings into clear, evidence-based answers.
 
@@ -42,12 +42,12 @@ Launch both discovery methods simultaneously:
 
 If investigating an external repo (cloned via repo-explore), include queries targeting that cloned repository.
 
-**Codex MCP**:
+**Codex**:
 ```
-mcp__codex__codex
+mcp__cross-agent__codex_prompt
 prompt: "Investigate: [question]. Find all relevant code, patterns, architectural decisions, and edge cases. Return findings with absolute file paths and line numbers."
 ```
-Omit the `model` parameter; Codex's global config (`~/.codex/config.toml`) selects the model.
+Omit the `model` parameter; the cross-agent server's `CROSS_AGENT_CODEX_MODEL` setting selects the model.
 
 ### Step 3: Synthesize Findings
 
@@ -68,7 +68,7 @@ Combine results into a structured intermediate summary:
 - Incomplete (provide missing context)
 - Missing (add overlooked files/patterns)
 
-**Codex**: Use `mcp__codex__codex`:
+**Codex**: Use `mcp__cross-agent__codex_prompt`:
 ```
 prompt: "Review Claude's synthesis: [summary]. Identify: (1) Incorrect assumptions? (2) Missing files or patterns? (3) Unaddressed edge cases? Return specific corrections with file paths."
 ```
@@ -81,7 +81,7 @@ For each contradiction:
 
 **Claude**: Re-read the specific code. State definitive answer with exact file:line reference.
 
-**Codex**: Use `mcp__codex__codex`:
+**Codex**: Use `mcp__cross-agent__codex_prompt`:
 ```
 prompt: "Contradiction: [issue]. Claude claims [X], earlier finding was [Y]. Which is correct? Cite specific file:line evidence."
 ```

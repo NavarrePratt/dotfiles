@@ -24,14 +24,13 @@ When the subagent finishes, relay its final summary to the user verbatim.
 
 You are conducting a rigorous code review of all changes on branch BRANCH_NAME since BASE_COMMIT, in working directory CWD.
 
-You will iterate with Codex MCP until it approves the changes or you reach 5 review iterations.
+You will iterate with Codex until it approves the changes or you reach 5 review iterations.
 
 ### Step 1: Initial Review Request
 
-Call `mcp__codex__codex` with:
-- `sandbox`: `read-only`
-- `approval-policy`: `never`
-- `cwd`: CWD
+Call `mcp__cross-agent__codex_prompt` with:
+- `read_only`: `true`
+- `directory`: CWD
 
 Prompt for Codex:
 
@@ -104,7 +103,7 @@ If Codex responds with "NEEDS REVISION":
 
 ### Step 3: Re-Review Loop
 
-After making fixes, call `mcp__codex__codex` again with the same parameters and a prompt containing:
+After making fixes, call `mcp__cross-agent__codex_prompt` again with the same parameters and a prompt containing:
 
 1. Statement: "Review iteration [N] - re-reviewing after fixes"
 2. List of issues addressed and how each was fixed

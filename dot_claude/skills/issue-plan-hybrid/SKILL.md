@@ -17,7 +17,7 @@ This command receives context from two sources:
 
 - **AskUserQuestion** - User interview and decision points
 - **Task (Explore subagent, haiku)** - Optional codebase exploration
-- **mcp__codex__codex** - Plan review for technical gaps
+- **mcp__cross-agent__codex_prompt** - Plan review for technical gaps
 - **br CLI** - Bead creation after planning is complete
 
 ---
@@ -160,7 +160,7 @@ Present this synthesis to the user briefly before sending to Codex for review.
 
 Send the synthesized plan to Codex for technical review. The review focuses on **technical gaps**, NOT feasibility.
 
-Use `mcp__codex__codex`:
+Use `mcp__cross-agent__codex_prompt`:
 ```
 prompt: "Review this implementation plan for technical gaps:
 

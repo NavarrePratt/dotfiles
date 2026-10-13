@@ -29,11 +29,11 @@ options:
 If Stash: `git stash push -u -m "grug-cut-pass: pre-run stash"`. Record that a stash was created so Phase 8 can restore it.
 If Abort: stop.
 
-## Step 3: Codex MCP tool available
+## Step 3: Cross-agent Codex tool available
 
-Check the tool list for `mcp__codex__codex`. If absent:
+Check the tool list for `mcp__cross-agent__codex_prompt`. If absent:
 
-"Codex MCP is required for the grug pass (Phase 3). Either enable the Codex MCP server or run /grug-review for a checklist-only review without Codex validation."
+"Codex is required for the grug pass (Phase 3). Either enable the cross-agent MCP server or run /grug-review for a checklist-only review without Codex validation."
 
 Stop. Do not fall through silently.
 

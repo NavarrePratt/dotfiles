@@ -139,9 +139,9 @@ Scenarios for team composition: reviewer count and specialization based on diff 
 
 ### 4.2 Codex validation runs in read-only sandbox
 
-- Observe Codex MCP calls from reviewer agents
-- Expected: Each reviewer calls `mcp__codex__codex` with `sandbox: "read-only"` and `approval-policy: "never"`
-- Expected: `cwd` is set to the actual working directory
+- Observe Codex calls from reviewer agents
+- Expected: Each reviewer calls `mcp__cross-agent__codex_prompt` with `read_only: true`
+- Expected: `directory` is set to the actual working directory
 - Verify: Codex does not modify any files
 
 ### 4.3 Findings written to TEMP_DIR
@@ -218,9 +218,9 @@ Scenarios for team composition: reviewer count and specialization based on diff 
 - Expected: Skill falls back to single-agent review (runs codex-diff-review instead)
 - Expected: User informed of the fallback
 
-### 6.7 Codex MCP unavailable for a reviewer
+### 6.7 Codex unavailable for a reviewer
 
-- Reviewer's `mcp__codex__codex` call fails
+- Reviewer's `mcp__cross-agent__codex_prompt` call fails
 - Expected: Reviewer reports unvalidated findings and notes that Codex validation was unavailable
 - Expected: Final report notes which reviewers lacked Codex validation
 

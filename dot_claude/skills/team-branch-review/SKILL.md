@@ -6,7 +6,7 @@ argument-hint: "[--epic <EPIC_ID>] [optional extra instructions]"
 
 # Team Branch Review
 
-Comprehensive code review of all commits on the current branch compared to main. Spawns parallel Claude (Opus) reviewer agents as background tasks - each specializing in a different review concern. Each reviewer independently validates their own findings using the Codex MCP, then the lead collects the results and synthesizes the final report.
+Comprehensive code review of all commits on the current branch compared to main. Spawns parallel Claude (Opus) reviewer agents as background tasks - each specializing in a different review concern. Each reviewer independently validates their own findings using the Codex, then the lead collects the results and synthesizes the final report.
 
 ## Context
 
@@ -18,13 +18,13 @@ Comprehensive code review of all commits on the current branch compared to main.
 
 You are the lead conducting a comprehensive multi-agent code review.
 
-Use the Agent tool to spawn Claude reviewer agents as background tasks (send all Agent calls in a single message so they run concurrently). Each reviewer is an independent Claude agent session, not a Codex MCP call - do not substitute direct mcp__codex__codex calls for reviewer agents. The Codex MCP is used only by the reviewer agents internally to validate their own findings; you (the lead) do not call Codex directly.
+Use the Agent tool to spawn Claude reviewer agents as background tasks (send all Agent calls in a single message so they run concurrently). Each reviewer is an independent Claude agent session, not a Codex call - do not substitute direct mcp__cross-agent__codex_prompt calls for reviewer agents. The Codex is used only by the reviewer agents internally to validate their own findings; you (the lead) do not call Codex directly.
 
 **This skill does NOT edit files.** It produces a review report only.
 
 You will:
 1. Spawn parallel Claude (Opus) reviewer agents as background tasks using the Agent tool
-2. Each reviewer explores the code deeply and validates their findings with Codex MCP
+2. Each reviewer explores the code deeply and validates their findings with Codex
 3. You collect all validated findings and synthesize the final report
 
 ---
@@ -195,7 +195,7 @@ rm -rf /tmp/RUN_ID
 | Scenario | Recovery |
 |----------|----------|
 | Reviewer agent fails or times out | Note the gap in the report, continue with remaining findings |
-| Codex MCP unavailable for a reviewer | Reviewer reports unvalidated findings, noted in report |
+| Codex unavailable for a reviewer | Reviewer reports unvalidated findings, noted in report |
 | Team spawn fails | Fall back to single-agent review (run codex-branch-review instead) |
 | No findings from any reviewer | Report "APPROVED - no issues found" with note about review coverage |
 
@@ -204,7 +204,7 @@ rm -rf /tmp/RUN_ID
 - **Model inheritance**: Do NOT set a `model` parameter on spawned agents - they inherit the global model setting automatically
 - **Parallel execution**: Spawn ALL reviewer agents simultaneously in one message
 - **Fixed base commit**: Use the exact hash from Phase 1 everywhere, never "main"
-- **Distributed Codex validation**: Each reviewer calls Codex MCP to validate their own findings (runs in parallel)
+- **Distributed Codex validation**: Each reviewer calls Codex to validate their own findings (runs in parallel)
 - **Don't embed diffs in prompts**: Let agents and Codex gather diffs via git commands themselves
 - **Deep exploration**: Reviewers should use Read, Grep, Glob extensively - not just skim diffs
 - **No severity inflation**: Findings should use honest, appropriate severity levels

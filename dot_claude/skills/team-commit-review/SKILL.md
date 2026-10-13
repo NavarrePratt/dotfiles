@@ -6,7 +6,7 @@ argument-hint: "[--epic <EPIC_ID>] [commit target: omit for HEAD, 'last N' for r
 
 # Team Commit Review
 
-Comprehensive code review scoped to specific commits. Spawns parallel Claude (Opus) reviewer agents as background tasks - each specializing in a different review concern. Each reviewer independently validates their own findings using the Codex MCP, then the lead collects the results and synthesizes the final report.
+Comprehensive code review scoped to specific commits. Spawns parallel Claude (Opus) reviewer agents as background tasks - each specializing in a different review concern. Each reviewer independently validates their own findings using the Codex, then the lead collects the results and synthesizes the final report.
 
 Unlike team-branch-review (which diffs an entire branch against main), this skill reviews a targeted set of commits: a single HEAD commit, the last N commits, or a specific SHA.
 
@@ -21,13 +21,13 @@ Unlike team-branch-review (which diffs an entire branch against main), this skil
 
 You are the lead conducting a comprehensive multi-agent code review scoped to specific commits.
 
-Use the Agent tool to spawn Claude reviewer agents as background tasks (send all Agent calls in a single message so they run concurrently). Each reviewer is an independent Claude agent session, not a Codex MCP call - do not substitute direct mcp__codex__codex calls for reviewer agents. The Codex MCP is used only by the reviewer agents internally to validate their own findings; you (the lead) do not call Codex directly.
+Use the Agent tool to spawn Claude reviewer agents as background tasks (send all Agent calls in a single message so they run concurrently). Each reviewer is an independent Claude agent session, not a Codex call - do not substitute direct mcp__cross-agent__codex_prompt calls for reviewer agents. The Codex is used only by the reviewer agents internally to validate their own findings; you (the lead) do not call Codex directly.
 
 **This skill does NOT edit files.** It produces a review report only.
 
 You will:
 1. Spawn parallel Claude (Opus) reviewer agents as background tasks using the Agent tool
-2. Each reviewer explores the code deeply and validates their findings with Codex MCP
+2. Each reviewer explores the code deeply and validates their findings with Codex
 3. You collect all validated findings and synthesize the final report
 
 ---
@@ -273,7 +273,7 @@ rm -rf "$TEMP_DIR"
 | Unparseable commit target argument | Stop in Phase 0: "Could not parse commit target. Expected: no argument (HEAD), 'last N' (e.g. last 3), or a bare SHA (e.g. a1b2c3d)." |
 | Diff exceeds 2000 lines | Warn but continue. Note the warning in the report. |
 | Reviewer agent fails or times out | Note the gap in the report, continue with remaining findings |
-| Codex MCP unavailable for a reviewer | Reviewer reports unvalidated findings, noted in report |
+| Codex unavailable for a reviewer | Reviewer reports unvalidated findings, noted in report |
 | Agent spawn unavailable | Fall back to single-agent review (run codex-diff-review instead) |
 | No findings from any reviewer | Report "APPROVED - no issues found" with note about review coverage |
 | Root commit (no parent) | Diff against empty tree hash: `4b825dc642cb6eb9a060e54bf899d69f82cf7c17` |
@@ -284,7 +284,7 @@ rm -rf "$TEMP_DIR"
 - **Model inheritance**: Do NOT set a `model` parameter on spawned agents - they inherit the global model setting automatically
 - **Parallel execution**: Spawn ALL reviewer agents simultaneously in one message
 - **Fixed SHAs**: Use the exact hashes resolved in Phase 1 everywhere, never relative references
-- **Distributed Codex validation**: Each reviewer calls Codex MCP to validate their own findings (runs in parallel)
+- **Distributed Codex validation**: Each reviewer calls Codex to validate their own findings (runs in parallel)
 - **Don't embed diffs in prompts**: Let agents and Codex gather diffs via git commands themselves
 - **Deep exploration**: Reviewers should use Read, Grep, Glob extensively - not just skim diffs
 - **No severity inflation**: Findings should use honest, appropriate severity levels

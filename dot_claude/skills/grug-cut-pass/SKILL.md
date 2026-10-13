@@ -59,7 +59,7 @@ Load [phase-0-preconditions.md](references/phase-0-preconditions.md) and run its
 
 - Git repo check
 - Working tree clean (stash or abort if dirty)
-- Codex MCP available
+- Codex available
 - BASE_REF discovery
 - Stack detection with `gh stack` (sets STACKED flag)
 
@@ -94,9 +94,8 @@ Substitute variables into [codex-prompt.md](templates/codex-prompt.md):
 - FILE_LIST, BASE_REF, DIFF_TEXT
 - UPSTACK_IMPACT (empty unless whole-stack scope)
 
-Invoke `mcp__codex__codex` with:
-- `approval-policy: "never"`
-- `sandbox: "read-only"`
+Invoke `mcp__cross-agent__codex_prompt` with:
+- `read_only: true`
 - prompt: the substituted template
 
 Parse Codex response as YAML findings. Save to `/tmp/grug-cut-<BRANCH_SLUG>/findings.yaml`. Each finding conforms to [cut-decision-schema.md](references/cut-decision-schema.md).

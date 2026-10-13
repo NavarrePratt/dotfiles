@@ -1,6 +1,6 @@
 # Phase 3: Codex Grug Pass
 
-Invoke Codex MCP with the grug-brain prompt template, parse the findings, and save to disk for Phase 4.
+Invoke Codex with the grug-brain prompt template, parse the findings, and save to disk for Phase 4.
 
 ## Step 1: Substitute the Codex prompt template
 
@@ -20,20 +20,19 @@ If `DIFF_TEXT` exceeds ~300K characters, truncate per-file to the first 2000 lin
 
 Save the substituted prompt to `$TMP_DIR/codex-prompt-substituted.md` for debugging.
 
-## Step 2: Invoke Codex MCP
+## Step 2: Invoke Codex
 
-Call `mcp__codex__codex` with:
+Call `mcp__cross-agent__codex_prompt` with:
 
 ```json
 {
   "prompt": "<substituted prompt>",
-  "sandbox": "read-only",
-  "approval-policy": "never",
-  "cwd": "<repo root>"
+  "read_only": true,
+  "directory": "<repo root>"
 }
 ```
 
-Do NOT specify the `model` parameter - let the global Codex configuration pick the default model (per global rules).
+Do NOT specify the `model` parameter - let the cross-agent server's `CROSS_AGENT_CODEX_MODEL` setting pick the model (per global rules).
 
 ## Step 3: Parse Codex response
 
@@ -86,4 +85,4 @@ If `findings.yaml` contains zero entries (or only `Acceptable` entries):
 | Codex invocation times out | Retry once with a smaller prompt (per-file truncation to 1000 lines). If second attempt fails, abort with "Codex timed out; try a smaller scope (single branch or subset of files)." |
 | Codex returns non-YAML output | Save raw response to `$TMP_DIR/codex-raw.txt`, abort with "Codex response not parseable; see $TMP_DIR/codex-raw.txt" |
 | All findings are malformed | Abort; surface `validation-warnings.txt` |
-| Codex MCP unavailable | Already caught in Phase 0; if it drops mid-run, abort cleanly |
+| Codex unavailable | Already caught in Phase 0; if it drops mid-run, abort cleanly |

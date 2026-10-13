@@ -50,12 +50,11 @@ FOCUS_BRIEF
 
 ### Step 2: Codex Validation
 
-Validate your findings using the Codex MCP tool.
+Validate your findings using the cross-agent Codex tool.
 
-Call `mcp__codex__codex` with:
-- `sandbox`: `"read-only"`
-- `approval-policy`: `"never"`
-- `cwd`: "CWD"
+Call `mcp__cross-agent__codex_prompt` with:
+- `read_only`: `true`
+- `directory`: "CWD"
 
 Use this prompt (substitute YOUR_FINDINGS with your actual findings from Step 1):
 
@@ -114,7 +113,7 @@ Report new findings using the same format, prefixed with "NEW -".
 - New findings added: N
 ```
 
-If the Codex MCP call fails, report your unvalidated findings and note that Codex validation was unavailable.
+If the Codex call fails, report your unvalidated findings and note that Codex validation was unavailable.
 
 ### Step 3: Write Findings to File
 

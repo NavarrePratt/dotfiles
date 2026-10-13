@@ -215,7 +215,7 @@ Scope: Med/Low findings where codex_status != "Disputed". Batch-approvals MUST N
 
 ### 9a: Codex unavailable during validation
 - User picks "Validate with Codex" for g-1
-- mcp__codex__codex call fails/times out
+- mcp__cross-agent__codex_prompt call fails/times out
 - **Expect**: "Codex validation unavailable. Proceeding with the original approaches."
 - Options re-presented without "Validate with Codex", without assessments
 - approach_source set to "user_choice" (not "codex_validated")
@@ -231,8 +231,8 @@ Scope: Med/Low findings where codex_status != "Disputed". Batch-approvals MUST N
 - **Expect**: "Findings skipped by user after block: N" in summary
 
 ### 9d: Fixer Codex unavailable
-- Fixer cannot reach mcp__codex__codex during self-validation
-- **Expect**: "Codex MCP unavailable - fixes not validated" in results file
+- Fixer cannot reach mcp__cross-agent__codex_prompt during self-validation
+- **Expect**: "Codex unavailable - fixes not validated" in results file
 - **Expect**: final report notes unvalidated fixes
 
 ### 9e: No findings approved

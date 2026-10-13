@@ -6,7 +6,7 @@ argument-hint: "[--auto] [--epic <EPIC_ID>] [review report or path to report]"
 
 # Team Branch Fix
 
-Implement code fixes for review findings using a parallel agent team. Each agent owns an exclusive set of files, implements all fixes for those files, and self-validates with Codex MCP. Runs verification (lint/test/build) after all agents complete.
+Implement code fixes for review findings using a parallel agent team. Each agent owns an exclusive set of files, implements all fixes for those files, and self-validates with Codex. Runs verification (lint/test/build) after all agents complete.
 
 ## Reference Files
 
@@ -264,7 +264,7 @@ Call AskUserQuestion tool with:
 
    **Auto-mode (AUTO_MODE = true):** Still generate 2 approaches (read code, draft per approach-generation.md) since fixer agents need the approach context. Auto-select the first approach (session-default-aligned). Set `decision.approach_source = "default"`. Log to Auto-Mode Decision Log: Phase="Step 1", Finding="[finding_id]: [title]", Decision="Approach 1: [label]", Reason="auto-mode: complex finding, selected session-default-aligned approach". Skip the AskUserQuestion call.
 
-   *(Fallback if reference files missing: draft 2 approaches from different styles - pick 2 of minimal_patch, defensive, refactor. Each needs a short label, one-line description, and ~10 line code preview. Session default goes first. Include "Validate with Codex" and "Skip" options. If user validates with Codex, call mcp__codex__codex with approaches + code context, then re-present with assessments baked in. Store decision.approach, decision.approach_detail, decision.approach_source.)*
+   *(Fallback if reference files missing: draft 2 approaches from different styles - pick 2 of minimal_patch, defensive, refactor. Each needs a short label, one-line description, and ~10 line code preview. Session default goes first. Include "Validate with Codex" and "Skip" options. If user validates with Codex, call mcp__cross-agent__codex_prompt with approaches + code context, then re-present with assessments baked in. Store decision.approach, decision.approach_detail, decision.approach_source.)*
 
 **If the user selects "More info"** (trivial findings only):
 
@@ -540,12 +540,11 @@ This is the safety net for hidden complexity. It is better to report a finding a
 
 ### Step 3: Self-Validate with Codex
 
-After implementing all fixes, validate your changes using the Codex MCP tool.
+After implementing all fixes, validate your changes using the cross-agent Codex tool.
 
-Call `mcp__codex__codex` with:
-- `sandbox`: `"read-only"`
-- `approval-policy`: `"never"`
-- `cwd`: "CWD"
+Call `mcp__cross-agent__codex_prompt` with:
+- `read_only`: `true`
+- `directory`: "CWD"
 
 Prompt:
 ```
@@ -568,7 +567,7 @@ Review these code changes for correctness. The changes implement fixes for speci
 
 If Codex finds issues with your fixes, correct them and re-validate.
 
-If the Codex MCP tool is unavailable or times out, skip validation and note in your results file under Codex Validation: "Codex MCP unavailable - fixes not validated." Continue to Step 4.
+If the cross-agent Codex tool is unavailable or times out, skip validation and note in your results file under Codex Validation: "Codex unavailable - fixes not validated." Continue to Step 4.
 
 ### Step 4: Write Results to File
 
@@ -822,7 +821,7 @@ Report back what commits were created.
 | Scenario | Recovery |
 |----------|----------|
 | Fix agent fails or times out | Note which findings weren't fixed, continue with others |
-| Codex MCP unavailable for an agent | Agent reports unvalidated fixes, noted in report |
+| Codex unavailable for an agent | Agent reports unvalidated fixes, noted in report |
 | Codex unavailable during approach validation | Note unvalidated in option description, proceed without |
 | Markdown previews don't render | Fall back to description-only options |
 | Verification fails | Report failure details, do NOT auto-fix |

@@ -224,14 +224,14 @@ Call AskUserQuestion tool with:
     question: "Run Codex validation on imported findings? (validates each finding against the codebase)",
     header: "Codex validation",
     options: [
-      { label: "Yes", description: "Validate each finding with Codex MCP - adds confidence scores" },
+      { label: "Yes", description: "Validate each finding with Codex - adds confidence scores" },
       { label: "No", description: "Skip validation - faster, findings reported as-is" }
     ],
     multiSelect: false
   }]
 ```
 
-**If yes**: For each finding, call `mcp__codex__codex` asking it to validate whether the finding is legitimate given the current codebase. Add a `Validation` field to each finding with the result (Confirmed/Disputed and rationale).
+**If yes**: For each finding, call `mcp__cross-agent__codex_prompt` asking it to validate whether the finding is legitimate given the current codebase. Add a `Validation` field to each finding with the result (Confirmed/Disputed and rationale).
 
 **If no**: Omit the `Validation` field from findings entirely.
 
@@ -345,7 +345,7 @@ After presenting the report, add this note:
 | No comments on PR | Report "No review comments found on PR #N" and exit |
 | All comments filtered out | Report "All N comments were filtered out. Try a broader filter." |
 | Branch mismatch | Warn and ask for override |
-| Codex MCP unavailable | Skip validation, note in report |
+| Codex unavailable | Skip validation, note in report |
 | API rate limiting | Wait and retry with backoff |
 
 ## Guidelines
