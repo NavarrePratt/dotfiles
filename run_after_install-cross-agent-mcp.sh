@@ -5,8 +5,10 @@
 # rather than templating the file directly. This script runs after chezmoi applies
 # files. chezmoi only re-runs it when the script content changes.
 #
-# Sets a 20-minute (1200000ms) tool execution timeout and selects the generic
-# non-interactive read-only OpenCode agent for cross-model calls.
+# Sets a 20-minute (1200000ms) tool execution timeout, selects the generic
+# non-interactive read-only OpenCode agent, and pins the Codex model and
+# reasoning effort. Read-only Codex calls skip ~/.codex/config.toml, so they
+# would otherwise fall back to the Codex default model.
 
 set -euo pipefail
 
@@ -15,6 +17,8 @@ INSTALL_URL="git+https://github.com/NavarrePratt/cross-agent-mcp[claude]"
 TIMEOUT_MS=1200000
 AGENT_ENV_KEY="CROSS_AGENT_OPENCODE_AGENT"
 AGENT_NAME="cross-agent-readonly"
+CODEX_MODEL="gpt-6.1-sol"
+CODEX_REASONING_EFFORT="high"
 
 reconcile_entry() {
     python3 -c "
@@ -32,9 +36,15 @@ if not isinstance(env, dict):
     env = {}
     entry['env'] = env
     changed = True
-if env.get('${AGENT_ENV_KEY}') != '${AGENT_NAME}':
-    env['${AGENT_ENV_KEY}'] = '${AGENT_NAME}'
-    changed = True
+wanted = {
+    '${AGENT_ENV_KEY}': '${AGENT_NAME}',
+    'CROSS_AGENT_CODEX_MODEL': '${CODEX_MODEL}',
+    'CROSS_AGENT_CODEX_REASONING_EFFORT': '${CODEX_REASONING_EFFORT}',
+}
+for key, value in wanted.items():
+    if env.get(key) != value:
+        env[key] = value
+        changed = True
 if changed:
     with open(path, 'w') as f:
         json.dump(d, f, indent=2)
