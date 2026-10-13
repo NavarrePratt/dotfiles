@@ -224,7 +224,7 @@ trc() {
 }
 
 tctx() {
-  kctx "$@"
+  scluster=$(printf '%s\n' "${(kubectl ctx)[@]}" | fzf --height 20% --prompt "Select a role: ")
 }
 
 tswitch() {
