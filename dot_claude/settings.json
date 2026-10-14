@@ -20,7 +20,8 @@
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": false,
-    "kynes-guide@cw-claude-code-plugins": true
+    "kynes-guide@cw-claude-code-plugins": true,
+    "cc-plugin-you-should-know@builtin": true
   },
   "skillOverrides": {
     "amps-bites": "off",
