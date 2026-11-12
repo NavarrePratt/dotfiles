@@ -23,7 +23,6 @@
       "/Users/npratt/git"
     ]
   },
-  "model": "opus",
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": false,
@@ -53,7 +52,6 @@
     }
   },
   "alwaysThinkingEnabled": true,
-  "effortLevel": "xhigh",
   "tui": "fullscreen",
   "autoDreamEnabled": true,
   "skipWorkflowUsageWarning": true,

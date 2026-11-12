@@ -23,8 +23,8 @@ if [ -d "$repo_root/dot_config/opencode" ]; then
 fi
 echo "opencode-json-validate: ok"
 
-jq empty "$repo_root/dot_claude/settings.json"
-if jq -e 'has("includeCoAuthoredBy")' "$repo_root/dot_claude/settings.json" >/dev/null; then
+jq empty "$repo_root/dot_claude/settings.base.json"
+if jq -e 'has("includeCoAuthoredBy")' "$repo_root/dot_claude/settings.base.json" >/dev/null; then
   echo "claude-settings-json-validate: deprecated includeCoAuthoredBy setting found" >&2
   exit 1
 fi

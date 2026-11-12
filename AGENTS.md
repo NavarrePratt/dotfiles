@@ -40,6 +40,21 @@ Before applying `~/.codex/config.toml`, review its targeted
 `dot_codex/private_config.toml` before applying. Use `--force` only after that
 review and only for the specific Codex target.
 
+## Managed Claude settings
+
+`dot_claude/modify_settings.json` is a chezmoi modify script for
+`~/.claude/settings.json`. It does not replace the live file. It builds the file
+from `dot_claude/settings.base.json` and keeps the keys that the live
+file owns: `model`, `effortLevel`, `modelSettings`, `autoMode`, `fastMode`, and
+`advisorModel`. Claude Code writes those keys itself, and `autoMode` describes
+internal environments that must stay out of this public repo.
+
+Edit managed keys in `dot_claude/settings.base.json`. Claude Code can
+also change managed keys in the live file, for example from `/config` or
+`/plugin`. The targeted `chezmoi --source "$PWD" diff` shows those changes, and
+`chezmoi apply` reverts them. Copy wanted changes into the base file before
+applying.
+
 ## The `devin/` personal plugin
 
 `devin/` is a Devin plugin installed at the user's **personal** scope from

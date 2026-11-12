@@ -15,6 +15,10 @@ local/**
 devin
 devin/**
 
+# Source-only input that dot_claude/modify_settings.json reads. chezmoi
+# matches these patterns against target paths.
+.claude/settings.base.json
+
 # Codex runtime files are intentionally unmanaged.
 dot_codex/auth.json
 dot_codex/history.jsonl

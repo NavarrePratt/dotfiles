@@ -24,6 +24,8 @@ Real tokens live outside git at:
 
 Use `dot_config/dotfiles/local/env.example.zsh` as the template. The live `.zshrc` sources the local file if it exists.
 
+Claude Code writes some of its settings to `~/.claude/settings.json` itself. `dot_claude/modify_settings.json` keeps those keys from the live file and takes the rest from `dot_claude/settings.base.json`. The live-owned keys are the default model, effort levels, fast mode, the advisor model, and the auto mode rules.
+
 Runtime state, histories, auth files, caches, sessions, SQLite databases, and local env files are intentionally ignored and should not be tracked.
 
 ## Local Planning Artifacts

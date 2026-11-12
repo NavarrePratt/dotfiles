@@ -1,0 +1,9 @@
+#!/bin/sh
+# Claude Code writes these keys itself, so the live file owns them. autoMode
+# also describes internal environments that must stay out of this public repo.
+# The rest of ~/.claude/settings.json comes from the managed base file.
+exec jq -n --slurpfile base "$CHEZMOI_SOURCE_DIR/dot_claude/settings.base.json" '
+  ([inputs][0] // {}) as $live
+  | $base[0] + ($live | with_entries(select(.key | IN(
+      "model", "effortLevel", "modelSettings", "autoMode", "fastMode", "advisorModel"
+    ))))'
