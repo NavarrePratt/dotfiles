@@ -8,7 +8,6 @@ bad=0
 while IFS= read -r path; do
   case "$path" in
     dot_config/dotfiles/local/env.zsh|\
-    dot_config/dotfiles/local/teleport.zsh|\
     dot_config/dotfiles/local/*.secret.zsh|\
     dot_config/dotfiles/mcp-servers/dot_env|\
     dot_config/dotfiles/mcp-servers/.env|\

@@ -25,7 +25,6 @@ args=(
   --no-heading
   --glob '!.git/**'
   --glob '!dot_config/dotfiles/local/env.zsh'
-  --glob '!dot_config/dotfiles/local/teleport.zsh'
   --glob '!dot_config/dotfiles/local/*.secret.zsh'
   --glob '!dot_config/dotfiles/mcp-servers/dot_env'
   --glob '!dot_config/dotfiles/mcp-servers/.env'
